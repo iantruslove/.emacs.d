@@ -9,13 +9,17 @@
   (package-refresh-contents))
 
 ;; Add in your own as you wish:
-(defvar my-packages '(nrepl
+(defvar my-packages '(cl
+                      nrepl
                       clojure-mode
                       clojure-test-mode
                       starter-kit
                       starter-kit-lisp
                       starter-kit-bindings
-                      markdown-mode)
+                      markdown-mode
+                      yasnippet
+                      yas-jit
+                      zencoding-mode)
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -29,3 +33,14 @@
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+
+(setq
+ scroll-margin 0
+ scroll-conservatively 100000
+ scroll-preserve-screen-position 1)
+
+(electric-indent-mode +1)
+
+;; Binding for comment toggle
