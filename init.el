@@ -19,7 +19,9 @@
                       markdown-mode
                       yasnippet
                       yas-jit
-                      zencoding-mode)
+                      zencoding-mode
+                      ;emacs-pry
+                      )
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -28,6 +30,9 @@
 
 ;;; Load window management crap
 ;(load "~/.emacs.d/emacsd-tile.el")
+
+;; ClojureScript
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
@@ -43,4 +48,10 @@
 
 (electric-indent-mode +1)
 
-;; Binding for comment toggle
+;; Enable winner mode - C-c <left> to go back a window configuration
+(winner-mode)
+
+;; Enable rainbow parens for all programming modes
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+
