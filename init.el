@@ -1,9 +1,9 @@
 (require 'package)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
-(load-theme 'misterioso t)
+(load-theme 'wombat t)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -13,10 +13,12 @@
                       nrepl
                       clojure-mode
                       clojure-test-mode
+                      js2-mode
                       starter-kit
                       starter-kit-lisp
                       starter-kit-bindings
                       markdown-mode
+                      ;smart-window
                       yasnippet
                       yas-jit
                       zencoding-mode
@@ -55,3 +57,16 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(css-indent-offset 2)
+ '(js-indent-level 2))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
