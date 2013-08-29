@@ -9,11 +9,13 @@
   (package-refresh-contents))
 
 ;; Add in your own as you wish:
-(defvar my-packages '(cl
+(defvar my-packages '(ac-nrepl
+                      auto-complete
+                      cl
                       nrepl
                       clojure-mode
                       clojure-test-mode
-                      js2-mode
+                      js2-mode 
                       starter-kit
                       starter-kit-lisp
                       starter-kit-bindings
@@ -30,11 +32,63 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+
+;; >>> Configure Load Path <<<
+;; From http://stackoverflow.com/a/1062314/594677
+;; >>> ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq emacs-config-path "~/.emacs.d/")
+(setq base-lisp-path "~/.emacs.d/site-lisp/")
+(setq site-lisp-path (concat emacs-config-path "/site-lisp"))
+(defun add-path (p)
+  (add-to-list 'load-path (concat base-lisp-path p)))
+
+;; I should really just do this recursively.
+(add-path "")
+;; (add-path "some-nested-folder")
+
+;; Load modules in site-lisp
+
+(require 'transpose-frame)
+
+;; >>> ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
 ;;; Load window management crap
 ;(load "~/.emacs.d/emacsd-tile.el")
 
+;; Enable autp-complete - taken in part from http://www.emacswiki.org/emacs/init-auto-complete.el
+(require 'auto-complete)
+(global-auto-complete-mode t)           ;enable global-mode
+(setq ac-auto-start t)                  ;automatically start
+
+(setq ac-modes
+      '(emacs-lisp-mode lisp-interaction-mode lisp-mode scheme-mode
+                        c-mode cc-mode c++-mode
+                        clojure-mode java-mode
+                        perl-mode cperl-mode python-mode ruby-mode
+                        ecmascript-mode javascript-mode js2-mode php-mode css-mode
+                        makefile-mode sh-mode fortran-mode f90-mode ada-mode
+                        xml-mode sgml-mode
+                        haskell-mode literate-haskell-mode
+                        emms-tag-editor-mode
+                        asm-mode
+                        org-mode))
+
+
+;; Set up ac-nrepl, per https://github.com/clojure-emacs/ac-nrepl#installation
+(require 'ac-nrepl)
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(add-to-list 'ac-modes 'nrepl-mode))
+
 ;; ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
+
+;; JavaScript
+;;(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
