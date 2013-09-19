@@ -1,9 +1,11 @@
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
 (package-initialize)
 
-(load-theme 'wombat t)
+;;(load-theme 'wombat t)
+(load-theme 'zenburn t)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -32,6 +34,7 @@
                       tree-mode
                       yasnippet
                       yas-jit
+                      zenburn-theme
                       zencoding-mode
                       ;emacs-pry
                       )
@@ -138,7 +141,7 @@
 (winner-mode)
 
 ;; Enable rainbow parens for all programming modes
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
 (custom-set-variables
