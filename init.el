@@ -15,12 +15,21 @@
                       nrepl
                       clojure-mode
                       clojure-test-mode
-                      js2-mode 
+;                      flx-ido
+                      flycheck
+;                      helm
+  ;                      helm-projectile
+                      highlight-symbol
+                      js2-mode
+;                      projectile
+                      simp
                       starter-kit
                       starter-kit-lisp
                       starter-kit-bindings
                       markdown-mode
                       ;smart-window
+                      skewer-mode
+                      tree-mode
                       yasnippet
                       yas-jit
                       zencoding-mode
@@ -52,6 +61,19 @@
 
 ;; >>> ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+;; Configure simp - it's like Vim's Ctrl-P
+;; (require 'simp)
+;; (simp-project-define
+;;  '(:has (.git)
+;;         :ignore (tmp coverage log vendor .git public/system public/assets)))
+;; (simp-project-define
+;;  '(:has (.svn)
+;;         :ignore (.svn)))
+;; (global-set-key [(control p)] 'simp-project-find-file)
+
+;(projectile-global-mode)
+;(helm-mode 1)
 
 
 ;;; Load window management crap
@@ -90,6 +112,12 @@
 ;;(autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+;; Load in skewer-mode
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+(add-hook 'html-mode-hook 'skewer-html-mode)
+
+
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
@@ -103,6 +131,8 @@
  scroll-preserve-screen-position 1)
 
 (electric-indent-mode +1)
+
+(auto-fill-mode -1)
 
 ;; Enable winner mode - C-c <left> to go back a window configuration
 (winner-mode)
@@ -118,9 +148,11 @@
  ;; If there is more than one, they won't work right.
  '(css-indent-offset 2)
  '(js-indent-level 2))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
