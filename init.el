@@ -4,9 +4,6 @@
 
 (package-initialize)
 
-;;(load-theme 'wombat t)
-(load-theme 'zenburn t)
-
 (when (not package-archive-contents)
   (package-refresh-contents))
 
@@ -23,6 +20,7 @@
   ;                      helm-projectile
                       highlight-symbol
                       js2-mode
+                      js2-refactor
 ;                      projectile
                       simp
                       starter-kit
@@ -44,6 +42,8 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+;;(load-theme 'wombat t)
+(load-theme 'zenburn t)
 
 ;; >>> Configure Load Path <<<
 ;; From http://stackoverflow.com/a/1062314/594677
@@ -120,6 +120,8 @@
 (add-hook 'css-mode-hook 'skewer-css-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
+;; JS2-refactor mode
+(js2r-add-keybindings-with-prefix "C-c C-m")
 
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
