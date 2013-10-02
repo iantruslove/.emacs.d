@@ -14,6 +14,7 @@
                       nrepl
                       clojure-mode
                       clojure-test-mode
+                      expand-region
 ;                      flx-ido
                       flycheck
 ;                      helm
