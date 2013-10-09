@@ -17,7 +17,8 @@
                       expand-region
 ;                      flx-ido
                       flycheck
-;                      helm
+                      helm
+                      helm-ls-git
   ;                      helm-projectile
                       highlight-symbol
                       js2-mode
@@ -147,13 +148,40 @@
 ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 
+;; Custom keybindings
+(global-set-key (kbd "M-@") 'er/expand-region) ; expand selected region 
+
+
+;; In-place scrolling
+
+(defun scroll-down-in-place (n)
+  (interactive "p")
+  (next-line n)
+  (scroll-down-line n))
+
+(defun scroll-up-in-place (n)
+  (interactive "p")
+  (previous-line n)
+  (scroll-up-line n))
+
+
+;; Enable helm mode
+(helm-mode t)
+
+(global-set-key (kbd "C-x C-_")
+                ;; I have no idea why this matches C-x C-/, but it does and that's what I was after
+                (lambda ()
+                  (interactive)
+                  (helm :sources '(helm-source-findutils) :buffer "*helm-findutils*")))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(css-indent-offset 2)
- '(js-indent-level 2))
+ '(css-indent-offset 4)
+ '(js-indent-level 4))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
