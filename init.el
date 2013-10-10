@@ -16,7 +16,10 @@
                       clojure-test-mode
                       expand-region
 ;                      flx-ido
-                      flycheck
+;                      flycheck
+                      flymake
+                      flymake-cursor
+                      flymake-jshint
                       helm
                       helm-ls-git
   ;                      helm-projectile
@@ -116,6 +119,10 @@
 ;; JavaScript
 ;;(autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+(require 'flymake-jshint)
+(require 'flymake-cursor)
+(add-hook 'js2-mode-hook 'flymake-mode)
 
 ;; Load in skewer-mode
 (add-hook 'js2-mode-hook 'skewer-mode)
