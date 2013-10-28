@@ -3,11 +3,8 @@
 (cask-initialize)
 (require 'pallet)
 
-(add-to-list 'load-path "~/.emacs.d/custom")
-
-(load "00common-setup.el")
-(load "01colors.el")
-(load "10projectile.el")
-(load "20javascript.el")
-(load "30clojure.el")
-
+;; Load *.el from the configs directory
+(defvar it/config-dir "~/.emacs.d/custom")
+(add-to-list 'load-path it/config-dir)
+(dolist (config-file (directory-files it/config-dir nil ".*el$"))
+  (load config-file))
