@@ -2,15 +2,15 @@
 
 ## Prerequisites
 
-* Install pallet - instructions at https://github.com/rdallasgray/pallet
-* From a fresh emacs install, cwd to ~/.emacs.d and run `cask install`
+* Install Cask and Pallet (full instructions at https://github.com/rdallasgray/pallet)
+  * `curl -fsSkL https://raw.github.com/cask/cask/master/go | python`
+  * cd to ~/.emacs.d and run `~/.cask/bin/cask install`
 
 ## References
 
 * http://crypt.codemancers.com/posts/2013-09-26-setting-up-emacs-as-development-environment-on-osx/
 * http://www.aaronbedra.com/emacs.d/
 * http://www.xsteve.at/prg/emacs/power-user-tips.html
-
 
 ## Emacs Cheatsheet
 

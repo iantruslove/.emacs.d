@@ -9,4 +9,5 @@
 (load "01colors.el")
 (load "10projectile.el")
 (load "20javascript.el")
+(load "30clojure.el")
 
