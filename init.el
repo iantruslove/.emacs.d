@@ -11,6 +11,7 @@
 (defvar my-packages '(ac-nrepl
                       auto-complete
                       cl
+                      cl-lib
                       nrepl
                       clojure-mode
                       clojure-test-mode
@@ -113,9 +114,11 @@
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'nrepl-mode))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; JavaScript
 ;;(autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -132,6 +135,16 @@
 ;; JS2-refactor mode
 (js2r-add-keybindings-with-prefix "C-c C-m")
 
+;; (require 'js-comint)
+;; (setq inferior-js-program-command "node")
+;; (add-hook 'js2-mode-hook '(lambda ()
+;;                             (local-set-key "\C-x\C-e" 'js-send-last-sexp)
+;;                             (local-set-key "\C-\M-x" 'js-send-last-sexp-and-go)
+;;                             (local-set-key "\C-cb" 'js-send-buffer)
+;;                             (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
+;;                             (local-set-key "\C-cl" 'js-load-file-and-go)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
