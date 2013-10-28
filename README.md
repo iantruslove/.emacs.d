@@ -5,6 +5,13 @@
 * Install pallet - instructions at https://github.com/rdallasgray/pallet
 * From a fresh emacs install, cwd to ~/.emacs.d and run `cask install`
 
+## References
+
+* http://crypt.codemancers.com/posts/2013-09-26-setting-up-emacs-as-development-environment-on-osx/
+* http://www.aaronbedra.com/emacs.d/
+* http://www.xsteve.at/prg/emacs/power-user-tips.html
+
+
 ## Emacs Cheatsheet
 
 ### Regions

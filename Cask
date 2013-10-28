@@ -1,3 +1,11 @@
-(source melpa)
+(source "melpa" "http://melpa.milkbox.net/packages/")
 
+(depends-on "grizzl")
+(depends-on "js2-mode")
+(depends-on "js2-refactor")
+(depends-on "json-mode")
+(depends-on "markdown-mode")
 (depends-on "pallet")
+(depends-on "projectile")
+(depends-on "smex")
+(depends-on "zenburn-theme")
