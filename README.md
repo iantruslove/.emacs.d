@@ -1,5 +1,10 @@
 # Emacs dotfiles
 
+## Prerequisites
+
+* Install pallet - instructions at https://github.com/rdallasgray/pallet
+* From a fresh emacs install, cwd to ~/.emacs.d and run `cask install`
+
 ## Emacs Cheatsheet
 
 ### Regions
