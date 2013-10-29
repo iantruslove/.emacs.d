@@ -43,3 +43,10 @@
 
 ;; Enable silver searcher highlighting
 (setq ag-highlight-search t)
+
+;; Show matching paren
+(require 'paren)
+(set-face-background 'show-paren-match-face (face-background 'default))
+(set-face-foreground 'show-paren-match-face "#000")
+(set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
+(show-paren-mode 1)
