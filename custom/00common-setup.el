@@ -39,3 +39,6 @@
 
 ;; Disable backup files
 (setq make-backup-files nil)
+
+;; Enable silver searcher highlighting
+(setq ag-highlight-search t)

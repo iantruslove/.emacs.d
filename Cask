@@ -1,9 +1,11 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
 
+(depends-on "ag")
 (depends-on "auto-complete")
 (depends-on "cider")
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
+(depends-on "es-lib")
 (depends-on "grizzl")
 (depends-on "js2-mode")
 (depends-on "js2-refactor")
