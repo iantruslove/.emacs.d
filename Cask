@@ -1,5 +1,6 @@
 (source "melpa" "http://melpa.milkbox.net/packages/")
 
+(depends-on "auto-complete")
 (depends-on "cider")
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
@@ -7,6 +8,7 @@
 (depends-on "js2-mode")
 (depends-on "js2-refactor")
 (depends-on "json-mode")
+(depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "pallet")
 (depends-on "paredit")
