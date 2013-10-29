@@ -14,4 +14,4 @@
 				emms-tag-editor-mode
 				asm-mode
 				org-mode)
-	      (add-to-list 'ac-modes mode)))				
+	      (add-to-list 'ac-modes mode)))
