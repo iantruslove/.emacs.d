@@ -3,6 +3,7 @@
 (depends-on "ag")
 (depends-on "auto-complete")
 (depends-on "cider")
+(depends-on "clj-refactor")
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
 (depends-on "es-lib")
