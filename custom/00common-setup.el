@@ -50,3 +50,8 @@
 (set-face-foreground 'show-paren-match-face "#000")
 (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 (show-paren-mode 1)
+
+;; Expand-region
+(require 'expand-region)
+(global-set-key (kbd "C-c =") 'er/expand-region)
+(global-set-key (kbd "C-c -") 'er/contract-region)

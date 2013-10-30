@@ -6,6 +6,7 @@
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
 (depends-on "es-lib")
+(depends-on "expand-region")
 (depends-on "grizzl")
 (depends-on "js2-mode")
 (depends-on "js2-refactor")
