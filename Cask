@@ -19,4 +19,5 @@
 (depends-on "projectile")
 (depends-on "rainbow-delimiters")
 (depends-on "smex")
+(depends-on "yasnippet")
 (depends-on "zenburn-theme")

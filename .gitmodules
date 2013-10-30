@@ -1,0 +1,3 @@
+[submodule "snippets/clojure-mode"]
+	path = snippets/clojure-mode
+	url = https://github.com/swannodette/clojure-snippets.git
