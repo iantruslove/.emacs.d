@@ -1,6 +1,7 @@
 ;; Indentation
 (setq tab-width 4
       indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
 ;; Shorter answers to questions
 (defalias 'yes-or-no-p 'y-or-n-p)
