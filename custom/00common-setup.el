@@ -3,6 +3,9 @@
       indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
+;; Suppress the startup screen
+(setq inhibit-startup-screen t)
+
 ;; Shorter answers to questions
 (defalias 'yes-or-no-p 'y-or-n-p)
 
