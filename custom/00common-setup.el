@@ -29,7 +29,6 @@
 (setq ibuffer-use-header-line t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
-
 ;; Enable smex for better M-x love
 (setq smex-save-file (expand-file-name ".smex-items" user-emacs-directory))
 (smex-initialize)
@@ -47,6 +46,9 @@
 ;; Enable silver searcher highlighting
 (setq ag-highlight-search t)
 
+;; Enable highlight-symbol-mode
+(setq highlight-symbol-mode t)
+
 ;; Show matching paren
 (require 'paren)
 (show-paren-mode 1)
@@ -56,3 +58,7 @@
 (require 'expand-region)
 (global-set-key (kbd "C-c =") 'er/expand-region)
 (global-set-key (kbd "C-c -") 'er/contract-region)
+
+;; Gitgutter mode
+(global-git-gutter-mode +1)
+
