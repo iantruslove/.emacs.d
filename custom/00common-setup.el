@@ -47,7 +47,11 @@
 (setq ag-highlight-search t)
 
 ;; Enable highlight-symbol-mode
-(setq highlight-symbol-mode t)
+(add-hook 'prog-mode-hook (lambda () (highlight-symbol-mode)))
+(global-set-key (kbd "C-c h h") 'highlight-symbol-at-point)
+(global-set-key (kbd "C-c h r") 'highlight-symbol-remove-all)
+(global-set-key (kbd "C-c h n") 'highlight-symbol-next)
+(global-set-key (kbd "C-c h p") 'highlight-symbol-prev)
 
 ;; Show matching paren
 (require 'paren)

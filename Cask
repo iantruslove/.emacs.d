@@ -11,6 +11,7 @@
 (depends-on "epl")
 (depends-on "es-lib")
 (depends-on "expand-region")
+(depends-on "f")
 (depends-on "flx-ido")
 (depends-on "git-commit-mode")
 (depends-on "git-gutter")
