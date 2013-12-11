@@ -72,3 +72,5 @@
 ;; Gitgutter mode
 (global-git-gutter-mode +1)
 
+;; Shortcut for magit-status
+(global-set-key (kbd "C-c g") 'magit-status)
