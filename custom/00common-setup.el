@@ -43,6 +43,12 @@
 ;; Disable backup files
 (setq make-backup-files nil)
 
+;; Show line and col number
+(setq column-number-mode t)
+
+;; Short alias for query-replace-regexp
+(defalias 'qrr 'query-replace-regexp)
+
 ;; Enable silver searcher highlighting
 (setq ag-highlight-search t)
 

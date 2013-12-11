@@ -20,4 +20,18 @@
 			       (cljr-add-keybindings-with-prefix "C-c C-r")
 			       ))
 
+(add-hook 'paredit-mode-hook
+          (lambda ()
+            ;; For Joe
+            (define-key paredit-mode-map (kbd "C-o C-r") 'paredit-forward-slurp-sexp)
+            (define-key paredit-mode-map (kbd "C-o M-r") 'paredit-forward-barf-sexp)
+            (define-key paredit-mode-map (kbd "C-o C-l") 'paredit-backward-slurp-sexp)
+            (define-key paredit-mode-map (kbd "C-o M-l") 'paredit-backward-barf-sexp)
 
+            ;; For Daniel
+            (define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
+            (define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp)
+
+            ;; Since Daniel's slurp bindings squash paredit-wrap-round...
+            (define-key paredit-mode-map (kbd "C-o C-w (") 'paredit-wrap-round)
+            (define-key paredit-mode-map (kbd "C-o C-w [") 'paredit-wrap-square)))
