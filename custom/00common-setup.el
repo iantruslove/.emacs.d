@@ -14,10 +14,12 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-c q") 'join-line)
 
+;; Configure scrolling a little more to my liking
 (setq
- scroll-margin 0
+ scroll-margin 2
  scroll-conservatively 100000
- scroll-preserve-screen-position 1)
+ scroll-preserve-screen-position 1
+ next-screen-context-lines 4)
 
 ;; Hide menus
 (menu-bar-mode -1)
