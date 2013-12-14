@@ -5,6 +5,11 @@
 ;; Enable eldoc
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
+;; Convenient keybinding to switch to REPL, given C-z is the tmux prefix key
+(add-hook 'cider-mode-hook
+          (lambda ()
+            (define-key cider-mode-map (kbd "C-c z") 'cider-switch-to-relevant-repl-buffer)))
+
 ;; Rainbow delimiters please
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
@@ -14,11 +19,12 @@
 
 ;; Set up clj-refactor-mode
 (add-hook 'clojure-mode-hook (lambda () (yas/minor-mode 1))) ;; until YAS is enabled throughout
+
 (require 'clj-refactor)
 (add-hook 'clojure-mode-hook (lambda ()
-			       (clj-refactor-mode 1)
-			       (cljr-add-keybindings-with-prefix "C-c C-r")
-			       ))
+                               (clj-refactor-mode 1)
+                               (cljr-add-keybindings-with-prefix "C-c C-r")
+                               ))
 
 (add-hook 'paredit-mode-hook
           (lambda ()
