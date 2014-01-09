@@ -2,6 +2,10 @@
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 
+;; Also turn on clojure test mode and whitespace mode when in clojure mode
+(add-hook 'clojure-mode-hook 'whitespace-mode)
+(add-hook 'clojure-mode-hook 'clojure-test-mode)
+
 ;; Enable eldoc
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
@@ -22,9 +26,9 @@
 
 (require 'clj-refactor)
 (add-hook 'clojure-mode-hook (lambda ()
-                               (clj-refactor-mode 1)
-                               (cljr-add-keybindings-with-prefix "C-c C-r")
-                               ))
+			       (clj-refactor-mode 1)
+			       (cljr-add-keybindings-with-prefix "C-c C-f")
+			       ))
 
 (add-hook 'paredit-mode-hook
           (lambda ()

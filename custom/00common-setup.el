@@ -98,3 +98,6 @@
     (message "Didn't clean up buffer.")))
 
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
+
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
