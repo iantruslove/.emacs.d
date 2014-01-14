@@ -1,9 +1,6 @@
 ;; Fire up Paredit when in various clojure modes
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
-
-;; Also turn on clojure test mode and whitespace mode when in clojure mode
-(add-hook 'clojure-mode-hook 'whitespace-mode)
 (add-hook 'clojure-mode-hook 'clojure-test-mode)
 
 ;; Enable eldoc
@@ -49,4 +46,6 @@
 (let ((sonian-stuff "~/src/sa-safe/.elisp/sonian.el"))
   (when (file-exists-p sonian-stuff)
     (message "Loading Sonian extras...")
-    (load (expand-file-name sonian-stuff))))
+    (load (expand-file-name sonian-stuff))
+    ;; Turn on whitespace mode all the time
+    (add-hook 'clojure-mode-hook 'whitespace-mode)))
