@@ -43,7 +43,7 @@
             (define-key paredit-mode-map (kbd "C-o C-w (") 'paredit-wrap-round)
             (define-key paredit-mode-map (kbd "C-o C-w [") 'paredit-wrap-square)))
 
-(let ((sonian-stuff "~/src/sa-safe/.elisp/sonian.el"))
+(let ((sonian-stuff "~/projects/sa-safe/.elisp/sonian.el"))
   (when (file-exists-p sonian-stuff)
     (message "Loading Sonian extras...")
     (load (expand-file-name sonian-stuff))
