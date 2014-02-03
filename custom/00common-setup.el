@@ -1,5 +1,5 @@
 ;; Indentation
-(setq tab-width 4
+(setq tab-width 2
       indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
