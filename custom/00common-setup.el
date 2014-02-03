@@ -99,5 +99,9 @@
 
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
+;; Disable arrow keys!
+(require 'no-easy-keys)
+(no-easy-keys 1)
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)

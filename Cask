@@ -1,4 +1,5 @@
 (source melpa)
+(source marmalade)
 
 (depends-on "ag")
 (depends-on "auto-complete")
@@ -25,6 +26,7 @@
 (depends-on "magit")
 (depends-on "markdown-mode")
 (depends-on "multiple-cursors")
+(depends-on "no-easy-keys")
 (depends-on "pallet")
 (depends-on "paredit")
 (depends-on "pkg-info")
