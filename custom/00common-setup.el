@@ -45,6 +45,9 @@
 ;; Disable backup files
 (setq make-backup-files nil)
 
+;; Always reload files changed from underneath
+(global-auto-revert-mode t)
+
 ;; Show line and col number
 (setq column-number-mode t)
 
