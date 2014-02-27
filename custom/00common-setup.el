@@ -59,10 +59,12 @@
 
 ;; Enable highlight-symbol-mode
 (add-hook 'prog-mode-hook (lambda () (highlight-symbol-mode)))
+(setq highlight-symbol-idle-delay 0.5) ;; 0.5 seconds
 (global-set-key (kbd "C-c h h") 'highlight-symbol-at-point)
 (global-set-key (kbd "C-c h r") 'highlight-symbol-remove-all)
 (global-set-key (kbd "C-c h n") 'highlight-symbol-next)
 (global-set-key (kbd "C-c h p") 'highlight-symbol-prev)
+(global-set-key (kbd "C-c h q r") 'highlight-symbol-query-replace)
 
 ;; Expand-region
 (require 'expand-region)
