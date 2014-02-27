@@ -1,3 +1,8 @@
+;; Show matching paren
+(require 'paren)
+(show-paren-mode 1)
+(setq show-paren-style 'parenthesis)
+
 ;; Configure matching paren highlight coloring now the theme is loaded
 ;; It seems 
 (defun modify-paren-match-colors ()

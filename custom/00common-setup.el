@@ -64,11 +64,6 @@
 (global-set-key (kbd "C-c h n") 'highlight-symbol-next)
 (global-set-key (kbd "C-c h p") 'highlight-symbol-prev)
 
-;; Show matching paren
-(require 'paren)
-(show-paren-mode 1)
-(setq show-paren-style 'expression)
-
 ;; Expand-region
 (require 'expand-region)
 (global-set-key (kbd "C-c =") 'er/expand-region)
