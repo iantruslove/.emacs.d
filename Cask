@@ -8,6 +8,7 @@
 (depends-on "clj-refactor")
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
+(depends-on "color-theme-sanityinc-tomorrow")
 (depends-on "dash")
 (depends-on "epl")
 (depends-on "es-lib")
