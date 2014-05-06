@@ -11,35 +11,39 @@
 (defvar my-packages '(ac-nrepl
                       auto-complete
                       cl
-                      nrepl
+                      cider
                       clojure-mode
                       clojure-test-mode
+                      color-theme-sanityinc-tomorrow
+                      dash
                       expand-region
-;                      flx-ido
-;                      flycheck
+                      ;; flx-ido
+                      ;; flycheck
                       flymake
                       flymake-cursor
                       flymake-jshint
                       helm
                       helm-ls-git
-  ;                      helm-projectile
+                      ;; helm-projectile
                       highlight-symbol
                       js2-mode
                       js2-refactor
-;                      projectile
+                      pkg-info
+                      ;; projectile
                       simp
                       starter-kit
                       starter-kit-lisp
                       starter-kit-bindings
                       markdown-mode
-                      ;smart-window
+                      rainbow-delimiters
+                      ;; smart-window
                       skewer-mode
                       tree-mode
                       yasnippet
                       yas-jit
-                      zenburn-theme
+                      ;; zenburn-theme
                       zencoding-mode
-                      ;emacs-pry
+                      ;;emacs-pry
                       )
   "A list of packages to ensure are installed at launch.")
 
@@ -48,7 +52,33 @@
     (package-install p)))
 
 ;;(load-theme 'wombat t)
-(load-theme 'zenburn t)
+                                        ;(load-theme 'zenburn t)
+(load-theme 'sanityinc-tomorrow-night t)
+
+;; Show matching paren
+(require 'paren)
+(show-paren-mode 1)
+(setq show-paren-style 'parenthesis)
+
+;; Configure matching paren highlight coloring now the theme is loaded
+;; It seems
+(defun modify-paren-match-colors ()
+  (set-face-background 'show-paren-match-face (face-background 'default))
+  (set-face-attribute 'show-paren-match nil :foreground nil
+                      :background "#1a1a1a" :weight 'normal))
+
+(add-hook 'window-setup-hook 'modify-paren-match-colors)
+
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+;; Convenient keybinding to switch to REPL, given C-z is the tmux
+;; prefix key
+(add-hook 'cider-mode-hook
+          (lambda ()
+            (define-key cider-mode-map (kbd "C-c z") 'nrepl-switch-to-repl-buffer)
+            (define-key cider-mode-map (kbd "C-c M-n") 'nrepl-set-ns)))
 
 ;; >>> Configure Load Path <<<
 ;; From http://stackoverflow.com/a/1062314/594677
@@ -67,6 +97,15 @@
 
 (require 'transpose-frame)
 
+
+(let ((sonian-stuff "~/projects/sa-safe/.elisp/sonian.el"))
+  (when (file-exists-p sonian-stuff)
+    (message "Loading Sonian extras...")
+    (load (expand-file-name sonian-stuff))
+    ;; Turn on whitespace mode all
+    ;; the time
+    (add-hook 'clojure-mode-hook 'whitespace-mode)))
+
 ;; >>> ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -80,12 +119,12 @@
 ;;         :ignore (.svn)))
 ;; (global-set-key [(control p)] 'simp-project-find-file)
 
-;(projectile-global-mode)
-;(helm-mode 1)
+                                        ;(projectile-global-mode)
+                                        ;(helm-mode 1)
 
 
 ;;; Load window management crap
-;(load "~/.emacs.d/emacsd-tile.el")
+                                        ;(load "~/.emacs.d/emacsd-tile.el")
 
 ;; Enable autp-complete - taken in part from http://www.emacswiki.org/emacs/init-auto-complete.el
 (require 'auto-complete)
@@ -156,7 +195,7 @@
 
 
 ;; Custom keybindings
-(global-set-key (kbd "M-@") 'er/expand-region) ; expand selected region 
+(global-set-key (kbd "M-@") 'er/expand-region) ; expand selected region
 
 
 ;; In-place scrolling
