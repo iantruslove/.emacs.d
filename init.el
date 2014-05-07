@@ -31,9 +31,9 @@
                       pkg-info
                       ;; projectile
                       simp
-                      starter-kit
-                      starter-kit-lisp
-                      starter-kit-bindings
+                      ;;starter-kit
+                      ;;starter-kit-lisp
+                      ;;starter-kit-bindings
                       markdown-mode
                       rainbow-delimiters
                       ;; smart-window
@@ -44,15 +44,14 @@
                       ;; zenburn-theme
                       zencoding-mode
                       ;;emacs-pry
-                      )
-  "A list of packages to ensure are installed at launch.")
+                      )  "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
 
-;;(load-theme 'wombat t)
-                                        ;(load-theme 'zenburn t)
+;; (load-theme 'wombat t)
+;; (load-theme 'zenburn t)
 (load-theme 'sanityinc-tomorrow-night t)
 
 ;; Show matching paren
@@ -77,8 +76,9 @@
 ;; prefix key
 (add-hook 'cider-mode-hook
           (lambda ()
-            (define-key cider-mode-map (kbd "C-c z") 'nrepl-switch-to-repl-buffer)
-            (define-key cider-mode-map (kbd "C-c M-n") 'nrepl-set-ns)))
+            (define-key cider-mode-map (kbd "C-c z") 'cider-switch-to-relevant-repl-buffer)
+            ;;(define-key cider-mode-map (kbd "C-c M-n") 'nrepl-set-ns)
+            ))
 
 ;; >>> Configure Load Path <<<
 ;; From http://stackoverflow.com/a/1062314/594677
@@ -147,10 +147,10 @@
 
 ;; Set up ac-nrepl, per https://github.com/clojure-emacs/ac-nrepl#installation
 (require 'ac-nrepl)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
 (eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'nrepl-mode))
+  '(add-to-list 'ac-modes 'cider-repl-mode))
 
 ;; ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
