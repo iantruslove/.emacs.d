@@ -104,7 +104,7 @@
 
 ;; Disable arrow keys!
 (require 'no-easy-keys)
-(no-easy-keys 1)
+(no-easy-keys 0)
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
