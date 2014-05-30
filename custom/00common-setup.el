@@ -42,6 +42,9 @@
 (setq ido-enable-flex-matching t
       ido-use-virtual-buffers t)
 
+;; Globally enable company-mode for autocomplete
+(add-hook 'after-init-hook 'global-company-mode)
+
 ;; Disable backup files
 (setq make-backup-files nil)
 
