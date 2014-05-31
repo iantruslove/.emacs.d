@@ -39,6 +39,7 @@
 (depends-on "s")
 (depends-on "simple-httpd")
 (depends-on "skewer-mode")
+(depends-on "slamhound")
 (depends-on "smex")
 (depends-on "undo-tree")
 (depends-on "web-mode")
