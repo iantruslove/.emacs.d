@@ -10,6 +10,7 @@
 ;; Add in your own as you wish:
 (defvar my-packages '(cl
                       cider
+                      clj-refactor
                       clojure-mode
                       clojure-test-mode
                       color-theme-sanityinc-tomorrow
@@ -133,6 +134,12 @@
 
 (add-hook 'clojure-mode-hook 'clojure-test-mode)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook (lambda ()
+                               (clj-refactor-mode 1)
+                               ;; insert clj-refactor mode keybinding setup here
+                               ))
 
 (add-hook 'paredit-mode-hook
 	  (lambda ()
