@@ -165,6 +165,9 @@
             ;;(define-key cider-mode-map (kbd "C-c M-n") 'nrepl-set-ns)
             ))
 
+;; Always save when compiling
+(setq cider-prompt-save-file-on-load nil)
+
 ;; Make code purdy, stolen from larkin and ESK
 (defun untabify-buffer ()
   (interactive)
