@@ -225,7 +225,9 @@
 (menu-bar-mode -1)
 
 ;; Enable global auto-complete with company-mode:
-(add-hook 'after-init-hook 'global-company-mode)
+;(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'cider-mode-hook 'company-mode)
+(setq company-idle-delay 0.1)
 
 ;; ClojureScript
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
