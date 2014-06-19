@@ -23,6 +23,7 @@
 
 ;; Hide menus
 (menu-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; Set up ibuffer to replace the buffer list
 (setq ibuffer-shrink-to-minimum-size t)
