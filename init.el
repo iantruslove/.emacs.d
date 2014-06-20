@@ -1,5 +1,5 @@
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa-stable.milkbox.net/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
@@ -22,13 +22,14 @@
                       ;;flymake
                       ;;flymake-cursor
                       ;;flymake-jshint
+                      git-gutter
                       ;; helm
                       ;; helm-ls-git
                       ;; helm-projectile
                       highlight-symbol
 		      ido
                       js2-mode
-                      js2-refactor
+                      ;;js2-refactor
 		      magit
 		      paredit
                       pkg-info
@@ -165,6 +166,9 @@
             ;;(define-key cider-mode-map (kbd "C-c M-n") 'nrepl-set-ns)
             ))
 
+;; Git gutter
+(global-git-gutter-mode +1)
+
 ;; Always save when compiling
 (setq cider-prompt-save-file-on-load nil)
 
@@ -246,7 +250,7 @@
 ;; (add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; JS2-refactor mode
-(js2r-add-keybindings-with-prefix "C-c C-m")
+;;(js2r-add-keybindings-with-prefix "C-c C-m")
 
 ;; Markdown support
 (autoload 'markdown-mode "markdown-mode"
