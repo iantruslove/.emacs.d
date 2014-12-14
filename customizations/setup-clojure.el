@@ -9,8 +9,18 @@
 ;; Java classes (e.g. JavaClassName)
 (add-hook 'clojure-mode-hook 'subword-mode)
 
+(require 'clojure-test-toggle)
+(add-hook 'clojure-mode-hook
+            (lambda ()
+              (define-key clojure-mode-map (kbd "C-c C-t") 'clojure-test-toggle)))
+
 ;; A little more syntax highlighting
 (require 'clojure-mode-extra-font-locking)
+
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (setq show-trailing-whitespace t)))
+
 
 ;; syntax hilighting for midje
 (add-hook 'clojure-mode-hook
@@ -25,10 +35,21 @@
             (define-clojure-indent (fact 1))
             (define-clojure-indent (facts 1))))
 
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (clj-refactor-mode 1)
+            ;; insert keybinding setup here
+            (cljr-add-keybindings-with-prefix "C-c C-m")
+            ))
+
+(yas/global-mode 1)
+
 ;;;;
 ;; Cider
 ;;;;
 
+(require 'cider)
 ;; provides minibuffer documentation for the code you're typing into the repl
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
@@ -79,4 +100,16 @@
      (define-key clojure-mode-map (kbd "C-c C-v") 'cider-start-http-server)
      (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
      (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
-     (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
+     (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)
+     (define-key cider-mode-map (kbd "C-c z") 'cider-switch-to-relevant-repl-buffer)
+     (define-key cider-mode-map (kbd "C-c C-t") nil)
+     (define-key cider-mode-map (kbd "C-c t") 'cider-test-show-report)))
+
+(let ((sonian-stuff "~/projects/sa-safe/.elisp/sonian.el"))
+  (when (file-exists-p sonian-stuff)
+    (message "Loading Sonian extras...")
+    (load (expand-file-name sonian-stuff))
+    (require 'sonian)
+    ;; Turn on whitespace mode all the time
+    (add-hook 'clojure-mode-hook 'whitespace-mode)))
+ 

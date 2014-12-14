@@ -3,7 +3,14 @@
 places
 .recentf
 cider-history
+history
 projectile-bookmarks.eld
 projectile.cache
-auto-save-list
-backups
+auto-save-list/*
+backups/*
+.emacs.desktop*
+.mc-lists.el
+.recentf~
+.session
+elpa
+var

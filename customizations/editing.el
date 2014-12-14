@@ -1,8 +1,37 @@
 ;; Customizations relating to editing a buffer.
 
+(setq-default
+ blink-cursor-delay 0
+ blink-cursor-interval 0.4
+ bookmark-default-file (expand-file-name ".bookmarks.el" user-emacs-directory)
+ buffers-menu-max-size 30
+ case-fold-search t
+ column-number-mode t
+ compilation-scroll-output t
+ delete-selection-mode t
+ ediff-split-window-function 'split-window-horizontally
+ ediff-window-setup-function 'ediff-setup-windows-plain
+ grep-highlight-matches t
+ grep-scroll-output t
+ indent-tabs-mode nil
+ line-spacing 0.2
+ make-backup-files nil
+ mouse-yank-at-point t
+ require-final-newline 'visit-save
+ save-interprogram-paste-before-kill t
+ scroll-preserve-screen-position 'always
+ set-mark-command-repeat-pop t
+ ;;show-trailing-whitespace t
+ tooltip-delay 1.5
+ truncate-lines nil
+ truncate-partial-width-windows nil
+ visible-bell t)
+
 ;; Key binding to use "hippie expand" for text autocompletion
 ;; http://www.emacswiki.org/emacs/HippieExpand
 (global-set-key (kbd "M-/") 'hippie-expand)
+
+(global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; Lisp-friendly hippie expand
 (setq hippie-expand-try-functions-list
@@ -70,3 +99,36 @@
     (quit nil)))
 
 (setq electric-indent-mode nil)
+
+(require 'undo-tree)
+(global-undo-tree-mode)
+(diminish 'undo-tree-mode)
+
+(require 'highlight-symbol)
+(dolist (hook '(prog-mode-hook html-mode-hook))
+  (add-hook hook 'highlight-symbol-mode)
+  (add-hook hook 'highlight-symbol-nav-mode))
+(eval-after-load 'highlight-symbol
+  '(diminish 'highlight-symbol-mode))
+
+;; Make code purdy, stolen from Dan Larkin and Emacs Starter Kit
+(defun untabify-buffer ()
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (if (< (buffer-size) 100000)
+      (progn
+	(indent-buffer)
+	(untabify-buffer)
+	(delete-trailing-whitespace)
+	(message "Cleaned up buffer."))
+    (message "Didn't clean up buffer.")))
+
+(global-set-key (kbd "C-c n") 'cleanup-buffer)
