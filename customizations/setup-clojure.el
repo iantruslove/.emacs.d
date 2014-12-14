@@ -19,6 +19,7 @@
 
 (add-hook 'clojure-mode-hook
           (lambda ()
+            (rainbow-delimiters-mode t)
             (setq show-trailing-whitespace t)))
 
 
