@@ -8,7 +8,4 @@
 
 
 (require 'color-theme-sanityinc-tomorrow)
-(color-theme-sanityinc-tomorrow-bright)
-;;(require 'color-theme-tomorrow)
-;;(color-theme-tomorrow-real 'night-bright)
-
+;;(color-theme-sanityinc-tomorrow-bright)
