@@ -1,0 +1,3 @@
+[submodule "vendor/cider"]
+	path = vendor/cider
+	url = https://github.com/clojure-emacs/cider.git
