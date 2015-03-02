@@ -19,6 +19,7 @@
  mouse-yank-at-point t
  require-final-newline 'visit-save
  save-interprogram-paste-before-kill t
+ scroll-conservatively 10
  scroll-preserve-screen-position 'always
  set-mark-command-repeat-pop t
  ;;show-trailing-whitespace t
