@@ -1,34 +1,6 @@
-;;;;
-;; Packages
-;;;;
-
-;; Define package repositories
-(require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("tromey" . "http://tromey.com/elpa/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-;; (add-to-list 'package-archives
-;;              '("melpa" . "http://melpa.milkbox.net/packages/") t)
-
-;; (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-;;                          ("marmalade" . "http://marmalade-repo.org/packages/")
-;;                          ("melpa" . "http://melpa-stable.milkbox.net/packages/")))
-
-;; Load and activate emacs packages. Do this first so that the
-;; packages are loaded before you start trying to modify them.
-;; This also sets the load path.
-(package-initialize)
-
-;; Download the ELPA archive description if needed.
-;; This informs Emacs about the latest versions of all packages, and
-;; makes them available for download.
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; Set up package management functions and archive locations
+(add-to-list 'load-path "~/.emacs.d/customizations")
+(load "init-package-management.el")
 
 ;; The packages you want installed. You can also install these
 ;; manually with M-x package-install
@@ -106,33 +78,10 @@
 (if (eq system-type 'darwin)
     (add-to-list 'my-packages 'exec-path-from-shell))
 
-(eval-when-compile (require 'cl))
-(defun sanityinc/add-subdirs-to-load-path (parent-dir)
-  "Adds every non-hidden subdir of PARENT-DIR to `load-path'."
-  (let* ((default-directory parent-dir))
-    (progn
-      (setq load-path
-            (append
-             (loop for dir in (directory-files parent-dir)
-                   unless (string-match "^\\." dir)
-                   collecting (expand-file-name dir))
-             load-path)))))
+;; Set up loading modules from the vendor directory
+(load "init-vendor-locations.el")
 
-;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
-;; to load them.
-;;
-;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
-;; then you can add the following code to this file:
-;;
-;; (require 'yaml-mode)
-;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;; 
-;; Adding this code will make Emacs enter yaml mode whenever you open
-;; a .yml file
-;;(add-to-list 'load-path "~/.emacs.d/vendor")
-(sanityinc/add-subdirs-to-load-path
- (expand-file-name "vendor/" user-emacs-directory))
-
+;; TODO: replace all the require calls with install and require, then get rid of this:
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
@@ -141,10 +90,6 @@
 ;;;;
 ;; Customization
 ;;;;
-
-;; Add a directory to our load path so that when you `load` things
-;; below, Emacs knows where to look for the corresponding file.
-(add-to-list 'load-path "~/.emacs.d/customizations")
 
 ;; Sets up exec-path-from-shell so that Emacs will use the correct
 ;; environment variables
@@ -179,7 +124,6 @@
 ;; Langauage-specific
 (load "setup-clojure.el")
 (load "setup-js.el")
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
