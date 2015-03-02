@@ -12,14 +12,15 @@
 
     ;; key bindings and code colorization for Clojure
     ;; https://github.com/clojure-emacs/clojure-mode
-    clojure-mode
+    ;;clojure-mode
 
     ;; extra syntax highlighting for clojure
     clojure-mode-extra-font-locking
 
     ;; integration with a Clojure REPL
     ;; https://github.com/clojure-emacs/cider
-    cider
+    ;; cider
+    
     pkg-info
     queue
 

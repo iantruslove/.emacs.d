@@ -36,15 +36,6 @@
             (define-clojure-indent (fact 1))
             (define-clojure-indent (facts 1))))
 
-(require 'clj-refactor)
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (clj-refactor-mode 1)
-            ;; insert keybinding setup here
-            (cljr-add-keybindings-with-prefix "C-c C-m")
-            ))
-
-(yas/global-mode 1)
 
 ;;;;
 ;; Cider
@@ -113,4 +104,14 @@
     (require 'sonian)
     ;; Turn on whitespace mode all the time
     (add-hook 'clojure-mode-hook 'whitespace-mode)))
- 
+
+;;; Clojure Refactor Mode
+
+(require 'clj-refactor)
+(add-hook 'clojure-mode-hook
+          (lambda ()
+            (clj-refactor-mode 1)
+            ;; insert keybinding setup here
+            (cljr-add-keybindings-with-prefix "C-c C-m")))
+
+(yas/global-mode 1)
