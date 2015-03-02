@@ -23,7 +23,7 @@
  scroll-preserve-screen-position 'always
  set-mark-command-repeat-pop t
  ;;show-trailing-whitespace t
- tooltip-delay 1.5
+ tooltip-delay 0.6
  truncate-lines nil
  truncate-partial-width-windows nil
  visible-bell t)
