@@ -63,6 +63,9 @@
     rainbow-delimiters
     color-theme-sanityinc-tomorrow
 
+    ;; Org
+    org  ;;; hopefully this results in an org 8.x, not 7.x. I suspect it won't.
+
     ;; Markdown
     markdown-mode
     markdown-mode+
@@ -87,7 +90,6 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-
 ;;;;
 ;; Customization
 ;;;;
@@ -109,6 +111,8 @@
 
 ;; Hard-to-categorize customizations
 (load "misc.el")
+
+(load "init-org.el")
 
 ;; For editing lisps
 (load "elisp-editing.el")
