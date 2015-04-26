@@ -104,8 +104,7 @@
 
 (require 'highlight-symbol)
 (dolist (hook '(prog-mode-hook html-mode-hook))
-  (add-hook hook 'highlight-symbol-mode)
-  (add-hook hook 'highlight-symbol-nav-mode))
+  (add-hook hook 'highlight-symbol-mode))
 (eval-after-load 'highlight-symbol
   '(diminish 'highlight-symbol-mode))
 
