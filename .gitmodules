@@ -1,6 +1,0 @@
-[submodule "vendor/cider"]
-	path = vendor/cider
-	url = https://github.com/clojure-emacs/cider.git
-[submodule "vendor/clojure-mode"]
-	path = vendor/clojure-mode
-	url = https://github.com/clojure-emacs/clojure-mode.git
