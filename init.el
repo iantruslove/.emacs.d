@@ -1,10 +1,6 @@
 ;; Set up package management functions and archive locations
 (add-to-list 'load-path "~/.emacs.d/customizations")
-(load "init-package-management.el")
 
-;; The packages you want installed. You can also install these
-;; manually with M-x package-install
-;; Add in your own as you wish:
 (defvar my-packages
   '(;; makes handling lisp expressions much, much easier
     ;; Cheatsheet: http://www.emacswiki.org/emacs/PareditCheatsheet
@@ -71,8 +67,11 @@
     markdown-mode+
 ))
 
+(require 'package)
 (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 (add-to-list 'package-pinned-packages '(clojure-mode . "melpa-stable") t)
+
+(load "init-package-management.el")
 
 ;; On OS X, an Emacs instance started from the graphical user
 ;; interface will have a different environment than a shell in a
@@ -85,13 +84,13 @@
 (if (eq system-type 'darwin)
     (add-to-list 'my-packages 'exec-path-from-shell))
 
-;; Set up loading modules from the vendor directory
-(load "init-vendor-locations.el")
-
 ;; TODO: replace all the require calls with install and require, then get rid of this:
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+;; Set up loading modules from the vendor directory
+(load "init-vendor-locations.el")
 
 ;;;;
 ;; Customization
