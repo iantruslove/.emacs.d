@@ -267,6 +267,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure
 
+(setq ian/clojure-cols 80)
+
 (use-package clojure-mode
   :ensure t
   :config
@@ -278,12 +280,11 @@
               ;; This is useful for working with camel-case tokens, like names of
               ;; Java classes (e.g. JavaClassName)
               (subword-mode)
-              (set-fill-column 80)
+              (set-fill-column ian/clojure-cols)
               (fci-mode)
-              (setq fci-rule-column 80
+              (setq fci-rule-column ian/clojure-cols
                     show-trailing-whitespace t)
               ;;(rainbow-delimiters-mode t)
-              (whitespace-mode)
               (smartparens-mode)
               (aggressive-indent-mode))))
 
