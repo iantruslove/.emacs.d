@@ -33,6 +33,13 @@
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
 
+(defun load-directory (dir)
+  ;; TODO: handle if dir doesn't exist
+  (let ((basedir (expand-file-name dir user-init-dir))
+        (load-it (lambda (f)
+                   (load-file (concat (file-name-as-directory basedir) f)))))
+    (mapc load-it (directory-files basedir nil "\\.el$"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fundamental Emacs config
 
@@ -320,11 +327,16 @@
 ;; Custom modules
 (load-user-file "modes/org.el")
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Site-specific overrides
+(load-directory "site")
+
 ;; DONE structural editing for lisps
 ;; TODO Figure out structural editing keystrokes - kill sexps/all sexps, slurpage, ...
 ;; TODO org mode
 ;; DONE highlight evaluated regions
-;; DONE automatic byte compile
+;; IN PROGRESS automatic byte compile
+;; - is this quite working properly? The "site" directory stuff isn't yet...
 ;; TODO org-todos
 ;; TODO spacemacs multiple pane buffer wrapping
 ;; DONE continual scrolling. Spacemacs has a nice one.
