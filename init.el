@@ -49,8 +49,7 @@
   :ensure t
   :config
   (setq load-prefer-newer t)
-  ;;  (package-initialize) 
-  (auto-compile-on-load-mode)  
+  (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
 
 (setq inhibit-splash-screen t
@@ -115,9 +114,7 @@
   (global-set-key (kbd "C-c g") 'magit-status)
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
-                magit-completing-read-function 'magit-ido-completing-read
-                magit-auto-revert-mode t
-                magit-last-seen-setup-instructions "1.4.0"))
+                magit-auto-revert-mode t))
 
 (use-package gist
   :ensure t)
