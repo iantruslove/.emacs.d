@@ -36,7 +36,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fundamental Emacs config
 
-(setq inhibit-splash-screen t)
 (global-auto-revert-mode 1)
 (menu-bar-mode -1)
 (when (fboundp 'tool-bar-mode)
@@ -54,7 +53,9 @@
   (auto-compile-on-load-mode)  
   (auto-compile-on-save-mode))
 
-(setq x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
+(setq inhibit-splash-screen t
+      make-backup-files nil
+      x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
       x-select-enable-primary t
       save-interprogram-paste-before-kill t)
 
@@ -328,6 +329,4 @@
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO font - monaco 13, iirc
-;; TODO Don't keep <foo>~ backup files
-
-
+;; DONE Don't keep <foo>~ backup files
