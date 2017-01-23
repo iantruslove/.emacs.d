@@ -74,6 +74,9 @@
   :config
   (smooth-scrolling-mode 1))
 
+(use-package fill-column-indicator
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operations
 
@@ -270,9 +273,9 @@
               ;; This is useful for working with camel-case tokens, like names of
               ;; Java classes (e.g. JavaClassName)
               (subword-mode)
-              ;; Set line length to 90 to appease the LG-graphers
-              (set-fill-column 90)
-              (setq fci-rule-column 90
+              (set-fill-column 80)
+              (fci-mode)
+              (setq fci-rule-column 80
                     show-trailing-whitespace t)
               ;;(rainbow-delimiters-mode t)
               (whitespace-mode)
