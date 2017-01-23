@@ -72,9 +72,10 @@
 (use-package recentf
   :ensure t
   :config
-  (setq recentf-exclude
-        '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$" ".*png$" ".*cache$"))
-  (setq recentf-max-saved-items 60))
+  (setq recentf-save-file (concat user-emacs-directory ".recentf")
+        recentf-exclude
+        '("COMMIT_MSG" "COMMIT_EDITMSG" "github.*txt$" ".*png$" ".*cache$")
+        recentf-max-saved-items 60))
 
 (use-package smex
   :ensure t)
