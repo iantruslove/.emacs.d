@@ -61,6 +61,7 @@
 
 (setq inhibit-splash-screen t
       make-backup-files nil
+      column-number-mode t
       x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
       x-select-enable-primary t
       save-interprogram-paste-before-kill t)
@@ -116,7 +117,8 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode))
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy))
 
 (use-package magit
   :ensure t
@@ -140,6 +142,8 @@
 
 (global-hl-line-mode 1)
 (show-paren-mode 1)
+
+(setq whitespace-style '(face trailing tabs))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editor
