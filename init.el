@@ -272,6 +272,7 @@
                     show-trailing-whitespace t)
               ;;(rainbow-delimiters-mode t)
               (whitespace-mode)
+              (smartparens-mode)
               (aggressive-indent-mode))))
 
 ;; A little more syntax highlighting
