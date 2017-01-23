@@ -365,3 +365,5 @@
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO font - monaco 13, iirc
 ;; DONE Don't keep <foo>~ backup files
+;; TODO Desktop - reopen files
+;; TODO Buffer list split into projectile projects
