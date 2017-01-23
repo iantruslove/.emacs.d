@@ -33,12 +33,17 @@
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
 
-(defun load-directory (dir)
+(defun load-all-in-directory (dir)
+  "`load' all elisp libraries in directory DIR which are not already loaded."
   ;; TODO: handle if dir doesn't exist
-  (let ((basedir (expand-file-name dir user-init-dir))
-        (load-it (lambda (f)
-                   (load-file (concat (file-name-as-directory basedir) f)))))
-    (mapc load-it (directory-files basedir nil "\\.el$"))))
+  (interactive "D")
+  (let ((libraries-loaded (mapcar #'file-name-sans-extension
+                                  (delq nil (mapcar #'car load-history)))))
+    (dolist (file (directory-files (expand-file-name dir user-init-dir) t ".+\\.elc?$"))
+      (let ((library (file-name-sans-extension file)))
+        (unless (member library libraries-loaded)
+          (load library nil t)
+          (push library libraries-loaded))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fundamental Emacs config
@@ -339,7 +344,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Site-specific overrides
-(load-directory "site")
+(load-all-in-directory "site")
+
 
 ;; DONE structural editing for lisps
 ;; TODO Figure out structural editing keystrokes - kill sexps/all sexps, slurpage, ...
