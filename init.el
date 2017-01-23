@@ -85,7 +85,9 @@
         recentf-max-saved-items 60))
 
 (use-package smex
-  :ensure t)
+  :ensure t
+  :config
+  (setq smex-save-file (concat user-emacs-directory ".smex-items")))
 
 (use-package ivy
   :ensure t
