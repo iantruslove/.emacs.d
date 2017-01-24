@@ -57,6 +57,19 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode 0)
 
+(when (eq system-type 'darwin)
+  (set-face-attribute 'default nil :family "Roboto Mono for Powerline")
+  ;; default font size (point * 10)
+  (set-face-attribute 'default nil :height 120))
+
+(use-package exec-path-from-shell
+  :ensure t)
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-envs
+   '("PATH")))
+
 (use-package auto-compile
   :ensure t
   :config
