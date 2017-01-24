@@ -434,10 +434,8 @@
 ;; Site-specific overrides
 (load-all-in-directory "site")
 
-
-;; TODO Figure out structural editing keystrokes - kill sexps/all sexps, slurpage, ...
-;; TODO org mode
-;; TODO org-todos
+;; TODO Figure out structural editing keystrokes - slurpage, ...
+;; TODO org-projectile
 ;; TODO spacemacs multiple pane buffer wrapping
 ;; TODO: set up some hydras
 ;; - clj-refactor
@@ -446,6 +444,4 @@
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO font - monaco 13, iirc
-;; TODO Desktop - reopen files
-;; TODO Buffer list split into projectile projects
-;; TODO C-k shouldn't just kill line in lisps
+;; TODO smartparens fun: https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el, https://github.com/Fuco1/smartparens/wiki/Tips-and-tricks
