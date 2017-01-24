@@ -276,8 +276,10 @@
 
   (bind-keys
    :map smartparens-mode-map
-   ("C-k"   . sp-kill-hybrid-sexp)
-   ("C-M-k" . sp-kill-sexp)
+   ("C-k"         . sp-kill-hybrid-sexp)
+   ("C-M-k"       . sp-kill-sexp)
+   ("<backspace>" . sp-backward-delete-char)
+   ("C-M-i"       . smartparens-hydra/body)
    ;; ("C-M-a" . sp-beginning-of-sexp)
    ;; ("C-M-e" . sp-end-of-sexp)
 
@@ -341,9 +343,6 @@
 (add-hook 'emacs-lisp-mode-hook (lambda ()
                                   (smartparens-mode)
                                   (aggressive-indent-mode)))
-
-(bind-keys :map emacs-lisp-mode-map
-           ("C-M-i" . smartparens-hydra/body))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure
@@ -421,10 +420,6 @@
                  (put-clojure-indent 'match 'defun)))))
 
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
-
-(bind-keys :map clojure-mode-map
-           ("C-M-i" . smartparens-hydra/body))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
