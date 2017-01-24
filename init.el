@@ -275,6 +275,8 @@
 
   (bind-keys
    :map smartparens-mode-map
+   ("C-k"   . sp-kill-hybrid-sexp)
+   ("C-M-k" . sp-kill-sexp)
    ;; ("C-M-a" . sp-beginning-of-sexp)
    ;; ("C-M-e" . sp-end-of-sexp)
 
@@ -416,6 +418,8 @@
                (progn
                  ;; match: as in clojure.core.match
                  (put-clojure-indent 'match 'defun)))))
+
+(add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
 (bind-keys :map clojure-mode-map
            ("C-M-i" . smartparens-hydra/body))
