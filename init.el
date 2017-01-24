@@ -307,8 +307,8 @@
    )
   )
 
-(use-package eval-sexp-fu
-  :ensure t)
+;; (use-package eval-sexp-fu
+;;   :ensure t)
 
 (setq-default indent-tabs-mode nil)
 (global-auto-revert-mode 1)
