@@ -413,15 +413,10 @@
 (load-all-in-directory "site")
 
 
-;; DONE structural editing for lisps
 ;; TODO Figure out structural editing keystrokes - kill sexps/all sexps, slurpage, ...
 ;; TODO org mode
-;; DONE highlight evaluated regions
-;; IN PROGRESS automatic byte compile
-;; - is this quite working properly? The "site" directory stuff isn't yet...
 ;; TODO org-todos
 ;; TODO spacemacs multiple pane buffer wrapping
-;; DONE continual scrolling. Spacemacs has a nice one.
 ;; TODO: set up some hydras
 ;; - clj-refactor
 ;; - cider
@@ -429,6 +424,6 @@
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO font - monaco 13, iirc
-;; DONE Don't keep <foo>~ backup files
 ;; TODO Desktop - reopen files
 ;; TODO Buffer list split into projectile projects
+;; TODO C-k shouldn't just kill line in lisps
