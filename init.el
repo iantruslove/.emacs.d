@@ -169,6 +169,9 @@
   :config
   (setq smex-save-file (concat user-emacs-directory ".smex-items")))
 
+(use-package flx
+  :ensure t)
+
 (use-package ivy
   :ensure t
   :diminish ivy-mode
