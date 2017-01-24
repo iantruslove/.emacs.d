@@ -1,6 +1,6 @@
 ;; From https://gist.githubusercontent.com/ptrv/7e27e0e18ae37d3f80aff7b9da749321/raw/0685c9b9b35b75886eb372b03f9fde601094d089/smartparens-hydra.el
 
-(defhydra ian/smartparens (:hint nil)
+(defhydra smartparens-hydra (:hint nil)
   "
 Sexps (quit with _q_)
 ^Nav^            ^Barf/Slurp^                 ^Depth^

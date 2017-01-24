@@ -179,6 +179,8 @@
 (use-package hydra
   :ensure t)
 
+(load-user-file "hydras/smartparens.el")
+
 (use-package projectile
   :ensure t
   :config
@@ -320,6 +322,8 @@
                                   (smartparens-mode)
                                   (aggressive-indent-mode)))
 
+(bind-keys :map emacs-lisp-mode-map
+           ("C-M-i" . smartparens-hydra/body))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure
@@ -395,6 +399,10 @@
                (progn
                  ;; match: as in clojure.core.match
                  (put-clojure-indent 'match 'defun)))))
+
+(bind-keys :map clojure-mode-map
+           ("C-M-i" . smartparens-hydra/body))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
