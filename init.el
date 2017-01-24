@@ -101,6 +101,7 @@
 (use-package ibuffer-projectile
   :ensure t
   :config
+  (setq projectile-enable-caching t)
   (add-hook 'ibuffer-hook
             (lambda ()
               (ibuffer-projectile-set-filter-groups)
