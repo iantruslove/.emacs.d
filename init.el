@@ -85,6 +85,8 @@
       column-number-mode t
       x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
       x-select-enable-primary t
+      require-final-newline 'visit-save
+      delete-selection-mode t
       save-interprogram-paste-before-kill t)
 
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
