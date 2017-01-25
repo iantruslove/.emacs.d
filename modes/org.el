@@ -236,12 +236,16 @@
 (use-package es-mode
   :ensure t)
 
+(use-package ob-http
+  :ensure t)
+
 (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (clojure . t)
-     (sh . t)
-     (elasticsearch . t)))
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (http . t)
+   (clojure . t)
+   (sh . t)
+   (elasticsearch . t)))
 
 (setq org-babel-sh-command "bash"
         org-babel-clojure-backend 'cider
