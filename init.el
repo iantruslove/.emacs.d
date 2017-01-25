@@ -218,6 +218,15 @@
 (use-package gist
   :ensure t)
 
+(use-package dumb-jump
+  :ensure t
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g ." . dumb-jump-go)
+         ("M-g ," . dumb-jump-back))
+  :config (setq dumb-jump-selector 'ivy))
+
+(dumb-jump-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
 
