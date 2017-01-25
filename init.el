@@ -178,6 +178,8 @@
   :diminish ivy-mode
   :config
   (ivy-mode 1)
+  (define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
+  (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
   (setq ivy-use-virtual-buffers t
         ;;ivy-count-format "(%d/%d) "
