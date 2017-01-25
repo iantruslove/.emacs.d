@@ -57,6 +57,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode 0)
 
+;; Save emacs customizations to somewhere other than the end of init.el
+(setq custom-file (expand-file-name "site/emacs-custom.el" user-init-dir))
+
 (when (eq system-type 'darwin)
   (set-face-attribute 'default nil :family "Roboto Mono for Powerline")
   ;; default font size (point * 10)
