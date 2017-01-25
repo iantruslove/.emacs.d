@@ -77,16 +77,16 @@
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
 
-(setq inhibit-splash-screen t
-      ;; Save emacs customizations to somewhere other than the end of init.el:
-      custom-file (expand-file-name "site/emacs-custom.el" user-init-dir)
-      make-backup-files nil
-      column-number-mode t
-      x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
-      x-select-enable-primary t
-      require-final-newline 'visit-save
-      delete-selection-mode t
-      save-interprogram-paste-before-kill t)
+(setq-default inhibit-splash-screen t
+              ;; Save emacs customizations to somewhere other than the end of init.el:
+              custom-file (expand-file-name "site/emacs-custom.el" user-init-dir)
+              make-backup-files nil
+              column-number-mode t
+              x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
+              x-select-enable-primary t
+              require-final-newline 'visit-save
+              delete-selection-mode t
+              save-interprogram-paste-before-kill t)
 
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
