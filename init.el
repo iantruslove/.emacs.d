@@ -308,10 +308,10 @@
    ;; ("C-S-f" . sp-forward-symbol)
    ;; ("C-S-b" . sp-backward-symbol)
 
-   ;; ("C-<right>" . sp-forward-slurp-sexp)
-   ;; ("M-<right>" . sp-forward-barf-sexp)
-   ;; ("C-<left>"  . sp-backward-slurp-sexp)
-   ;; ("M-<left>"  . sp-backward-barf-sexp)
+   ("M-)" . sp-forward-slurp-sexp)
+   ("C-M-)" . sp-forward-barf-sexp)
+   ("M-("  . sp-backward-slurp-sexp)
+   ("C-M-("  . sp-backward-barf-sexp)
 
    ;; ("C-M-t" . sp-transpose-sexp)
    ;; ("C-M-k" . sp-kill-sexp)
