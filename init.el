@@ -207,6 +207,9 @@
   (projectile-global-mode)
   (setq projectile-completion-system 'ivy))
 
+(use-package ag
+  :ensure t)
+
 (use-package magit
   :ensure t
   :config
