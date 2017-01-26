@@ -321,6 +321,10 @@
    ("M-("  . sp-backward-slurp-sexp)
    ("C-M-("  . sp-backward-barf-sexp)
 
+   ("M-s" . sp-splice-sexp)
+   ("M-r" . sp-raise-sexp)
+   ("C-M-r" . sp-splice-sexp-killing-backward)
+
    ;; ("C-M-t" . sp-transpose-sexp)
    ;; ("C-M-k" . sp-kill-sexp)
    ;; ("C-k"   . sp-kill-hybrid-sexp)
