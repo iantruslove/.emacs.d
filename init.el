@@ -186,6 +186,7 @@
   (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
   (setq ivy-use-virtual-buffers t
+        ivy-wrap t
         ;;ivy-count-format "(%d/%d) "
         ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ;; This is really slow on big lists.
         ivy-initial-inputs-alist nil))
@@ -451,13 +452,12 @@
 ;; Site-specific overrides
 (load-all-in-directory "site")
 
-;; TODO Figure out structural editing keystrokes - slurpage, ...
 ;; TODO org-projectile
+;; TODO org archiving - e.g. http://stackoverflow.com/a/35475878
 ;; TODO spacemacs multiple pane buffer wrapping
 ;; TODO: set up some hydras
 ;; - clj-refactor
 ;; - cider
-;; - smartparens
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO font - monaco 13, iirc
