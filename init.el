@@ -366,7 +366,10 @@
 
 (add-hook 'emacs-lisp-mode-hook (lambda ()
                                   (smartparens-mode)
-                                  (aggressive-indent-mode)))
+                                  (aggressive-indent-mode)
+                                  (bind-keys
+                                   :map emacs-lisp-mode-map
+                                   (";" . sp-comment))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Clojure
@@ -375,6 +378,7 @@
 
 (use-package clojure-mode
   :ensure t
+  :bind ((";" . sp-comment))
   :config
   (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
   (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
