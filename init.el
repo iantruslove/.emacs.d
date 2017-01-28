@@ -86,7 +86,8 @@
               x-select-enable-primary t
               require-final-newline 'visit-save
               delete-selection-mode t
-              save-interprogram-paste-before-kill t)
+              save-interprogram-paste-before-kill t
+              ring-bell-function 'ignore)
 
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
