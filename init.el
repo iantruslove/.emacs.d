@@ -377,7 +377,6 @@
 
 (use-package clojure-mode
   :ensure t
-  :bind ((";" . sp-comment))
   :config
   (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
   (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
@@ -386,6 +385,10 @@
             (lambda ()
               ;; This is useful for working with camel-case tokens, like names of
               ;; Java classes (e.g. JavaClassName)
+              (bind-keys
+               :map clojure-mode-map
+               (";" . sp-comment)
+               ("C-c z" . cider-switch-to-repl-buffer))
               (subword-mode)
               (set-fill-column ian/clojure-cols)
               (fci-mode)
