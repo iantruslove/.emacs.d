@@ -454,6 +454,13 @@
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package scss-mode
+  :ensure t
+  :config
+  (setq scss-compile-at-save nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
 (load-user-file "modes/org.el")
 
