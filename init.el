@@ -489,3 +489,5 @@
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO smartparens fun: https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el, https://github.com/Fuco1/smartparens/wiki/Tips-and-tricks
+;; TODO multiple cursors
+;; TODO expand region
