@@ -80,6 +80,8 @@
 (setq-default column-number-mode t
               custom-file (expand-file-name "site/emacs-custom.el" user-init-dir) ;; Saves emacs customizations to somewhere other than the end of init.el
               delete-selection-mode t
+              ediff-split-window-function 'split-window-horizontally
+              ediff-window-setup-function 'ediff-setup-windows-plain
               inhibit-splash-screen t
               make-backup-files nil
               require-final-newline 'visit-save
