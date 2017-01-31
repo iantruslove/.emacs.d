@@ -416,7 +416,6 @@
 ;; A little more syntax highlighting
 (use-package clojure-mode-extra-font-locking
   :ensure t)
-;;(require 'clojure-mode-extra-font-locking)
 
 (use-package cider
   :ensure t
