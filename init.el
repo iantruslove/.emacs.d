@@ -482,11 +482,10 @@
 
 ;; TODO org-projectile
 ;; TODO org archiving - e.g. http://stackoverflow.com/a/35475878
-;; TODO spacemacs multiple pane buffer wrapping
+;; DONE spacemacs multiple pane buffer wrapping -- it's `follow-mode`.
 ;; TODO: set up some hydras
 ;; - clj-refactor
 ;; - cider
 ;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
-;; TODO font - monaco 13, iirc
 ;; TODO smartparens fun: https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el, https://github.com/Fuco1/smartparens/wiki/Tips-and-tricks
