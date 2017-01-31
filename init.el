@@ -58,7 +58,8 @@
 (blink-cursor-mode 0)
 
 (when (eq system-type 'darwin)
-  (set-face-attribute 'default nil :family "Roboto Mono for Powerline")
+  ;; Download: http://www.1001freefonts.com/roboto_mono.font
+  (set-face-attribute 'default nil :family "Roboto Mono")
   ;; default font size (point * 10)
   (set-face-attribute 'default nil :height 120))
 
