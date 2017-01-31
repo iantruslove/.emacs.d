@@ -228,6 +228,18 @@
 (use-package gist
   :ensure t)
 
+(use-package highlight-symbol
+  :ensure t
+  :diminish highlight-symbol-mode
+  :bind (("M-n" . highlight-symbol-next)
+         ("M-p" . highlight-symbol-prev)
+         ("M-'" . highlight-symbol-query-replace))
+  :config
+  (setq highlight-symbol-idle-delay 0.75)
+  (dolist (hook '(prog-mode-hook html-mode-hook))
+    (add-hook hook (lambda ()
+                     (highlight-symbol-mode)))))
+
 (use-package dumb-jump
   :ensure t
   :bind (("M-g o" . dumb-jump-go-other-window)
