@@ -465,6 +465,16 @@
 
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
+;; Clojure inferior mode - e.g. for phantomjs
+(use-package inf-clojure
+  :ensure t)
+
+(defun cljs-start-phantom-repl ()
+  (interactive)
+  ;; TODO localization - remove the hard coded path
+  (run-clojure (concat "lein trampoline run -m clojure.main "
+                       (expand-file-name "~/.emacs.d/repls/phantom_repl.clj"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package scss-mode
