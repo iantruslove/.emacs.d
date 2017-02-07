@@ -79,7 +79,6 @@
    '("PATH")))
 
 (use-package auto-compile
-  :ensure t
   :config
   (setq load-prefer-newer t)
   (auto-compile-on-load-mode)
@@ -102,7 +101,6 @@
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 
 (use-package smooth-scrolling
-  :ensure t
   :config
   (smooth-scrolling-mode 1)
   (setq smooth-scroll-margin 1))
@@ -113,7 +111,6 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (use-package ibuffer-projectile
-  :ensure t
   :config
   (setq projectile-enable-caching t)
   (add-hook 'ibuffer-hook
@@ -162,7 +159,6 @@
                 tags-table-list)))
 
 (use-package session
-  :ensure t
   :config
   (setq session-save-file (expand-file-name ".session" user-emacs-directory))
   (add-hook 'after-init-hook 'session-initialize))
@@ -172,7 +168,6 @@
 ;; Operations
 
 (use-package recentf
-  :ensure t
   :config
   (setq recentf-save-file (concat user-emacs-directory ".recentf")
         recentf-exclude
@@ -180,7 +175,6 @@
         recentf-max-saved-items 60))
 
 (use-package smex
-  :ensure t
   :config
   (setq smex-save-file (concat user-emacs-directory ".smex-items")))
 
@@ -188,7 +182,6 @@
   :ensure t)
 
 (use-package ivy
-  :ensure t
   :diminish ivy-mode
   :config
   (ivy-mode 1)
@@ -202,12 +195,10 @@
         ivy-initial-inputs-alist nil))
 
 (use-package counsel
-  :ensure t
   :config
   (global-set-key (kbd "M-x") 'counsel-M-x))
 
 (use-package swiper
-  :ensure t
   :config
   (global-set-key (kbd "C-M-s") 'swiper))
 
@@ -217,7 +208,6 @@
 (load-user-file "hydras/smartparens.el")
 
 (use-package projectile
-  :ensure t
   :config
   (projectile-global-mode)
   (setq projectile-completion-system 'ivy
@@ -227,7 +217,6 @@
   :ensure t)
 
 (use-package magit
-  :ensure t
   :config
   (global-set-key (kbd "C-c g") 'magit-status)
   (setq-default magit-process-popup-time 10
@@ -238,7 +227,6 @@
   :ensure t)
 
 (use-package highlight-symbol
-  :ensure t
   :diminish highlight-symbol-mode
   :bind (("M-n" . highlight-symbol-next)
          ("M-p" . highlight-symbol-prev)
@@ -250,7 +238,6 @@
                      (highlight-symbol-mode)))))
 
 (use-package dumb-jump
-  :ensure t
   :bind (("M-g o" . dumb-jump-go-other-window)
          ("M-g ." . dumb-jump-go)
          ("M-g ," . dumb-jump-back))
@@ -262,7 +249,6 @@
 ;; Themes and appearance
 
 (use-package color-theme-sanityinc-tomorrow
-  :ensure t
   :demand t
   :config
   (load-theme 'sanityinc-tomorrow-night t))
@@ -297,12 +283,10 @@
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 (use-package undo-tree
-  :ensure t
   :diminish undo-tree-mode
   :config (global-undo-tree-mode))
 
 (use-package saveplace
-  :ensure t
   :config
   (setq-default save-place t)
   (setq save-place-file (concat user-emacs-directory "places")))
@@ -311,7 +295,6 @@
   :ensure t)
 
 (use-package smartparens
-  :ensure t
   :config
   ;; load up smartparens default config - https://github.com/Fuco1/smartparens/blob/master/smartparens-config.el
   (require 'smartparens-config)
@@ -399,7 +382,6 @@
 (setq ian/clojure-cols 80)
 
 (use-package clojure-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
   (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
@@ -427,7 +409,6 @@
   :ensure t)
 
 (use-package cider
-  :ensure t
   :pin melpa-stable
   :config
   (setq
@@ -456,7 +437,6 @@
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
 (use-package clj-refactor
-  :ensure t
   :config
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
@@ -487,7 +467,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package scss-mode
-  :ensure t
   :config
   (setq scss-compile-at-save nil))
 
