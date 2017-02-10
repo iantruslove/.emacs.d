@@ -57,6 +57,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode 0)
 
+(defadvice quit-window (before quit-window-always-kill)
+  "When running `quit-window', always kill the buffer."
+  (ad-set-arg 0 t))
+(ad-activate 'quit-window)
+
 (when (eq system-type 'darwin)
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
   (set-face-attribute 'default nil :family "Roboto Mono")
