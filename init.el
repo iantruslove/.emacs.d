@@ -218,7 +218,8 @@
   :ensure t
   :config
   (projectile-global-mode)
-  (setq projectile-completion-system 'ivy))
+  (setq projectile-completion-system 'ivy
+        projectile-create-missing-test-files t))
 
 (use-package ag
   :ensure t)
