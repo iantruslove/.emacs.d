@@ -442,6 +442,8 @@
   :config
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
+(add-hook 'cider-mode-hook #'eldoc-mode)
+
 (add-hook 'clojure-mode-hook
           (lambda ()
             (clj-refactor-mode 1)
