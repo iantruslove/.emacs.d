@@ -97,6 +97,8 @@
               x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
               x-select-enable-primary t)
 
+(set-language-environment "utf-8")
+
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 
@@ -469,6 +471,29 @@
 (use-package scss-mode
   :config
   (setq scss-compile-at-save nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Common Lisp
+
+(add-hook 'lisp-mode-hook 'smartparens-mode)
+(add-hook 'lisp-mode-hook #'eldoc-mode)
+
+(setq auto-mode-alist
+      (append '(("\\.lisp$" . lisp-mode)
+                ("\\.cl$" . lisp-mode))
+              auto-mode-alist))
+
+(setq slime-default-lisp 'ccl)
+(setq slime-lisp-implementations
+      '((ccl ("/usr/local/bin/ccl64" "-K" "utf-8"))))
+
+(use-package slime
+  :pin melpa-stable
+  :config
+  (add-hook 'slime-mode-hook 'smartparens-mode)
+  (setq slime-net-coding-system 'utf-8-unix)
+  (slime-setup '(slime-fancy)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
