@@ -505,6 +505,29 @@
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-fancy)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Web stuff
+
+(defun add-auto-mode (mode &rest patterns)
+  (mapc (lambda (pattern)
+          (add-to-list 'auto-mode-alist (cons pattern mode)))
+        patterns))
+
+(use-package web-mode
+  :config
+  (add-auto-mode 'web-mode
+                 "*html*" "*twig*" "*tmpl*" "\\.erb" "\\.rhtml$" "\\.ejs$" "\\.hbs$"
+                 "\\.ctp$" "\\.tpl$"
+                 "/\\(views\\|html\\|templates\\)/.*\\.php$")
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2))
+
+(use-package php-mode
+  :init
+  (add-hook 'php-mode-hook
+            (lambda ()
+              (setq c-basic-offset 2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
