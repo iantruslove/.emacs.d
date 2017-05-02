@@ -397,6 +397,7 @@
                (";" . sp-comment)
                ("C-c z" . cider-switch-to-repl-buffer))
               (subword-mode)
+              (auto-complete-mode)
               (whitespace-mode)
               (set-fill-column ian/clojure-cols)
               (fci-mode)
