@@ -513,7 +513,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
-(use-package elpy)
+(use-package elpy
+  :config
+  (elpy-enable)
+  ;;(setq elpy-rpc-backend "jedi")
+  ;;(setq elpy-rpc-python-command "python3.5")
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Web stuff
