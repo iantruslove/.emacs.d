@@ -247,6 +247,10 @@
 
 (dumb-jump-mode)
 
+(use-package expand-region
+  :config
+  (global-set-key (kbd "C-c =") 'er/expand-region))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
 
