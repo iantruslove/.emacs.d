@@ -418,6 +418,9 @@
    ;; go right to the REPL buffer when it's finished connecting
    cider-repl-pop-to-buffer-on-connect t
 
+   ;; Don't show the REPL welcome message
+   cider-repl-display-help-banner nil 
+
    ;; When there's a cider error, don't show it.
    cider-show-error-buffer nil
    cider-auto-select-error-buffer nil
