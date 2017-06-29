@@ -448,7 +448,8 @@
 
 (use-package clj-refactor
   :config
-  (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (cljr-add-keybindings-with-prefix "C-c C-m")
+  (setq cljr-favor-prefix-notation nil))
 
 (add-hook 'cider-mode-hook #'eldoc-mode)
 
