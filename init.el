@@ -476,6 +476,7 @@
   ;; TODO localization - remove the hard coded path
   (run-clojure (concat "lein trampoline run -m clojure.main "
                        (expand-file-name "~/.emacs.d/repls/phantom_repl.clj"))))
+
 (use-package ac-cider
   :config
   (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
@@ -511,9 +512,17 @@
   :pin melpa-stable
   :config
   (add-hook 'slime-mode-hook 'smartparens-mode)
+  (add-hook 'slime-repl-mode-hook 'smartparens-mode)
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-fancy)))
 
+(use-package ac-slime
+  :pin melpa-stable
+  :config
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+    '(add-to-list 'ac-modes 'slime-repl-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
