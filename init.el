@@ -97,6 +97,8 @@
               x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
               x-select-enable-primary t)
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)  ;; or perhaps 'whitespace-cleanup
+
 (set-language-environment "utf-8")
 
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -423,7 +425,7 @@
    cider-repl-pop-to-buffer-on-connect t
 
    ;; Don't show the REPL welcome message
-   cider-repl-display-help-banner nil 
+   cider-repl-display-help-banner nil
 
    ;; When there's a cider error, don't show it.
    cider-show-error-buffer nil
