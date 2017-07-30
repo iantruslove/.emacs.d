@@ -530,11 +530,22 @@
 ;; Python
 
 (use-package elpy
+  :bind (("C-c z" . elpy-shell-switch-to-shell))
   :config
-  (elpy-enable)
-  ;;(setq elpy-rpc-backend "jedi")
-  ;;(setq elpy-rpc-python-command "python3.5")
-  )
+  (progn
+    (elpy-enable)
+    ;;(setq elpy-rpc-backend "jedi")
+    (setq elpy-rpc-python-command "python3.5")))
+
+(setq ian/python-cols 79)
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            ;; Set up fill column indicator
+            (set-fill-column ian/python-cols)
+            (fci-mode)
+            (setq fci-rule-column ian/python-cols
+                  show-trailing-whitespace t)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Web stuff
