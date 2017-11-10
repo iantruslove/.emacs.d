@@ -237,6 +237,8 @@
          ("M-'" . highlight-symbol-query-replace))
   :config
   (setq highlight-symbol-idle-delay 0.75)
+  (setq highlight-symbol-highlight-single-occurrence nil)
+  (setq highlight-symbol-on-navigation-p t)
   (dolist (hook '(prog-mode-hook html-mode-hook))
     (add-hook hook (lambda ()
                      (highlight-symbol-mode)))))
