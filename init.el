@@ -572,6 +572,15 @@
               (setq c-basic-offset 2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Markup and text formatting
+
+(use-package markdown-mode
+  :pin melpa-stable)
+
+(use-package yaml-mode
+  :pin melpa-stable)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
 (load-user-file "modes/org.el")
 
