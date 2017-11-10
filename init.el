@@ -66,9 +66,10 @@
 
 (when (eq system-type 'darwin)
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
-  (set-face-attribute 'default nil :family "Roboto Mono")
   ;; default font size (point * 10)
-  (set-face-attribute 'default nil :height 120))
+  (set-face-attribute 'default nil
+                      :font "Roboto Mono"
+                      :height 120))
 
 (use-package exec-path-from-shell
   :ensure t)
