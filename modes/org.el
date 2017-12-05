@@ -65,14 +65,15 @@
                       ;; ;; Structural
                       ("project" . ?p)  ;; identifies a TODO item as a project
                       ("inbox"   . ?i)
+                      ("ARCHIVE" . ?A)
 
                       ;; ;; Others:
                       ("blog"    . ?b)
                       ("idea"    . ?d)
                       ("meeting" . ?m)
-                      ("retro"   . ?o)
+                      ;; ("retro"   . ?o)
                       ("REFILE"  . ?r)
-                      ("sm"      . ?s)
+                      ;; ("sm"      . ?s)
                       ("talk"    . ?t)))
 
 ;; Project tags shouldn't automatically propagate down to subtasks
