@@ -55,11 +55,11 @@
                       ("@lg"       . ?L)
                       ("@cambium"  . ?G)
                       ("@home"     . ?H)
-                      ("@nerding"  . ?N)
-                      ("@errands"  . ?E)
-                      ("@coding"   . ?C)
-                      ("@phone"    . ?P)
-                      ("@reading"  . ?R)
+                      ;; ("@nerding"  . ?N)
+                      ;; ("@errands"  . ?E)
+                      ;; ("@coding"   . ?C)
+                      ;; ("@phone"    . ?P)
+                      ;; ("@reading"  . ?R)
                       (:endgroup   . nil)
 
                       ;; ;; Structural
