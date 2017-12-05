@@ -127,6 +127,44 @@
         ;;  :empty-lines 1)
         ))
 
+(defun my/org-match-at-point-p (match &optional todo-only)
+  "Return non-nil if headline at point matches MATCH.
+Here MATCH is a match string of the same format used by
+`org-tags-view'.
+If the optional argument TODO-ONLY is non-nil, do not declare a
+match unless headline at point is a todo item."
+  (let ((todo      (org-get-todo-state))
+        (tags-list (org-get-tags-at)))
+    (eval (cdr (org-make-tags-matcher match)))))
+
+(defun my/org-agenda-skip-without-match (match)
+  "Skip current headline unless it matches MATCH.
+Return nil if headline containing point matches MATCH (which
+should be a match string of the same format used by
+`org-tags-view').  If headline does not match, return the
+position of the next headline in current buffer.
+Intended for use with `org-agenda-skip-function', where this will
+skip exactly those headlines that do not match."
+  (save-excursion
+    (unless (org-at-heading-p) (org-back-to-heading))
+    (let ((next-headline (save-excursion
+                           (or (outline-next-heading) (point-max)))))
+      (if (my/org-match-at-point-p match) nil next-headline))))
+
+(defun my/org-agenda-skip-with-match (match)
+  "Skip current headline if it matches MATCH.
+Return nil if headline containing point matches MATCH (which
+should be a match string of the same format used by
+`org-tags-view').  If headline does not match, return the
+position of the next headline in current buffer.
+Intended for use with `org-agenda-skip-function', where this will
+skip exactly those headlines that do not match."
+  (save-excursion
+    (unless (org-at-heading-p) (org-back-to-heading))
+    (let ((next-headline (save-excursion
+                           (or (outline-next-heading) (point-max)))))
+      (if (my/org-match-at-point-p match) next-headline nil))))
+
 (setq org-agenda-custom-commands
       '(("A" "Agenda and todos"
          ((agenda ""
