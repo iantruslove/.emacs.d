@@ -536,6 +536,7 @@
   :bind (("C-c z" . elpy-shell-switch-to-shell))
   :config
   (progn
+    (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
     (elpy-enable)
     ;;(setq elpy-rpc-backend "jedi")
     (setq elpy-rpc-python-command "python3.5")))
@@ -553,10 +554,11 @@
 (use-package highlight-indent-guides
   :config
   (progn
+    ;;(setq highlight-indent-guides-method 'column)
     (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-auto-odd-face-perc 30)
-    (setq highlight-indent-guides-auto-even-face-perc 30)
-    (setq highlight-indent-guides-auto-character-face-perc 40)
+    (setq highlight-indent-guides-auto-odd-face-perc 3)
+    (setq highlight-indent-guides-auto-even-face-perc 7)
+    (setq highlight-indent-guides-auto-character-face-perc 10)
     (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
