@@ -20,7 +20,6 @@
 (eval-when-compile
   (require 'use-package))
 
-(require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
 (defconst user-init-dir
@@ -72,6 +71,9 @@
                       :height 120))
 
 (use-package exec-path-from-shell
+  :ensure t)
+
+(use-package diminish
   :ensure t)
 
 (when (memq window-system '(mac ns))
