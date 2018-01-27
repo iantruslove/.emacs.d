@@ -184,10 +184,16 @@ skip exactly those headlines that do not match."
                       (org-agenda-skip-function
                        '(org-agenda-skip-entry-when-regexp-matches))
                       (org-agenda-skip-regexp "\\[#A\\]")))
-          (tags-todo "@lg"
+          (tags-todo "strategy"
                      ((org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "cambium"
+          (tags-todo "+cambium-strategy"
+                     ((org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "horus"
+                     ((org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "@lg"
                      ((org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
           (tags-todo "@home")
@@ -196,6 +202,50 @@ skip exactly those headlines that do not match."
           (tags-todo "@coding")
           (tags-todo "@phone")
           (tags-todo "@reading")))
+
+        ("c" "Cambium"
+         ((agenda ""
+                  ((org-agenda-ndays 1)
+                   (org-deadline-warning-days 14)
+                   (org-agenda-sorting-strategy '(time-up todo-state-up priority-down))
+                   (org-agenda-repeating-timestamp-show-all nil)))
+          (tags-todo "PRIORITY={A}"
+                     ((org-agenda-overriding-header "HIGH PRIORITY")))
+          (tags-todo "DEADLINE=\"\"+FLAGGED|DEADLINE>\"<+1w>\"+FLAGGED"
+                     ((org-agenda-overriding-header "FLAGGED")
+                      (org-agenda-skip-function
+                       '(org-agenda-skip-entry-when-regexp-matches))
+                      (org-agenda-skip-regexp "\\[#A\\]")))
+          (tags-todo "strategy"
+                     ((org-agenda-overriding-header "STRATEGY")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "website"
+                     ((org-agenda-overriding-header "WEBSITE")
+                      (org-agenda-skip-function
+                       '(org-agenda-skip-entry-when-regexp-matches))
+                      (org-agenda-skip-regexp "\\[#C\\]")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "project"
+                     ((org-agenda-overriding-header "PROJECTS")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "sos"
+                     ((org-agenda-overriding-header "SOS")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "blue_moon"
+                     ((org-agenda-overriding-header "BLUE MOON")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "+cambium-strategy-website-project-sos-blue_moon"
+                     ((org-agenda-overriding-header "OTHER CAMBIUM TODOS")
+                      (org-agenda-sorting-strategy
+                       '(scheduled-down priority-down todo-state-up))))
+          (tags-todo "+cambium+PRIORITY=\"C\""
+                     ((org-agenda-overriding-header "LOW PRIORITY")
+                      (org-agenda-sorting-strategy '(priority-down))))))
 
         ("L" "Long agenda"
          ((agenda ""
