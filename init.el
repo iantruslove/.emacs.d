@@ -470,7 +470,8 @@
              (lambda ()
                (progn
                  ;; match: as in clojure.core.match
-                 (put-clojure-indent 'match 'defun)))))
+                 (put-clojure-indent 'match 'defun)
+                 (put-clojure-indent 'fdef 'defun)))))
 
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
