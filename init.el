@@ -443,7 +443,7 @@
    ;; Wrap when navigating history.
    cider-repl-wrap-history t
 
-   cider-prompt-save-file-on-load 'always-save
+   cider-save-file-on-load t
 
    ;; Don't ask to jump to symbol
    cider-prompt-for-symbol nil))
