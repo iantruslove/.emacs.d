@@ -98,12 +98,12 @@
         ;; ("T" "Detailed Task" entry
         ;;  (file+headline organizer "Inbox")
         ;;  ,my/org-basic-task-template)
-        ("T" "Quick task" entry
+        ("T" "Quick organizer TODO" entry
          (file+headline organizer "Inbox")
          "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
          :immediate-finish t)
 
-        ("t" "Quick LG journal task" entry
+        ("t" "Quick LG journal TODO" entry
          (file+datetree lg-journal)
          "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
          :empty-lines 1
@@ -142,9 +142,9 @@ match unless headline at point is a todo item."
 Return nil if headline containing point matches MATCH (which
 should be a match string of the same format used by
 `org-tags-view').  If headline does not match, return the
-position of the next headline in current buffer.
-Intended for use with `org-agenda-skip-function', where this will
-skip exactly those headlines that do not match."
+position of the next headline in current buffer.  Intended for
+use with `org-agenda-skip-function', where this will skip exactly
+those headlines that do not match."
   (save-excursion
     (unless (org-at-heading-p) (org-back-to-heading))
     (let ((next-headline (save-excursion
@@ -208,7 +208,7 @@ skip exactly those headlines that do not match."
                    ;; only show days with something:
                    (org-agenda-show-all-dates nil)))))
 
-        ("K" "tasK summary"
+        ("K" "tasK summary (refile, in progress, todo)"
          ((tags-todo "REFILE"
                      ((org-agenda-overriding-header "Tasks to refile")
                       (org-agenda-sorting-strategy '(priority-down))))
