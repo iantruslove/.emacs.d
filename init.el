@@ -588,6 +588,10 @@
             (lambda ()
               (setq c-basic-offset 2))))
 
+(use-package puppet-mode
+    :pin melpa-stable)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markup and text formatting
 
