@@ -349,3 +349,29 @@ skip exactly those headlines that do not match."
 (org-crypt-use-before-save-magic)
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
 (setq org-crypt-key nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Remove all source block results
+;; from https://www.wisdomandwonder.com/article/10597/remove-every-source-block-results
+
+(defconst help/org-special-pre "^\s*#[+]")
+
+(defun help/org-2every-src-block (fn)
+  "Visit every Source-Block and evaluate `FN'."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (let ((case-fold-search t))
+      (while (re-search-forward (concat help/org-special-pre "BEGIN_SRC") nil t)
+        (let ((element (org-element-at-point)))
+          (when (eq (org-element-type element) 'src-block)
+            (funcall fn element)))))
+    (save-buffer)))
+
+(defun org-babel-remove-every-results-block ()
+  (interactive)
+  (help/org-2every-src-block (lambda (_)
+                               (funcall 'org-babel-remove-result))))
+
+(define-key org-mode-map (kbd "M-]")
+  'org-babel-remove-every-results-block)
