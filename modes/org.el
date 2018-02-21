@@ -337,10 +337,11 @@ skip exactly those headlines that do not match."
    (elasticsearch . t)))
 
 (setq org-babel-sh-command "bash"
-        org-babel-clojure-backend 'cider
-        org-confirm-babel-evaluate nil
-        org-babel-default-header-args:clojure '((:results . "value verbatim pp"))
-        org-babel-default-header-args:sh '((:results . "verbatim drawer")))
+      org-confirm-babel-evaluate nil
+      org-babel-clojure-backend 'cider
+      org-confirm-babel-evaluate nil
+      org-babel-default-header-args:clojure '((:results . "value verbatim pp"))
+      org-babel-default-header-args:sh '((:results . "verbatim drawer")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Basic block encryption: encrypt any heading contents tagged with ":crypt:".
@@ -375,3 +376,5 @@ skip exactly those headlines that do not match."
 
 (define-key org-mode-map (kbd "M-]")
   'org-babel-remove-every-results-block)
+
+;; fin
