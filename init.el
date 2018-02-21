@@ -209,6 +209,12 @@
   :config
   (global-set-key (kbd "C-M-s") 'swiper))
 
+(use-package avy
+  :config
+  (global-set-key (kbd "M-g M-w") 'avy-goto-char-2)
+  (setq avy-timeout-seconds 0.2)
+  (global-set-key (kbd "M-g M-t") 'avy-goto-char-timer))
+
 (use-package hydra
   :ensure t)
 
