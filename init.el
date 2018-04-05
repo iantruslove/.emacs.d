@@ -301,6 +301,9 @@
 
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
+(use-package which-key
+  :config (which-key-mode))
+
 (use-package undo-tree
   :diminish undo-tree-mode
   :config (global-undo-tree-mode))
