@@ -351,6 +351,10 @@ skip exactly those headlines that do not match."
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
 (setq org-crypt-key nil)
 
+;; Full-file encryption
+(require 'epa-file)
+(epa-file-enable)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Remove all source block results
 ;; from https://www.wisdomandwonder.com/article/10597/remove-every-source-block-results
