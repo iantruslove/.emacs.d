@@ -51,6 +51,7 @@
 
 (global-auto-revert-mode 1)
 (menu-bar-mode -1)
+(setq use-dialog-box nil)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode)
