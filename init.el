@@ -551,7 +551,7 @@
   (progn
     (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
     (elpy-enable)
-    ;;(setq elpy-rpc-backend "jedi")
+    (setq elpy-rpc-backend "jedi")
     (setq elpy-rpc-python-command "python3")))
 
 (setq ian/python-cols 79)
