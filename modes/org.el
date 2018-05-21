@@ -14,7 +14,7 @@
       org-edit-src-content-indentation 0
       org-src-tab-acts-natively t
       org-src-fontify-natively t
-      org-agenda-files '("~/org/")
+      ;;org-agenda-files '("~/org/")
       org-log-into-drawer 't
       org-refile-targets '((org-agenda-files . (:maxlevel . 3))))
 
@@ -322,6 +322,8 @@ skip exactly those headlines that do not match."
 ;; babel and friends
 
 (require 'ob-clojure)
+(require 'cider)
+
 (use-package es-mode
   :ensure t)
 
@@ -333,6 +335,7 @@ skip exactly those headlines that do not match."
  '((emacs-lisp . t)
    (http . t)
    (clojure . t)
+   (python . t)
    (sh . t)
    (elasticsearch . t)))
 
