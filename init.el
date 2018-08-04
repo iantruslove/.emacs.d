@@ -303,6 +303,7 @@
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 (use-package which-key
+  :pin melpa-stable
   :config (which-key-mode))
 
 (use-package undo-tree
