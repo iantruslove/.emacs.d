@@ -625,11 +625,11 @@
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2))
 
-(use-package php-mode
-  :init
-  (add-hook 'php-mode-hook
-            (lambda ()
-              (setq c-basic-offset 2))))
+;; (use-package php-mode
+;;   :config
+;;   (add-hook 'php-mode-hook
+;;             (lambda ()
+;;               (setq c-basic-offset 2))))
 
 (use-package puppet-mode
     :pin melpa-stable)
