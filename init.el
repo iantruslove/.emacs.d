@@ -315,6 +315,21 @@
   (setq-default save-place t)
   (setq save-place-file (concat user-emacs-directory "places")))
 
+(use-package avy-flycheck
+  :config
+  (global-set-key (kbd "M-g M-w") 'avy-goto-char-2)
+  (setq avy-timeout-seconds 0.2)
+  (global-set-key (kbd "M-g M-t") 'avy-goto-char-timer))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'flycheck-mode-hook
+            (lambda ()
+              (bind-keys
+               :map flycheck-mode-map
+               ("M-g M-e" . avy-flycheck-goto-error)))))
+
 (use-package aggressive-indent
   :ensure t)
 
