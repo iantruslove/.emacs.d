@@ -644,6 +644,12 @@
 (use-package yaml-mode
   :pin melpa-stable)
 
+(use-package highlight-indentation
+  :config
+  (add-hook 'yaml-mode-hook
+            (lambda ()
+              (highlight-indentation-current-column-mode))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
 (load-user-file "modes/org.el")
