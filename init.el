@@ -568,7 +568,11 @@
     (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
     (elpy-enable)
     (setq elpy-rpc-backend "jedi")
-    (setq elpy-rpc-python-command "python3")))
+    (setq elpy-rpc-python-command "python")))
+
+(eval-after-load "elpy"
+  '(cl-dolist (key '("M-<left>" "M-<right>"))
+     (define-key elpy-mode-map (kbd key) nil)))
 
 (setq ian/python-cols 79)
 
@@ -610,7 +614,16 @@
             (set-fill-column ian/python-cols)
             (fci-mode)
             (setq fci-rule-column ian/python-cols
-                  show-trailing-whitespace t)))
+                  show-trailing-whitespace t)
+
+            (flycheck-mode)
+
+            (setq python-shell-completion-native-enable nil)
+
+            (bind-keys
+               :map python-mode-map
+               ("C-M-f" . python-nav-forward-sexp-safe)
+               ("C-M-b" . python-nav-backward-sexp-safe))))
 
 (use-package highlight-indent-guides
   :config
