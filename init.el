@@ -635,6 +635,25 @@
     (setq highlight-indent-guides-auto-character-face-perc 10)
     (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Solidity
+
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(use-package solidity-mode
+  :pin melpa-stable
+  :config
+  (setq solidity-flycheck-solc-checker-active t)
+  (setq solidity-solc-path "/usr/local/bin/solc")
+
+  (setq solidity-flycheck-solium-checker-active t)
+  (setq solidity-solium-path "/usr/local/bin/solium"))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Web stuff
 
