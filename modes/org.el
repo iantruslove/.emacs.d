@@ -63,7 +63,7 @@
                       (:endgroup   . nil)
 
                       ;; ;; Structural
-                      ("project" . ?p)  ;; identifies a TODO item as a project
+                      ;; ("project" . ?p)  ;; identifies a TODO item as a project
                       ("inbox"   . ?i)
                       ("ARCHIVE" . ?A)
 
@@ -71,6 +71,7 @@
                       ("blog"    . ?b)
                       ("idea"    . ?d)
                       ("meeting" . ?m)
+                      ("PerfReview" . ?p)
                       ;; ("retro"   . ?o)
                       ("REFILE"  . ?r)
                       ;; ("sm"      . ?s)
