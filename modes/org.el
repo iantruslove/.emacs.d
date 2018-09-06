@@ -332,12 +332,14 @@ skip exactly those headlines that do not match."
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((emacs-lisp . t)
+ '((clojure . t)
+   (dot . t)
+   (elasticsearch . t)
+   (emacs-lisp . t)
    (http . t)
-   (clojure . t)
    (python . t)
-   (sh . t)
-   (elasticsearch . t)))
+   (shell . t)
+   (sql . t)))
 
 (setq org-babel-sh-command "bash"
       org-confirm-babel-evaluate nil
