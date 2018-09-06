@@ -698,6 +698,11 @@
             (lambda ()
               (highlight-indentation-current-column-mode))))
 
+(use-package deft
+  :config
+  (setq deft-directory "~/org"
+        deft-recursive t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
 (load-user-file "modes/org.el")
