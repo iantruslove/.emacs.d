@@ -484,7 +484,7 @@
   (cljr-add-keybindings-with-prefix "C-c C-m")
   (setq cljr-favor-prefix-notation nil))
 
-(add-hook 'cider-mode-hook #'eldoc-mode)
+;;(add-hook 'cider-mode-hook #'eldoc-mode)  ;; this is terrible in CLJS
 
 (add-hook 'clojure-mode-hook
           (lambda ()
@@ -497,7 +497,8 @@
                (progn
                  ;; match: as in clojure.core.match
                  (put-clojure-indent 'match 'defun)
-                 (put-clojure-indent 'fdef 'defun)))))
+                 (put-clojure-indent 'fdef 'defun)
+                 (put-clojure-indent 'for-all 1)))))
 
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
