@@ -569,10 +569,14 @@
     (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
     (elpy-enable)
     (setq elpy-rpc-backend "jedi")
-    (setq elpy-rpc-python-command "python")))
+    (setq elpy-rpc-python-command "python")
+    (bind-keys
+     :map elpy-mode-map
+     ("M-g M-n" . elpy-flymake-next-error)
+     ("M-g M-p" . elpy-flymake-previous-error))))
 
 (eval-after-load "elpy"
-  '(cl-dolist (key '("M-<left>" "M-<right>"))
+  '(cl-dolist (key '("M-<left>" "M-<right>" "C-c C-p" "C-c C-n"))
      (define-key elpy-mode-map (kbd key) nil)))
 
 (setq ian/python-cols 79)
