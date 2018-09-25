@@ -703,6 +703,7 @@
               (highlight-indentation-current-column-mode))))
 
 (use-package deft
+  :pin melpa-stable
   :config
   (setq deft-directory "~/org"
         deft-recursive t))
