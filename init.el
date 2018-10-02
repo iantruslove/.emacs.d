@@ -585,8 +585,6 @@
   :init
   (add-to-list 'exec-path "~/.pyenv/shims")
   (setenv "WORKON_HOME" "~/.pyenv/versions/")
-  :config
-  (pyenv-mode)
   :bind
   ("C-x p e" . pyenv-activate-current-project))
 
@@ -624,11 +622,11 @@
             (flycheck-mode)
 
             (setq python-shell-completion-native-enable nil)
+            (pyenv-mode)
 
-            (bind-keys
-               :map python-mode-map
-               ("C-M-f" . python-nav-forward-sexp-safe)
-               ("C-M-b" . python-nav-backward-sexp-safe))))
+            (bind-keys :map python-mode-map
+                       ("C-M-f" . python-nav-forward-sexp-safe)
+                       ("C-M-b" . python-nav-backward-sexp-safe))))
 
 (use-package highlight-indent-guides
   :config
