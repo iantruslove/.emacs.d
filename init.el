@@ -682,7 +682,7 @@
 ;;               (setq c-basic-offset 2))))
 
 (use-package puppet-mode
-    :pin melpa-stable)
+  :pin melpa-stable)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
