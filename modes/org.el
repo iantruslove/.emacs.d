@@ -133,15 +133,14 @@
         ;;  :empty-lines 1)
         ))
 
-(defun my/org-match-at-point-p (match &optional todo-only)
+(defun my/org-match-at-point-p (match)
   "Return non-nil if headline at point matches MATCH.
 Here MATCH is a match string of the same format used by
-`org-tags-view'.
-If the optional argument TODO-ONLY is non-nil, do not declare a
-match unless headline at point is a todo item."
-  (let ((todo      (org-get-todo-state))
-        (tags-list (org-get-tags-at)))
-    (eval (cdr (org-make-tags-matcher match)))))
+`org-tags-view'."
+  (funcall (cdr (org-make-tags-matcher match))
+           (org-get-todo-state)
+           (org-get-tags-at)
+           (org-reduced-level (org-current-level))))
 
 (defun my/org-agenda-skip-without-match (match)
   "Skip current headline unless it matches MATCH.
