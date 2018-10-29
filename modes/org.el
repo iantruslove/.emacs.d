@@ -25,8 +25,7 @@
 
 (defvar organizer (concat org-directory "organizer.org"))
 (defvar cambium-organizer (concat org-directory "cambium/cambium-organizer.org"))
-(setq journal (concat org-directory "journal.org"))
-(defvar lg-journal (concat org-directory "lg/lg-journal.org"))
+(defvar journal (concat org-directory "journal.org"))
 
 (setq org-default-notes-file 'organizer)
 
@@ -46,7 +45,7 @@
 (global-set-key (kbd "C-c j")
                 (lambda ()
                   (interactive)
-                  (find-file lg-journal)))
+                  (find-file journal)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Agenda
 
@@ -57,7 +56,7 @@
 
 (setq org-tag-alist '(;; GTD-ish Contexts:
                       (:startgroup . nil)
-                      ("@lg"       . ?L)
+                      ("@whiteops"       . ?W)
                       ("@cambium"  . ?G)
                       ("@home"     . ?H)
                       ;; ("@nerding"  . ?N)
@@ -109,8 +108,8 @@
          "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
          :immediate-finish t)
 
-        ("t" "Quick LG journal TODO" entry
-         (file+datetree lg-journal)
+        ("t" "Quick journal TODO" entry
+         (file+datetree journal)
          "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
          :empty-lines 1
          :immediate-finish t)
@@ -121,8 +120,8 @@
          :empty-lines 1
          :immediate-finish t)
 
-        ("j" "Quick LG Journal Entry" entry
-         (file+datetree lg-journal)
+        ("j" "Quick Journal Entry" entry
+         (file+datetree journal)
          "* %^{Title}\n:PROPERTIES:\n:Captured: [%<%H:%M>]\n:END:\n"
          :empty-lines 1
          :immediate-finish t)
@@ -198,7 +197,7 @@ skip exactly those headlines that do not match."
           (tags-todo "horus"
                      ((org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "@lg"
+          (tags-todo "@whiteops"
                      ((org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
           (tags-todo "@home")
