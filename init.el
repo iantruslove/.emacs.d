@@ -199,10 +199,12 @@
   (ivy-mode 1)
   (define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
   (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
+  (define-key ivy-minibuffer-map (kbd "S-SPC") nil)
+  (define-key ivy-minibuffer-map (kbd "M-SPC") 'ivy-restrict-to-matches)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
   (setq ivy-use-virtual-buffers t
         ivy-wrap t
-        ;;ivy-count-format "(%d/%d) "
+        ivy-count-format "(%d/%d) "
         ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ;; This is really slow on big lists.
         ivy-initial-inputs-alist nil))
 
