@@ -742,6 +742,8 @@
             (lambda ()
               (highlight-indentation-current-column-mode))))
 
+(use-package graphviz-dot-mode)
+
 (use-package deft
   :pin melpa-stable
   :config

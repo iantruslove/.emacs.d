@@ -346,6 +346,7 @@ skip exactly those headlines that do not match."
       org-babel-clojure-backend 'cider
       org-confirm-babel-evaluate nil
       org-babel-default-header-args:clojure '((:results . "value verbatim pp"))
+      org-babel-default-header-args:dot '((:cmdline . "-Kdot -Tpng"))
       org-babel-default-header-args:sh '((:results . "verbatim drawer")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
