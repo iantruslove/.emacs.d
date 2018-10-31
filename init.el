@@ -64,12 +64,15 @@
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
 
-(when (eq system-type 'darwin)
+(pcase system-type
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
   ;; default font size (point * 10)
-  (set-face-attribute 'default nil
-                      :font "Roboto Mono"
-                      :height 120))
+  ('darwin (set-face-attribute 'default nil
+                               :font "Roboto Mono"
+                               :height 120))
+  ('gnu/linux (set-face-attribute 'default nil
+                                  :font "Liberation Mono"
+                                  :height 100)))
 
 (use-package exec-path-from-shell
   :ensure t)
