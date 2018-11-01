@@ -1,8 +1,13 @@
 ;; Org
 (use-package org
   :ensure t
-  :pin melpa)
+  :pin org)
 
+;; some hack to force org to update, because org sucks and it comes with Emacs
+(unless (file-expand-wildcards (concat package-user-dir "/org-[0-9]*"))
+  (package-install (elt (cdr (assoc 'org package-archive-contents)) 0)))
+
+(require 'org)
 (add-hook 'org-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c l") 'org-store-link)
