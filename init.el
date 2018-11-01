@@ -646,19 +646,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Solidity
 
+;;;;; Temporarily disabling; this all isn't quite right...
+;; (use-package flycheck
+;;   :ensure t
+;;   :init (global-flycheck-mode))
 
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
+;; (use-package solidity-mode
+;;   :pin melpa-stable
+;;   :config
+;;   (setq solidity-flycheck-solc-checker-active t)
+;;   (setq solidity-solc-path "/usr/local/bin/solc")
 
-(use-package solidity-mode
-  :pin melpa-stable
-  :config
-  (setq solidity-flycheck-solc-checker-active t)
-  (setq solidity-solc-path "/usr/local/bin/solc")
-
-  (setq solidity-flycheck-solium-checker-active t)
-  (setq solidity-solium-path "/usr/local/bin/solium"))
+;;   (setq solidity-flycheck-solium-checker-active t)
+;;   (setq solidity-solium-path "/usr/local/bin/solium"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
