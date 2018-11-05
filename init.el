@@ -692,6 +692,42 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Rust
+
+(use-package flycheck-rust
+  :pin melpa-stable)
+
+(use-package flycheck-inline
+  :pin melpa-stable
+  :config
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)))
+
+(use-package rust-mode
+  :pin melpa-stable
+  :config
+  (setq rust-format-on-save t)
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
+(use-package cargo
+  :pin melpa-stable
+  :config
+  (add-hook 'rust-mode-hook #'cargo-minor-mode)
+  (setq compilation-ask-about-save nil))
+
+(use-package racer
+  :pin melpa-stable
+  :requires rust-mode
+  :init
+  (setq company-tooltip-align-annotations t)
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markup and text formatting
 
 (use-package markdown-mode
