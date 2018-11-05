@@ -237,15 +237,11 @@ skip exactly those headlines that do not match."
                      ((org-agenda-overriding-header "PROJECTS")
                       (org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "sos"
-                     ((org-agenda-overriding-header "SOS")
+          (tags-todo "distil"
+                     ((org-agenda-overriding-header "DISTIL")
                       (org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "blue_moon"
-                     ((org-agenda-overriding-header "BLUE MOON")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "+cambium-strategy-website-project-sos-blue_moon"
+          (tags-todo "+cambium-strategy-website-project-distil"
                      ((org-agenda-overriding-header "OTHER CAMBIUM TODOS")
                       (org-agenda-sorting-strategy
                        '(scheduled-down priority-down todo-state-up))))
