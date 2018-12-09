@@ -228,8 +228,8 @@
 (use-package projectile
   :config
   (projectile-global-mode)
-
   (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
+  :diminish projectile-mode
   (setq projectile-completion-system 'ivy
         projectile-create-missing-test-files t))
 
