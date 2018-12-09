@@ -105,24 +105,24 @@
         ;;  ,my/org-basic-task-template)
         ("T" "Quick organizer TODO" entry
          (file+headline organizer "Inbox")
-         "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
+         "* TODO %^{Task}\n\n"
          :immediate-finish t)
 
         ("t" "Quick journal TODO" entry
          (file+datetree journal)
-         "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
+         "* TODO %^{Task}\n\n"
          :empty-lines 1
          :immediate-finish t)
 
         ("c" "Quick Cambium TODO" entry
          (file+headline cambium-organizer "Cambium Inbox")
-         "* TODO %^{Task}\n:PROPERTIES:\n:Captured: %U\n:END:\n"
+         "* TODO %^{Task}\n\n"
          :empty-lines 1
          :immediate-finish t)
 
         ("j" "Quick Journal Entry" entry
          (file+datetree journal)
-         "* %^{Title}\n:PROPERTIES:\n:Captured: [%<%H:%M>]\n:END:\n"
+         "* %^{Title}\n\n"
          :empty-lines 1
          :immediate-finish t)
 
