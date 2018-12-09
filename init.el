@@ -573,21 +573,25 @@
 ;; Python
 
 (use-package elpy
-  :bind (("C-c z" . elpy-shell-switch-to-shell))
   :config
-  (progn
-    (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
-    (elpy-enable)
-    (setq elpy-rpc-backend "jedi")
-    (setq elpy-rpc-python-command "python")
-    (bind-keys
-     :map elpy-mode-map
-     ("M-g M-n" . elpy-flymake-next-error)
-     ("M-g M-p" . elpy-flymake-previous-error))))
+  (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
+  (setq elpy-rpc-backend "jedi")
+  (setq elpy-rpc-python-command "python")
 
-(eval-after-load "elpy"
-  '(cl-dolist (key '("M-<left>" "M-<right>" "C-c C-p" "C-c C-n"))
-     (define-key elpy-mode-map (kbd key) nil)))
+  :bind (:map elpy-mode-map
+              ("C-c z" . elpy-shell-switch-to-shell)
+              ("M-g M-n" . elpy-flymake-next-error)
+              ("M-g M-p" . elpy-flymake-previous-error)
+              ("<M-left>" . nil)
+              ("<M-right>" . nil)
+              ("<M-S-left>" . elpy-nav-indent-shift-left)
+              ("<M-S-right>" . elpy-nav-indent-shift-right)
+              ("M-." . elpy-goto-definition)
+              ("M-," . pop-tag-mark)))
+
+;; (eval-after-load "elpy"
+;;   '(cl-dolist (key '("M-<left>" "M-<right>" "C-c C-p" "C-c C-n"))
+;;      (define-key elpy-mode-map (kbd key) nil)))
 
 (setq ian/python-cols 88)
 
@@ -599,27 +603,28 @@
   ("C-x p e" . pyenv-activate-current-project))
 
 (defun pyenv-activate-current-project ()
-  "Automatically activates pyenv version if .python-version file exists."
+  "Activates pyenv version if .python-version file exists."
   (interactive)
   (f-traverse-upwards
    (lambda (path)
      (message path)
      (let ((pyenv-version-path (f-expand ".python-version" path)))
        (if (f-exists? pyenv-version-path)
-            (let ((pyenv-current-version (s-trim (f-read-text pyenv-version-path 'utf-8))))
-              (pyenv-mode-set pyenv-current-version)
-              (message (concat "Setting virtualenv to " pyenv-current-version))))))))
+           (let ((pyenv-current-version (s-trim (f-read-text pyenv-version-path 'utf-8))))
+             (pyenv-mode-set pyenv-current-version)
+             (message (concat "Setting virtualenv to " pyenv-current-version))))))))
 
-(defvar pyenv-current-version nil nil)
+;; (defvar pyenv-current-version nil nil)
 
-(defun pyenv-init()
-  "Initialize pyenv's current version to the global one."
-  (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
-    (message (concat "Setting pyenv version to " global-pyenv))
-    (pyenv-mode-set global-pyenv)
-    (setq pyenv-current-version global-pyenv)))
+;; (defun pyenv-init()
+;;   "Initialize pyenv's current version to the global one."
+;;   (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
+;;     (message (concat "Setting pyenv version to " global-pyenv))
+;;     (pyenv-mode-set global-pyenv)
+;;     (setq pyenv-current-version global-pyenv)))
 
-(add-hook 'after-init-hook 'pyenv-init)
+;; (add-hook 'after-init-hook 'pyenv-init)
+
 
 (add-hook 'python-mode-hook
           (lambda ()
@@ -633,6 +638,9 @@
 
             (setq python-shell-completion-native-enable nil)
             (pyenv-mode)
+
+            (elpy-mode)
+            (elpy-enable)
 
             (bind-keys :map python-mode-map
                        ("C-M-f" . python-nav-forward-sexp-safe)
