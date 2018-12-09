@@ -589,7 +589,7 @@
   '(cl-dolist (key '("M-<left>" "M-<right>" "C-c C-p" "C-c C-n"))
      (define-key elpy-mode-map (kbd key) nil)))
 
-(setq ian/python-cols 79)
+(setq ian/python-cols 88)
 
 (use-package pyenv-mode
   :init
