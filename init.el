@@ -584,6 +584,8 @@
               ("M-g M-p" . elpy-flymake-previous-error)
               ("<M-left>" . nil)
               ("<M-right>" . nil)
+              ("C-c C-p" . nil)
+              ("C-c C-n" . nil)
               ("<M-S-left>" . elpy-nav-indent-shift-left)
               ("<M-S-right>" . elpy-nav-indent-shift-right)
               ("M-." . elpy-goto-definition)
