@@ -1,345 +1,918 @@
-;; Org
-(use-package org
-  :ensure t
-  :pin org)
+;; The following setting is different from the document so that you
+;; can override the document path by setting your path in the variable
+;; org-mode-user-lisp-path
+;;
+(if (boundp 'org-mode-user-lisp-path)
+    (add-to-list 'load-path org-mode-user-lisp-path)
+  (add-to-list 'load-path (expand-file-name "~/.emacs.d/modes/")))
 
-;; some hack to force org to update, because org sucks and it comes with Emacs
-(unless (file-expand-wildcards (concat package-user-dir "/org-[0-9]*"))
-  (package-install (elt (cdr (assoc 'org package-archive-contents)) 0)))
-
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
 (require 'org)
-(add-hook 'org-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-c l") 'org-store-link)
-            (local-set-key (kbd "C-c C-l") 'org-insert-link)
-            ;; Always use org-indent-mode
-            (org-indent-mode t)))
 
-(setq org-directory "~/org/"
-      org-edit-src-content-indentation 0
-      org-src-tab-acts-natively t
-      org-src-fontify-natively t
-      ;;org-agenda-files '("~/org/")
-      org-log-into-drawer 't
-      org-refile-targets '((org-agenda-files . (:maxlevel . 3))))
+(require 'org-lib)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GENERAL ORG SETUP
+
+;; ;; Bookmark handling
+;; (global-set-key (kbd "<C-f6>") '(lambda () (interactive) (bookmark-set "SAVED")))
+;; (global-set-key (kbd "<f6>") '(lambda () (interactive) (bookmark-jump "SAVED")))
+
+
+(setq org-directory "~/org/")
 
 (defvar organizer (concat org-directory "organizer.org"))
 (defvar cambium-organizer (concat org-directory "cambium/cambium-organizer.org"))
 (defvar journal (concat org-directory "journal.org"))
 
-(setq org-default-notes-file 'organizer)
+(setq org-default-notes-file organizer)
 
-;; Speed commands
-(setq org-use-speed-commands t)
-(add-to-list 'org-speed-commands-user '("N" org-narrow-to-subtree))
-(add-to-list 'org-speed-commands-user '("W" widen))
+;; The following setting is different from the document so that you
+;; can override the document org-agenda-files by setting your
+;; org-agenda-files in the variable org-user-agenda-files
 
-(global-set-key (kbd "C-c a") 'org-agenda)
+;; (if (boundp 'org-user-agenda-files)
+;;     (setq org-agenda-files org-user-agenda-files)
+;;   (setq org-agenda-files (list org-default-notes-file
+;;                                ;;"~/org/organizer.org"
+;;                                )))
+
+
+;; Set default column view headings: Task Effort Clock_Summary
+(setq org-columns-default-format "%80ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+
+(setq org-stuck-projects (quote ("" nil nil "")))
+
+(setq org-alphabetical-lists t)
+
+;; Enable abbrev-mode
+(add-hook 'org-mode-hook (lambda () (abbrev-mode 1)))
+
+;; Enable habit tracking (and a bunch of other modules)
+(setq org-modules (quote ( ;;org-bbdb
+                          org-bibtex
+                          org-crypt
+                          org-gnus
+                          org-id
+                          org-info
+                          org-jsinfo
+                          org-habit
+                          org-inlinetask
+                          ;;org-irc
+                          org-mew
+                          org-mhe
+                          ;;org-protocol
+                          ;;org-rmail
+                          org-vm
+                          org-wl
+                          org-w3m)))
+
+(setq org-src-preserve-indentation nil)
+(setq org-edit-src-content-indentation 0)
+
+(setq org-catch-invisible-edits 'error)
+
+(setq org-export-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-charset-priority 'unicode)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
+(setq org-startup-folded nil)
+
+;; flyspell mode for spell checking everywhere
+(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+
+;; Disable keys in org-mode
+;;    C-c [
+;;    C-c ]
+;;    C-c ;
+;;    C-c C-x C-q  cancelling the clock (we never want this)
+(add-hook 'org-mode-hook
+          '(lambda ()
+             ;; Undefine C-c [ and C-c ] since this breaks my
+             ;; org-agenda files when directories are include It
+             ;; expands the files in the directories individually
+             ;;;; (org-defkey org-mode-map "\C-c[" 'undefined)
+             ;;;; (org-defkey org-mode-map "\C-c]" 'undefined)
+             (org-defkey org-mode-map "\C-c;" 'undefined)
+             (org-defkey org-mode-map "\C-c\C-x\C-q" 'undefined))
+          'append)
+
+(setq org-clone-delete-id t)
+
+(setq org-cycle-include-plain-lists t)
+
+(setq org-src-fontify-natively t)
+
+(setq org-table-use-standard-references (quote from))
+
+(setq org-file-apps (quote ((auto-mode . emacs)
+                            ("\\.mm\\'" . system)
+                            ("\\.x?html?\\'" . system)
+                            ("\\.pdf\\'" . system))))
+
+
+(run-at-time "00:59" 3600 'org-save-all-org-buffers)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; WEIRD / RANDOM SETTINGS
+
+;; Use the current window for indirect buffer display
+(setq org-indirect-buffer-display 'current-window)
+
+;; Don't enable this because it breaks access to emacs from my Android phone
+(setq org-startup-with-inline-images nil)
+
+
+;; The following setting is different from the document so that you
+;; can override the document path by setting your path in the variable
+;; org-mode-user-contrib-lisp-path
+;;
+(if (boundp 'org-mode-user-contrib-lisp-path)
+    (add-to-list 'load-path org-mode-user-contrib-lisp-path)
+  (add-to-list 'load-path (expand-file-name "~/git/org-mode/contrib/lisp")))
+
+;; (require 'org-checklist)
+
+(setq org-enforce-todo-dependencies t)
+
+(setq org-hide-leading-stars nil)
+
+(setq org-startup-indented t)
+
+(setq org-cycle-separator-lines 0)
+
+(setq org-blank-before-new-entry (quote ((heading)
+                                         (plain-list-item . auto))))
+
+(setq org-insert-heading-respect-content nil)
+
+(setq org-reverse-note-order nil)
+
+(setq org-show-following-heading t)
+(setq org-show-hierarchy-above t)
+(setq org-show-siblings (quote ((default))))
+
+(setq org-special-ctrl-a/e t)
+(setq org-special-ctrl-k t)
+(setq org-yank-adjusted-subtrees t)
+
+(setq org-id-method (quote uuidgen))
+
+(setq org-deadline-warning-days 30)
+
+(setq org-table-export-default-format "orgtbl-to-csv")
+
+(setq org-link-frame-setup (quote ((vm . vm-visit-folder)
+                                   (gnus . org-gnus-no-new-news)
+                                   (file . find-file))))
+
+;; Use the current window for C-c ' source editing
+(setq org-src-window-setup 'current-window)
+
+(setq org-log-done (quote time))
+(setq org-log-into-drawer t)
+(setq org-log-state-notes-insert-after-drawers nil)
+
+(setq org-clock-sound "/usr/local/lib/tngchime.wav")
+
+(setq require-final-newline t)
+
+(defvar bh/insert-inactive-timestamp t)
+
+(add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
+
+(setq org-return-follows-link t)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
+
+(setq org-remove-highlights-with-change t)
+
+(add-to-list 'Info-default-directory-list "~/git/org-mode/doc")
+
+(setq org-read-date-prefer-future 'time)
+
+(setq org-list-demote-modify-bullet (quote (("+" . "-")
+                                            ("*" . "-")
+                                            ("1." . "-")
+                                            ("1)" . "-")
+                                            ("A)" . "-")
+                                            ("B)" . "-")
+                                            ("a)" . "-")
+                                            ("b)" . "-")
+                                            ("A." . "-")
+                                            ("B." . "-")
+                                            ("a." . "-")
+                                            ("b." . "-"))))
+
+(setq org-link-mailto-program (quote (compose-mail "%a" "%s")))
+
+
+(setq org-emphasis-alist (quote (("*" bold "<b>" "</b>")
+                                 ("/" italic "<i>" "</i>")
+                                 ("_" underline "<span style=\"text-decoration:underline;\">" "</span>")
+                                 ("=" org-code "<code>" "</code>" verbatim)
+                                 ("~" org-verbatim "<code>" "</code>" verbatim))))
+
+(setq org-use-sub-superscripts nil)
+
+(setq org-odd-levels-only nil)
+
+(setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+
+(setq org-structure-template-alist
+      (quote (("s" "#+begin_src ?\n\n#+end_src" "<src lang=\"?\">\n\n</src>")
+              ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
+              ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
+              ("v" "#+begin_verse\n?\n#+end_verse" "<verse>\n?\n</verse>")
+              ("c" "#+begin_center\n?\n#+end_center" "<center>\n?\n</center>")
+              ("l" "#+begin_latex\n?\n#+end_latex" "<literal style=\"latex\">\n?\n</literal>")
+              ("L" "#+latex: " "<literal style=\"latex\">?</literal>")
+              ("h" "#+begin_html\n?\n#+end_html" "<literal style=\"html\">\n?\n</literal>")
+              ("H" "#+html: " "<literal style=\"html\">?</literal>")
+              ("a" "#+begin_ascii\n?\n#+end_ascii")
+              ("A" "#+ascii: ")
+              ("i" "#+index: ?" "#+index: ?")
+              ("I" "#+include %file ?" "<include file=%file markup=\"?\">"))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; KEYBINDINGS
+
+;;
+;; Standard key bindings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+;; Custom Key Bindings
+(global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "<f5>") 'bh/org-todo)
+(global-set-key (kbd "<S-f5>") 'bh/widen)
+(global-set-key (kbd "<f7>") 'bh/set-truncate-lines)
+(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
+(global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
+(global-set-key (kbd "<f9> b") 'bbdb)
+(global-set-key (kbd "<f9> c") 'calendar)
+(global-set-key (kbd "<f9> f") 'boxquote-insert-file)
+(global-set-key (kbd "<f9> g") 'gnus)
+(global-set-key (kbd "<f9> h") 'bh/hide-other)
+(global-set-key (kbd "<f9> n") 'bh/toggle-next-task-display)
+
+(global-set-key (kbd "<f9> I") 'bh/punch-in)
+(global-set-key (kbd "<f9> O") 'bh/punch-out)
+
+(global-set-key (kbd "<f9> o") 'bh/make-org-scratch)
+
+(global-set-key (kbd "<f9> r") 'boxquote-region)
+(global-set-key (kbd "<f9> s") 'bh/switch-to-scratch)
+
+(global-set-key (kbd "<f9> t") 'bh/insert-inactive-timestamp)
+(global-set-key (kbd "<f9> T") 'bh/toggle-insert-inactive-timestamp)
+
+(global-set-key (kbd "<f9> v") 'visible-mode)
+(global-set-key (kbd "<f9> l") 'org-toggle-link-display)
+(global-set-key (kbd "<f9> SPC") 'bh/clock-in-last-task)
+(global-set-key (kbd "C-<f9>") 'previous-buffer)
+(global-set-key (kbd "M-<f9>") 'org-toggle-inline-images)
+(global-set-key (kbd "C-x n r") 'narrow-to-region)
+(global-set-key (kbd "C-<f10>") 'next-buffer)
+(global-set-key (kbd "<f11>") 'org-clock-goto)
+(global-set-key (kbd "C-<f11>") 'org-clock-in)
+(global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
 
-;; Quick shortcuts to open important files:
-(global-set-key (kbd "C-c o")
-                (lambda ()
-                  (interactive)
-                  (find-file organizer)))
-(global-set-key (kbd "C-c j")
-                (lambda ()
-                  (interactive)
-                  (find-file journal)))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Agenda
+;;...
+
+(global-set-key (kbd "<f5>") 'bh/org-todo)
+(global-set-key (kbd "<S-f5>") 'bh/widen)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; AGENDA
+
+
+;; Do not dim blocked tasks
+(setq org-agenda-dim-blocked-tasks nil)
+
+;; Compact the block agenda view
+(setq org-agenda-compact-blocks t)
+
+;; Custom agenda command definitions
+(setq org-agenda-custom-commands
+      (quote (("N" "Notes" tags "NOTE"
+               ((org-agenda-overriding-header "Notes")
+                (org-tags-match-list-sublevels t)))
+              ("h" "Habits" tags-todo "STYLE=\"habit\""
+               ((org-agenda-overriding-header "Habits")
+                (org-agenda-sorting-strategy
+                 '(todo-state-down effort-up category-keep))))
+              ("a" "Agenda"
+               ((agenda "" nil)
+                (tags "REFILE"
+                      ((org-agenda-overriding-header "Tasks to Refile")
+                       (org-tags-match-list-sublevels nil)))
+                (tags-todo "-CANCELLED/!"
+                           ((org-agenda-overriding-header "Stuck Projects")
+                            (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+                (tags-todo "-HOLD-CANCELLED/!"
+                           ((org-agenda-overriding-header "Projects")
+                            (org-agenda-skip-function 'bh/skip-non-projects)
+                            (org-tags-match-list-sublevels 'indented)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+                (tags-todo "-CANCELLED/!NEXT"
+                           ((org-agenda-overriding-header (concat "Project Next Tasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+                            (org-tags-match-list-sublevels t)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-sorting-strategy
+                             '(todo-state-down effort-up category-keep))))
+                (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                           ((org-agenda-overriding-header (concat "Project Subtasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            (org-agenda-skip-function 'bh/skip-non-project-tasks)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+                (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                           ((org-agenda-overriding-header (concat "Standalone Tasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            (org-agenda-skip-function 'bh/skip-project-tasks)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+                (tags-todo "-CANCELLED+WAITING|HOLD/!"
+                           ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            (org-agenda-skip-function 'bh/skip-non-tasks)
+                            (org-tags-match-list-sublevels nil)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+                (tags "-REFILE/"
+                      ((org-agenda-overriding-header "Tasks to Archive")
+                       (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
+                       (org-tags-match-list-sublevels nil))))
+               nil))))
+
+(setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
+
+;; Agenda clock report parameters
+(setq org-agenda-clockreport-parameter-plist
+      (quote (:link t :maxlevel 5 :fileskip0 t :compact t :narrow 80)))
+
+;; Agenda log mode items to display (closed and state changes by default)
+(setq org-agenda-log-mode-items (quote (closed state)))
+
+;; (global-set-key (kbd "<f9> p") 'bh/phone-call)
+
+(setq org-agenda-span 'day)
+
+;; Rebuild the reminders everytime the agenda is displayed
+(add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
+
+;; This is at the end of my .emacs - so appointments are set up when Emacs starts
+(bh/org-agenda-to-appt)
+
+;; Activate appointments so we get notifications
+(appt-activate t)
+
+;; If we leave Emacs running overnight - reset the appointments one minute after midnight
+(run-at-time "24:01" nil 'bh/org-agenda-to-appt)
+
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda ()
+             (org-defkey org-agenda-mode-map "W"
+                         (lambda ()
+                           (interactive)
+                           (setq bh/hide-scheduled-and-waiting-next-tasks t)
+                           (bh/widen))))
+          'append)
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "N" 'bh/narrow-to-subtree))
+          'append)
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "U" 'bh/narrow-up-one-level))
+          'append)
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "P" 'bh/narrow-to-project))
+          'append)
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "V" 'bh/view-next-project))
+          'append)
+
+(setq org-show-entry-below (quote ((default))))
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "\C-c\C-x<" 'bh/set-agenda-restriction-lock))
+          'append)
+
+;; Limit restriction lock highlighting to the headline only
+(setq org-agenda-restriction-lock-highlight-subtree nil)
+
+;; Always hilight the current agenda line
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (hl-line-mode 1))
+          'append)
+
+;; Keep tasks with dates on the global todo lists
+(setq org-agenda-todo-ignore-with-date nil)
+
+;; Keep tasks with deadlines on the global todo lists
+(setq org-agenda-todo-ignore-deadlines nil)
+
+;; Keep tasks with scheduled dates on the global todo lists
+(setq org-agenda-todo-ignore-scheduled nil)
+
+;; Keep tasks with timestamps on the global todo lists
+(setq org-agenda-todo-ignore-timestamp nil)
+
+;; Remove completed deadline tasks from the agenda view
+(setq org-agenda-skip-deadline-if-done t)
+
+;; Remove completed scheduled tasks from the agenda view
+(setq org-agenda-skip-scheduled-if-done t)
+
+;; Remove completed items from search results
+(setq org-agenda-skip-timestamp-if-done t)
+
+(setq org-agenda-include-diary nil)
+(setq org-agenda-diary-file "~/git/org/diary.org")
+
+(setq org-agenda-insert-diary-extract-time t)
+
+;; Include agenda archive files when searching for things
+(setq org-agenda-text-search-extra-files (quote (agenda-archives)))
+
+;; Show all future entries for repeating tasks
+(setq org-agenda-repeating-timestamp-show-all t)
+
+;; Show all agenda dates - even if they are empty
+(setq org-agenda-show-all-dates t)
+
+;; Sorting order for tasks on the agenda
+(setq org-agenda-sorting-strategy
+      (quote ((agenda habit-down time-up user-defined-up effort-up category-keep)
+              (todo category-up effort-up)
+              (tags category-up effort-up)
+              (search category-up))))
+
+;; Start the weekly agenda on Monday
+(setq org-agenda-start-on-weekday 1)
+
+;; Enable display of the time grid so we can see the marker for the current time
+;; (setq org-agenda-time-grid (quote ((daily today remove-match)
+;;                                    #("----------------" 0 16 (org-heading t))
+;;                                    (0900 1100 1300 1500 1700))))
+
+;; Display tags farther right
+(setq org-agenda-tags-column -102)
+
+;;
+;; Agenda sorting functions
+;;
+(setq org-agenda-cmp-user-defined 'bh/agenda-sort)
+
+
+;; Use sticky agendas so they persist
+(setq org-agenda-sticky t)
+
+(setq org-agenda-persistent-filter t)
+
+(setq org-agenda-skip-additional-timestamps-same-entry t)
+
+;; Overwrite the current window with the agenda
+(setq org-agenda-window-setup 'current-window)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TAGS
+
+;; Tags with fast selection keys
+(setq org-tag-alist (quote ((:startgroup)
+                            ("@errand" . ?e)
+                            ("@office" . ?o)
+                            ("@home" . ?H)
+                            ("@farm" . ?f)
+                            (:endgroup)
+                            ("WAITING" . ?w)
+                            ("HOLD" . ?h)
+                            ("PERSONAL" . ?P)
+                            ("WORK" . ?W)
+                            ("FARM" . ?F)
+                            ("ORG" . ?O)
+                            ("NORANG" . ?N)
+                            ("crypt" . ?E)
+                            ("NOTE" . ?n)
+                            ("CANCELLED" . ?c)
+                            ("FLAGGED" . ??))))
+
+                                        ; Allow setting single tags without the menu
+(setq org-fast-tag-selection-single-key (quote expert))
+
+                                        ; For tag searches ignore tasks with scheduled and deadline dates
+(setq org-agenda-tags-todo-honor-ignore-options t)
+
+
+(setq org-tags-match-list-sublevels t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; TASKS / TODOs
+
+(add-hook 'org-after-todo-state-change-hook 'bh/mark-next-parent-tasks-todo 'append)
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "IN PROGRESS(i!)" "WAIT(w@/!)"
-                  "|"
-                  "DONE(d!)" "CANCELED(c@)")))
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
-(setq org-tag-alist '(;; GTD-ish Contexts:
-                      (:startgroup . nil)
-                      ("@whiteops"       . ?W)
-                      ("@cambium"  . ?G)
-                      ("@home"     . ?H)
-                      ;; ("@nerding"  . ?N)
-                      ;; ("@errands"  . ?E)
-                      ;; ("@coding"   . ?C)
-                      ;; ("@phone"    . ?P)
-                      ;; ("@reading"  . ?R)
-                      (:endgroup   . nil)
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold)
+              ("MEETING" :foreground "forest green" :weight bold)
+              ("PHONE" :foreground "forest green" :weight bold))))
 
-                      ;; ;; Structural
-                      ;; ("project" . ?p)  ;; identifies a TODO item as a project
-                      ("inbox"   . ?i)
-                      ("ARCHIVE" . ?A)
+(setq org-use-fast-todo-selection t)
 
-                      ;; ;; Others:
-                      ("blog"    . ?b)
-                      ("idea"    . ?d)
-                      ("meeting" . ?m)
-                      ("PerfReview" . ?p)
-                      ;; ("retro"   . ?o)
-                      ("REFILE"  . ?r)
-                      ;; ("sm"      . ?s)
-                      ("talk"    . ?t)))
+(setq org-treat-S-cursor-todo-selection-as-state-change nil)
 
-;; Project tags shouldn't automatically propagate down to subtasks
-(setq org-tags-exclude-from-inheritance '("project" "inbox"))
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+              ("WAITING" ("WAITING" . t))
+              ("HOLD" ("WAITING") ("HOLD" . t))
+              (done ("WAITING") ("HOLD"))
+              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
-;; Don't show days in rolled-up times
+;; global Effort estimate values
+;; global STYLE property values for completion
+(setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                                    ("STYLE_ALL" . "habit"))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CAPTURE
+
+;; I use C-c c to start capture mode
+(global-set-key (kbd "C-c c") 'org-capture)
+
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/git/org/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/git/org/refile.org")
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/git/org/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file "~/git/org/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("m" "Meeting" entry (file "~/git/org/refile.org")
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file "~/git/org/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/git/org/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CLOCKING
+
+(add-hook 'org-clock-in-hook 'bh/mark-next-parent-tasks-todo 'append)
+
+(add-hook 'org-clock-out-hook 'bh/remove-empty-drawer-on-clock-out 'append)
+
+;; Resume clocking task when emacs is restarted
+(org-clock-persistence-insinuate)
+;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+(setq org-clock-history-length 23)
+;; Resume clocking task on clock-in if the clock is open
+(setq org-clock-in-resume t)
+;; Change tasks to NEXT when clocking in
+(setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
+;; Separate drawers for clocking and logs
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+;; Save clock data and state changes and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+;; Clock out when moving task to a done state
+(setq org-clock-out-when-done t)
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+;; Do not prompt to resume an active clock
+(setq org-clock-persist-query-resume nil)
+;; Enable auto clock resolution for finding open clocks
+(setq org-clock-auto-clock-resolution (quote when-no-clock-is-running))
+;; Include current clocking task in clock reports
+(setq org-clock-report-include-clocking-task t)
+
+(setq bh/keep-clock-running nil)
+
+(add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
+
+(setq org-time-stamp-rounding-minutes (quote (1 1)))
+
+(setq org-agenda-clock-consistency-checks
+      (quote (:max-duration "4:00"
+                            :min-duration 0
+                            :max-gap 0
+                            :gap-ok-around ("4:00"))))
+
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+
 (setq org-time-clocksum-format
       '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
 
-(defvar my/org-basic-task-template "* TODO %^{Task}
-:PROPERTIES:
-:Size: %^{effort|0:05|0:15|0:30|1:00|2:00|4:00}
-:Captured: %U
-:END:
-%?
 
-%i
-" "Basic task data")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; REFILE
 
-(setq org-capture-templates
-      `(
-        ;; ("T" "Detailed Task" entry
-        ;;  (file+headline organizer "Inbox")
-        ;;  ,my/org-basic-task-template)
-        ("T" "Quick organizer TODO" entry
-         (file+headline organizer "Inbox")
-         "* TODO %^{Task}\n\n"
-         :immediate-finish t)
+;; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
 
-        ("t" "Quick journal TODO" entry
-         (file+datetree journal)
-         "* TODO %^{Task}\n\n"
-         :empty-lines 1
-         :immediate-finish t)
+;; Use full outline paths for refile targets - we file directly with IDO
+(setq org-refile-use-outline-path t)
 
-        ("c" "Quick Cambium TODO" entry
-         (file+headline cambium-organizer "Cambium Inbox")
-         "* TODO %^{Task}\n\n"
-         :empty-lines 1
-         :immediate-finish t)
+;; Targets complete directly with IDO
+(setq org-outline-path-complete-in-steps nil)
 
-        ("j" "Quick Journal Entry" entry
-         (file+datetree journal)
-         "* %^{Title}\n\n"
-         :empty-lines 1
-         :immediate-finish t)
+;; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-        ;; ("J" "Context-specific Journal Entry"
-        ;;  entry (file+datetree journal)
-        ;;  "* %?\n:PROPERTIES:\n:Captured:[%<%H:%M>]\n:END:\n\n  %i\n\n  From: %a"
-        ;;  :empty-lines 1)
-        ))
+;;;; Refile settings
+(setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-(defun my/org-match-at-point-p (match)
-  "Return non-nil if headline at point matches MATCH.
-Here MATCH is a match string of the same format used by
-`org-tags-view'."
-  (funcall (cdr (org-make-tags-matcher match))
-           (org-get-todo-state)
-           (org-get-tags-at)
-           (org-reduced-level (org-current-level))))
 
-(defun my/org-agenda-skip-without-match (match)
-  "Skip current headline unless it matches MATCH.
-Return nil if headline containing point matches MATCH (which
-should be a match string of the same format used by
-`org-tags-view').  If headline does not match, return the
-position of the next headline in current buffer.  Intended for
-use with `org-agenda-skip-function', where this will skip exactly
-those headlines that do not match."
-  (save-excursion
-    (unless (org-at-heading-p) (org-back-to-heading))
-    (let ((next-headline (save-excursion
-                           (or (outline-next-heading) (point-max)))))
-      (if (my/org-match-at-point-p match) nil next-headline))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; IDO
+;;;;; NOTE: I commented out all the IDO stuff.
 
-(defun my/org-agenda-skip-with-match (match)
-  "Skip current headline if it matches MATCH.
-Return nil if headline containing point matches MATCH (which
-should be a match string of the same format used by
-`org-tags-view').  If headline does not match, return the
-position of the next headline in current buffer.
-Intended for use with `org-agenda-skip-function', where this will
-skip exactly those headlines that do not match."
-  (save-excursion
-    (unless (org-at-heading-p) (org-back-to-heading))
-    (let ((next-headline (save-excursion
-                           (or (outline-next-heading) (point-max)))))
-      (if (my/org-match-at-point-p match) next-headline nil))))
+;; ;; Use IDO for both buffer and file completion and ido-everywhere to t
+;; (setq org-completion-use-ido t)
+;; (setq ido-everywhere t)
+;; (setq ido-max-directory-size 100000)
+;; (ido-mode (quote both))
+;; ;; Use the current window when visiting files and buffers with ido
+;; (setq ido-default-file-method 'selected-window)
+;; (setq ido-default-buffer-method 'selected-window)
 
-(setq org-agenda-custom-commands
-      '(("A" "Agenda and todos"
-         ((agenda ""
-                  ((org-agenda-ndays 1)
-                   (org-deadline-warning-days 7)
-                   (org-agenda-sorting-strategy '(time-up todo-state-up priority-down))
-                   (org-agenda-repeating-timestamp-show-all nil)))
 
-          (tags-todo "DEADLINE<\"<+0d>\""
-                     ((org-agenda-overriding-header "OVERDUE")))
-          (tags-todo "DEADLINE>=\"<+0d>\"+DEADLINE<=\"<+1w>\""
-                     ((org-agenda-overriding-header "DUE IN NEXT 7 DAYS")))
-          (tags-todo "DEADLINE=\"\"+PRIORITY={A}|DEADLINE>\"<+1w>\"+PRIORITY={A}"
-                     ((org-agenda-overriding-header "HIGH PRIORITY")))
-          (tags-todo "DEADLINE=\"\"+FLAGGED|DEADLINE>\"<+1w>\"+FLAGGED"
-                     ((org-agenda-overriding-header "FLAGGED")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-when-regexp-matches))
-                      (org-agenda-skip-regexp "\\[#A\\]")))
-          (tags-todo "strategy"
-                     ((org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "+cambium-strategy"
-                     ((org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "horus"
-                     ((org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "@whiteops"
-                     ((org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "@home")
-          (tags-todo "@nerding")
-          (tags-todo "@errands")
-          (tags-todo "@coding")
-          (tags-todo "@phone")
-          (tags-todo "@reading")))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ARCHIVING
 
-        ("c" "Cambium"
-         ((agenda ""
-                  ((org-agenda-ndays 1)
-                   (org-deadline-warning-days 14)
-                   (org-agenda-sorting-strategy '(time-up todo-state-up priority-down))
-                   (org-agenda-repeating-timestamp-show-all nil)))
-          (tags-todo "PRIORITY={A}"
-                     ((org-agenda-overriding-header "HIGH PRIORITY")))
-          (tags-todo "DEADLINE=\"\"+FLAGGED|DEADLINE>\"<+1w>\"+FLAGGED"
-                     ((org-agenda-overriding-header "FLAGGED")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-when-regexp-matches))
-                      (org-agenda-skip-regexp "\\[#A\\]")))
-          (tags-todo "strategy"
-                     ((org-agenda-overriding-header "STRATEGY")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "website"
-                     ((org-agenda-overriding-header "WEBSITE")
-                      (org-agenda-skip-function
-                       '(org-agenda-skip-entry-when-regexp-matches))
-                      (org-agenda-skip-regexp "\\[#C\\]")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "project"
-                     ((org-agenda-overriding-header "PROJECTS")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "distil"
-                     ((org-agenda-overriding-header "DISTIL")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "+cambium-strategy-website-project-distil"
-                     ((org-agenda-overriding-header "OTHER CAMBIUM TODOS")
-                      (org-agenda-sorting-strategy
-                       '(scheduled-down priority-down todo-state-up))))
-          (tags-todo "+cambium+PRIORITY=\"C\""
-                     ((org-agenda-overriding-header "LOW PRIORITY")
-                      (org-agenda-sorting-strategy '(priority-down))))))
+(setq org-archive-mark-done nil)
+(setq org-archive-location "%s_archive::* Archived Tasks")
 
-        ("L" "Long agenda"
-         ((agenda ""
-                  ((org-agenda-ndays 60)
-                   (org-deadline-warning-days 7)
-                   (org-agenda-sorting-strategy '(time-up todo-state-up priority-down))
-                   (org-agenda-time-grid nil)
-                   (org-agenda-repeating-timestamp-show-all nil)
-                   (org-agenda-show-log t)
-                   ;; only show days with something:
-                   (org-agenda-show-all-dates nil)))))
 
-        ("K" "tasK summary (refile, in progress, todo)"
-         ((tags-todo "REFILE"
-                     ((org-agenda-overriding-header "Tasks to refile")
-                      (org-agenda-sorting-strategy '(priority-down))))
-          (todo "IN PROGRESS"
-                ((org-agenda-overriding-header "Tasks In Progress")
-                 (org-agenda-sorting-strategy '(priority-down))))
-          (todo "TODO"
-                ((org-agenda-overriding-header "Tasks TODO")
-                 (org-agenda-skip-function '(my/org-agenda-skip-with-match ":REFILE:"))
-                 (org-agenda-sorting-strategy '(priority-down))))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; EXPORTS
 
-        ("D" "toDay"
-         ((agenda ""
-                  ((org-agenda-ndays 1)
-                   (org-agenda-show-log t)
-                   (org-agenda-time-grid nil)
-                   (org-agenda-log-mode-items '(state))
-                   (org-agenda-sorting-strategy
-                    (quote ((agenda time-up priority-down tag-up))))
-                   (org-deadline-warning-days 0)))
-          (todo "IN PROGRESS"
-                ((org-agenda-overriding-header "Tasks In Progress")
-                 (org-agenda-sorting-strategy '(priority-down))))))
+;; Explicitly load required exporters
+(require 'ox-html)
+(require 'ox-latex)
+(require 'ox-ascii)
 
-        ("td" "Daily Timesheet"
-         ((agenda ""))
-         ((org-agenda-log-mode-items '(clock closed))
-          (org-agenda-overriding-header "DAILY TIMESHEET")
-          (org-agenda-show-log 'clockcheck)
-          (org-agenda-span 'day)
-          (org-agenda-start-with-clockreport-mode t)
-          (org-agenda-time-grid nil)))
+(setq org-ditaa-jar-path "~/git/org-mode/contrib/scripts/ditaa.jar")
+(setq org-plantuml-jar-path "~/java/plantuml.jar")
 
-        ("tw" "Weekly Timesheet"
-         ((agenda ""))
-         (
-          ;; (org-agenda-format-date "")
-          (org-agenda-overriding-header "WEEKLY TIMESHEET")
-          (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
-          (org-agenda-span 'week)
-          (org-agenda-start-on-weekday 1)
-          (org-agenda-start-with-clockreport-mode t)
-          (org-agenda-time-grid nil)))
+;; experimenting with docbook exports - not finished
+(setq org-export-docbook-xsl-fo-proc-command "fop %s %s")
+(setq org-export-docbook-xslt-proc-command "xsltproc --output %s /usr/share/xml/docbook/stylesheet/nwalsh/fo/docbook.xsl %s")
 
-        ("tm" "Monthly Timesheet"
-         ((agenda ""))
-         (
-          ;; (org-agenda-format-date "")
-          (org-agenda-overriding-header "MONTHLY TIMESHEET")
-          (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
-          (org-agenda-span 'month)
-          (org-agenda-start-on-weekday 1)
-          (org-agenda-start-with-clockreport-mode t)
-          (org-agenda-time-grid nil)))
+;; Inline images in HTML instead of producting links to the image
+(setq org-html-inline-images t)
+;; Do not use sub or superscripts - I currently don't need this functionality in my documents
+(setq org-export-with-sub-superscripts nil)
+;; Use org.css from the norang website for export document stylesheets
+(setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
+(setq org-html-head-include-default-style nil)
+;; Do not generate internal css formatting for HTML exports
+(setq org-export-htmlize-output-type (quote css))
+;; Export with LaTeX fragments
+(setq org-export-with-LaTeX-fragments t)
+;; Increase default number of headings to export
+(setq org-export-headline-levels 6)
 
-        ("S" "Scratch"
-         ;;((tags "project+CATEGORY=\"elephants\""))
-         ((tags "retro")))))
+;; ;; List of projects
+;; ;; norang       - http://www.norang.ca/
+;; ;; doc          - http://doc.norang.ca/
+;; ;; org-mode-doc - http://doc.norang.ca/org-mode.html and associated files
+;; ;; org          - miscellaneous todo lists for publishing
+;; (setq org-publish-project-alist
+;;                                         ;
+;;       ;; http://www.norang.ca/  (norang website)
+;;       ;; norang-org are the org-files that generate the content
+;;       ;; norang-extra are images and css files that need to be included
+;;       ;; norang is the top-level project that gets published
+;;       (quote (("norang-org"
+;;                :base-directory "~/git/www.norang.ca"
+;;                :publishing-directory "/ssh:www-data@www:~/www.norang.ca/htdocs"
+;;                :recursive t
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function org-html-publish-to-html
+;;                :style-include-default nil
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :html-head "<link rel=\"stylesheet\" href=\"norang.css\" type=\"text/css\" />"
+;;                :author-info nil
+;;                :creator-info nil)
+;;               ("norang-extra"
+;;                :base-directory "~/git/www.norang.ca/"
+;;                :publishing-directory "/ssh:www-data@www:~/www.norang.ca/htdocs"
+;;                :base-extension "css\\|pdf\\|png\\|jpg\\|gif"
+;;                :publishing-function org-publish-attachment
+;;                :recursive t
+;;                :author nil)
+;;               ("norang"
+;;                :components ("norang-org" "norang-extra"))
+;;                                         ;
+;;               ;; http://doc.norang.ca/  (norang website)
+;;               ;; doc-org are the org-files that generate the content
+;;               ;; doc-extra are images and css files that need to be included
+;;               ;; doc is the top-level project that gets published
+;;               ("doc-org"
+;;                :base-directory "~/git/doc.norang.ca/"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs"
+;;                :recursive nil
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+;;                :style-include-default nil
+;;                :html-head "<link rel=\"stylesheet\" href=\"/org.css\" type=\"text/css\" />"
+;;                :author-info nil
+;;                :creator-info nil)
+;;               ("doc-extra"
+;;                :base-directory "~/git/doc.norang.ca/"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs"
+;;                :base-extension "css\\|pdf\\|png\\|jpg\\|gif"
+;;                :publishing-function org-publish-attachment
+;;                :recursive nil
+;;                :author nil)
+;;               ("doc"
+;;                :components ("doc-org" "doc-extra"))
+;;               ("doc-private-org"
+;;                :base-directory "~/git/doc.norang.ca/private"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs/private"
+;;                :recursive nil
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+;;                :style-include-default nil
+;;                :html-head "<link rel=\"stylesheet\" href=\"/org.css\" type=\"text/css\" />"
+;;                :auto-sitemap t
+;;                :sitemap-filename "index.html"
+;;                :sitemap-title "Norang Private Documents"
+;;                :sitemap-style "tree"
+;;                :author-info nil
+;;                :creator-info nil)
+;;               ("doc-private-extra"
+;;                :base-directory "~/git/doc.norang.ca/private"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs/private"
+;;                :base-extension "css\\|pdf\\|png\\|jpg\\|gif"
+;;                :publishing-function org-publish-attachment
+;;                :recursive nil
+;;                :author nil)
+;;               ("doc-private"
+;;                :components ("doc-private-org" "doc-private-extra"))
+;;                                         ;
+;;               ;; Miscellaneous pages for other websites
+;;               ;; org are the org-files that generate the content
+;;               ("org-org"
+;;                :base-directory "~/git/org/"
+;;                :publishing-directory "/ssh:www-data@www:~/org"
+;;                :recursive t
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function org-html-publish-to-html
+;;                :style-include-default nil
+;;                :html-head "<link rel=\"stylesheet\" href=\"/org.css\" type=\"text/css\" />"
+;;                :author-info nil
+;;                :creator-info nil)
+;;                                         ;
+;;               ;; http://doc.norang.ca/  (norang website)
+;;               ;; org-mode-doc-org this document
+;;               ;; org-mode-doc-extra are images and css files that need to be included
+;;               ;; org-mode-doc is the top-level project that gets published
+;;               ;; This uses the same target directory as the 'doc' project
+;;               ("org-mode-doc-org"
+;;                :base-directory "~/git/org-mode-doc/"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs"
+;;                :recursive t
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function (org-html-publish-to-html)
+;;                :plain-source t
+;;                :htmlized-source t
+;;                :style-include-default nil
+;;                :html-head "<link rel=\"stylesheet\" href=\"/org.css\" type=\"text/css\" />"
+;;                :author-info nil
+;;                :creator-info nil)
+;;               ("org-mode-doc-extra"
+;;                :base-directory "~/git/org-mode-doc/"
+;;                :publishing-directory "/ssh:www-data@www:~/doc.norang.ca/htdocs"
+;;                :base-extension "css\\|pdf\\|png\\|jpg\\|gif\\|org"
+;;                :publishing-function org-publish-attachment
+;;                :recursive t
+;;                :author nil)
+;;               ("org-mode-doc"
+;;                :components ("org-mode-doc-org" "org-mode-doc-extra"))
+;;                                         ;
+;;               ;; http://doc.norang.ca/  (norang website)
+;;               ;; org-mode-doc-org this document
+;;               ;; org-mode-doc-extra are images and css files that need to be included
+;;               ;; org-mode-doc is the top-level project that gets published
+;;               ;; This uses the same target directory as the 'doc' project
+;;               ("tmp-org"
+;;                :base-directory "/tmp/publish/"
+;;                :publishing-directory "/ssh:www-data@www:~/www.norang.ca/htdocs/tmp"
+;;                :recursive t
+;;                :section-numbers nil
+;;                :table-of-contents nil
+;;                :base-extension "org"
+;;                :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+;;                :html-head "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />"
+;;                :plain-source t
+;;                :htmlized-source t
+;;                :style-include-default nil
+;;                :auto-sitemap t
+;;                :sitemap-filename "index.html"
+;;                :sitemap-title "Test Publishing Area"
+;;                :sitemap-style "tree"
+;;                :author-info t
+;;                :creator-info t)
+;;               ("tmp-extra"
+;;                :base-directory "/tmp/publish/"
+;;                :publishing-directory "/ssh:www-data@www:~/www.norang.ca/htdocs/tmp"
+;;                :base-extension "css\\|pdf\\|png\\|jpg\\|gif"
+;;                :publishing-function org-publish-attachment
+;;                :recursive t
+;;                :author nil)
+;;               ("tmp"
+;;                :components ("tmp-org" "tmp-extra")))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; babel and friends
+;; I'm lazy and don't want to remember the name of the project to publish when I modify
+;; a file that is part of a project.  So this function saves the file, and publishes
+;; the project that includes this file
+;;
+;; It's bound to C-S-F12 so I just edit and hit C-S-F12 when I'm done and move on to the next thing
+(global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 
-(require 'ob-clojure)
-(require 'cider)
+(setq org-latex-listings t)
 
-(use-package es-mode
-  :ensure t)
+(setq org-html-xml-declaration (quote (("html" . "")
+                                       ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+                                       ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
 
-(use-package ob-http
-  :ensure t)
+(setq org-export-allow-BIND t)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((clojure . t)
-   (dot . t)
-   (elasticsearch . t)
-   (emacs-lisp . t)
-   (http . t)
-   (python . t)
-   (shell . t)
-   (sql . t)))
+(setq org-export-with-timestamps nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; BABEL
+
+(add-hook 'org-babel-after-execute-hook 'bh/display-inline-images 'append)
+
+;; Make babel results blocks lowercase
+(setq org-babel-results-keyword "results")
 
 (setq org-babel-sh-command "bash"
       org-confirm-babel-evaluate nil
@@ -349,42 +922,234 @@ skip exactly those headlines that do not match."
       org-babel-default-header-args:dot '((:cmdline . "-Kdot -Tpng"))
       org-babel-default-header-args:sh '((:results . "verbatim drawer")))
 
+(require 'ob-clojure)
+
+(require 'cider)
+
+(use-package es-mode
+  :ensure t)
+
+(use-package ob-http
+  :ensure t)
+
+(org-babel-do-load-languages
+ (quote org-babel-load-languages)
+ (quote ((clojure . t)
+         (dot . t)
+         (ditaa . t)
+         (emacs-lisp . t)
+         (gnuplot . t)
+         (http . t)
+         (org . t)
+         (plantuml . t)
+         (python . t)
+         (shell . t)
+         (sql . t))))
+
+;; Use fundamental mode when editing plantuml blocks with C-c '
+(add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; SKELETONS
+
+;; sblk - Generic block #+begin_FOO .. #+end_FOO
+(define-skeleton skel-org-block
+  "Insert an org block, querying for type."
+  "Type: "
+  "#+begin_" str "\n"
+  _ - \n
+  "#+end_" str "\n")
+
+(define-abbrev org-mode-abbrev-table "sblk" "" 'skel-org-block)
+
+;; splantuml - PlantUML Source block
+(define-skeleton skel-org-block-plantuml
+  "Insert a org plantuml block, querying for filename."
+  "File (no extension): "
+  "#+begin_src plantuml :file " str ".png :cache yes\n"
+  _ - \n
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "splantuml" "" 'skel-org-block-plantuml)
+
+(define-skeleton skel-org-block-plantuml-activity
+  "Insert a org plantuml block, querying for filename."
+  "File (no extension): "
+  "#+begin_src plantuml :file " str "-act.png :cache yes :tangle " str "-act.txt\n"
+  (bh/plantuml-reset-counters)
+  "@startuml\n"
+  "skinparam activity {\n"
+  "BackgroundColor<<New>> Cyan\n"
+  "}\n\n"
+  "title " str " - \n"
+  "note left: " str "\n"
+  "(*) --> \"" str "\"\n"
+  "--> (*)\n"
+  _ - \n
+  "@enduml\n"
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sact" "" 'skel-org-block-plantuml-activity)
+
+(define-skeleton skel-org-block-plantuml-activity-if
+  "Insert a org plantuml block activity if statement"
+  ""
+  "if \"\" then\n"
+  "  -> [condition] ==IF" (setq ifn (bh/plantuml-if)) "==\n"
+  "  --> ==IF" ifn "M1==\n"
+  "  -left-> ==IF" ifn "M2==\n"
+  "else\n"
+  "end if\n"
+  "--> ==IF" ifn "M2==")
+
+(define-abbrev org-mode-abbrev-table "sif" "" 'skel-org-block-plantuml-activity-if)
+
+(define-skeleton skel-org-block-plantuml-activity-for
+  "Insert a org plantuml block activity for statement"
+  "Loop for each: "
+  "--> ==LOOP" (setq loopn (bh/plantuml-loop)) "==\n"
+  "note left: Loop" loopn ": For each " str "\n"
+  "--> ==ENDLOOP" loopn "==\n"
+  "note left: Loop" loopn ": End for each " str "\n" )
+
+(define-abbrev org-mode-abbrev-table "sfor" "" 'skel-org-block-plantuml-activity-for)
+
+(define-skeleton skel-org-block-plantuml-sequence
+  "Insert a org plantuml activity diagram block, querying for filename."
+  "File appends (no extension): "
+  "#+begin_src plantuml :file " str "-seq.png :cache yes :tangle " str "-seq.txt\n"
+  "@startuml\n"
+  "title " str " - \n"
+  "actor CSR as \"Customer Service Representative\"\n"
+  "participant CSMO as \"CSM Online\"\n"
+  "participant CSMU as \"CSM Unix\"\n"
+  "participant NRIS\n"
+  "actor Customer"
+  _ - \n
+  "@enduml\n"
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sseq" "" 'skel-org-block-plantuml-sequence)
+
+;; sdot - Graphviz DOT block
+(define-skeleton skel-org-block-dot
+  "Insert a org graphviz dot block, querying for filename."
+  "File (no extension): "
+  "#+begin_src dot :file " str ".png :cache yes :cmdline -Kdot -Tpng\n"
+  "graph G {\n"
+  _ - \n
+  "}\n"
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sdot" "" 'skel-org-block-dot)
+
+;; sditaa - Ditaa source block
+(define-skeleton skel-org-block-ditaa
+  "Insert a org ditaa block, querying for filename."
+  "File (no extension): "
+  "#+begin_src ditaa :file " str ".png :cache yes\n"
+  _ - \n
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "sditaa" "" 'skel-org-block-ditaa)
+
+;; selisp - Emacs Lisp source block
+(define-skeleton skel-org-block-elisp
+  "Insert a org emacs-lisp block"
+  ""
+  "#+begin_src emacs-lisp\n"
+  _ - \n
+  "#+end_src\n")
+
+(define-abbrev org-mode-abbrev-table "selisp" "" 'skel-org-block-elisp)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; HABITS
+
+;; position the habit graph on the agenda to the right of the default
+(setq org-habit-graph-column 50)
+
+(run-at-time "06:00" 86400 '(lambda () (setq org-habit-show-habits t)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; CRYPT
+
 ;; Basic block encryption: encrypt any heading contents tagged with ":crypt:".
 
 (require 'org-crypt)
+;; Encrypt all entries before saving
 (org-crypt-use-before-save-magic)
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
 (setq org-crypt-key nil)
+(setq org-crypt-disable-auto-save nil)
 
 ;; Full-file encryption
 (require 'epa-file)
 (epa-file-enable)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Remove all source block results
-;; from https://www.wisdomandwonder.com/article/10597/remove-every-source-block-results
+;; SPEED COMMANDS
 
-(defconst help/org-special-pre "^\s*#[+]")
+(setq org-use-speed-commands t)
+(setq org-speed-commands-user (quote (("0" . ignore)
+                                      ("1" . ignore)
+                                      ("2" . ignore)
+                                      ("3" . ignore)
+                                      ("4" . ignore)
+                                      ("5" . ignore)
+                                      ("6" . ignore)
+                                      ("7" . ignore)
+                                      ("8" . ignore)
+                                      ("9" . ignore)
 
-(defun help/org-2every-src-block (fn)
-  "Visit every Source-Block and evaluate `FN'."
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (let ((case-fold-search t))
-      (while (re-search-forward (concat help/org-special-pre "BEGIN_SRC") nil t)
-        (let ((element (org-element-at-point)))
-          (when (eq (org-element-type element) 'src-block)
-            (funcall fn element)))))
-    (save-buffer)))
+                                      ("a" . ignore)
+                                      ("d" . ignore)
+                                      ("h" . bh/hide-other)
+                                      ("i" progn
+                                       (forward-char 1)
+                                       (call-interactively 'org-insert-heading-respect-content))
+                                      ("k" . org-kill-note-or-show-branches)
+                                      ("l" . ignore)
+                                      ("m" . ignore)
+                                      ("q" . bh/show-org-agenda)
+                                      ("r" . ignore)
+                                      ("s" . org-save-all-org-buffers)
+                                      ("w" . org-refile)
+                                      ("x" . ignore)
+                                      ("y" . ignore)
+                                      ("z" . org-add-note)
 
-(defun org-babel-remove-every-results-block ()
-  (interactive)
-  (help/org-2every-src-block (lambda (_)
-                               (funcall 'org-babel-remove-result))))
+                                      ("A" . ignore)
+                                      ("B" . ignore)
+                                      ("E" . ignore)
+                                      ("F" . bh/restrict-to-file-or-follow)
+                                      ("G" . ignore)
+                                      ("H" . ignore)
+                                      ("J" . org-clock-goto)
+                                      ("K" . ignore)
+                                      ("L" . ignore)
+                                      ("M" . ignore)
+                                      ("N" . bh/narrow-to-org-subtree)
+                                      ("P" . bh/narrow-to-org-project)
+                                      ("Q" . ignore)
+                                      ("R" . ignore)
+                                      ("S" . ignore)
+                                      ("T" . bh/org-todo)
+                                      ("U" . bh/narrow-up-one-org-level)
+                                      ("V" . ignore)
+                                      ("W" . bh/widen)
+                                      ("X" . ignore)
+                                      ("Y" . ignore)
+                                      ("Z" . ignore))))
 
-(define-key org-mode-map (kbd "M-]")
-  'org-babel-remove-every-results-block)
 
-;; fin
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PROTOCOL
+
+;; (require 'org-protocol)
+
+;; (require 'org-mime)
