@@ -24,6 +24,7 @@
 (defvar organizer (concat org-directory "organizer.org"))
 (defvar cambium-organizer (concat org-directory "cambium/cambium-organizer.org"))
 (defvar journal (concat org-directory "journal.org"))
+(defvar refile (concat org-directory "refile.org"))
 
 (setq org-default-notes-file organizer)
 
@@ -295,7 +296,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AGENDA
 
-
 ;; Do not dim blocked tasks
 (setq org-agenda-dim-blocked-tasks nil)
 
@@ -311,7 +311,7 @@
                ((org-agenda-overriding-header "Habits")
                 (org-agenda-sorting-strategy
                  '(todo-state-down effort-up category-keep))))
-              ("a" "Agenda"
+              ("A" "Agenda"
                ((agenda "" nil)
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
@@ -588,23 +588,63 @@
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/git/org/refile.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("r" "respond" entry (file "~/git/org/refile.org")
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file "~/git/org/refile.org")
-               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-              ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
-               "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/git/org/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
-              ("m" "Meeting" entry (file "~/git/org/refile.org")
-               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file "~/git/org/refile.org")
-               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-              ("h" "Habit" entry (file "~/git/org/refile.org")
+      (quote (("t" "todo" entry (file refile)
+               "* TODO %?\n%U\n%a\n"
+               :clock-in t :clock-resume t)
+              ("r" "respond" entry (file refile)
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
+               :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file refile)
+               "* %? :NOTE:\n%U\n%a\n"
+               :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree journal)
+               "* %?\n%U\n"
+               :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file refile)
+               "* TODO Review %c\n%U\n"
+               :immediate-finish t)
+              ("m" "Meeting" entry (file refile)
+               "* MEETING with %? :MEETING:\n%U"
+               :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file refile)
+               "* PHONE %? :PHONE:\n%U"
+               :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file refile)
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
+;; (setq org-capture-templates
+;;       `(
+;;         ;; ("T" "Detailed Task" entry
+;;         ;;  (file+headline organizer "Inbox")
+;;         ;;  ,my/org-basic-task-template)
+;;         ("T" "Quick organizer TODO" entry
+;;          (file+headline organizer "Inbox")
+;;          "* TODO %^{Task}\n\n"
+;;          :immediate-finish t)
+
+;;         ("t" "Quick journal TODO" entry
+;;          (file+datetree journal)
+;;          "* TODO %^{Task}\n\n"
+;;          :empty-lines 1
+;;          :immediate-finish t)
+
+;;         ("c" "Quick Cambium TODO" entry
+;;          (file+headline cambium-organizer "Cambium Inbox")
+;;          "* TODO %^{Task}\n\n"
+;;          :empty-lines 1
+;;          :immediate-finish t)
+
+;;         ("j" "Quick Journal Entry" entry
+;;          (file+datetree journal)
+;;          "* %^{Title}\n\n"
+;;          :empty-lines 1
+;;          :immediate-finish t)
+
+;;         ;; ("J" "Context-specific Journal Entry"
+;;         ;;  entry (file+datetree journal)
+;;         ;;  "* %?\n:PROPERTIES:\n:Captured:[%<%H:%M>]\n:END:\n\n  %i\n\n  From: %a"
+;;         ;;  :empty-lines 1)
+;;         ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CLOCKING
