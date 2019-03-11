@@ -553,13 +553,13 @@
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
+              ("NEXT" :foreground "forest green" :weight bold)
+              ("DONE" :foreground "blue" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+              ("CANCELLED" :foreground "blue" :weight bold)
+              ("MEETING" :foreground "blue" :weight bold)
+              ("PHONE" :foreground "blue" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
 
