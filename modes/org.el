@@ -538,6 +538,14 @@
                             ("@home" . ?H)
                             ("@whiteops" . ?W)
                             (:endgroup)
+
+                            (:startgroup)
+                            ("deep" . ?d)
+                            ("shallow"  . ?s)
+                            ("idle" . ?i)
+                            ("distracted" . ?D)
+                            (:endgroup)
+
                             ("WAITING" . ?w)
                             ("HOLD" . ?h)
                             ("PERSONAL" . ?P)
@@ -1161,7 +1169,6 @@
                                       ("8" . ignore)
                                       ("9" . ignore)
 
-                                      ("a" . ignore)
                                       ("d" . ignore)
                                       ("h" . bh/hide-other)
                                       ("i" progn
