@@ -10,6 +10,7 @@
 (require 'org)
 
 (require 'org-lib)
+(require 'org-clocktable-by-tag)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GENERAL ORG SETUP
