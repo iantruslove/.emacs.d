@@ -763,9 +763,13 @@
 
 (use-package highlight-indentation
   :config
-  (add-hook 'yaml-mode-hook
-            (lambda ()
-              (highlight-indentation-current-column-mode))))
+  (add-hook 'web-mode-hook #'highlight-indent-guides-mode)
+  (add-hook 'web-mode-hook #'highlight-indentation-current-column-mode)
+
+  (add-hook 'html-mode-hook #'highlight-indent-guides-mode)
+  (add-hook 'html-mode-hook #'highlight-indentation-current-column-mode)
+
+  (add-hook 'yaml-mode-hook #'highlight-indentation-current-column-mode))
 
 (use-package graphviz-dot-mode)
 
