@@ -120,7 +120,7 @@
 ;; WEIRD / RANDOM SETTINGS
 
 ;; Use the current window for indirect buffer display
-(setq org-indirect-buffer-display 'current-window)
+(setq org-indirect-buffer-display 'other-window)  ;; current-window
 
 ;; Don't enable this because it breaks access to emacs from my Android phone
 (setq org-startup-with-inline-images nil)
@@ -284,6 +284,7 @@
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 (global-set-key (kbd "C-<f10>") 'next-buffer)
 (global-set-key (kbd "<f11>") 'org-clock-goto)
+(global-set-key (kbd "C-c C-x C-j") 'org-clock-goto)
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -428,34 +429,20 @@
           'append)
 
 (add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "N" 'bh/narrow-to-subtree))
-          'append)
-
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "U" 'bh/narrow-up-one-level))
-          'append)
-
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "P" 'bh/narrow-to-project))
-          'append)
-
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "V" 'bh/view-next-project))
+          '(lambda ()
+             (org-defkey org-agenda-mode-map "N" 'bh/narrow-to-subtree)
+             (org-defkey org-agenda-mode-map "U" 'bh/narrow-up-one-level)
+             (org-defkey org-agenda-mode-map "P" 'bh/narrow-to-project)
+             (org-defkey org-agenda-mode-map "V" 'bh/view-next-project)
+             (org-defkey org-agenda-mode-map "\C-c\C-x<" 'bh/set-agenda-restriction-lock)
+             ;; Always hilight the current agenda line:
+             (hl-line-mode 1))
           'append)
 
 (setq org-show-entry-below (quote ((default))))
 
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "\C-c\C-x<" 'bh/set-agenda-restriction-lock))
-          'append)
-
 ;; Limit restriction lock highlighting to the headline only
 (setq org-agenda-restriction-lock-highlight-subtree nil)
-
-;; Always hilight the current agenda line
-(add-hook 'org-agenda-mode-hook
-          '(lambda () (hl-line-mode 1))
-          'append)
 
 ;; Keep tasks with dates on the global todo lists
 (setq org-agenda-todo-ignore-with-date nil)
@@ -524,7 +511,7 @@
 (setq org-agenda-skip-additional-timestamps-same-entry t)
 
 ;; Overwrite the current window with the agenda
-(setq org-agenda-window-setup 'current-window)
+(setq org-agenda-window-setup 'other-window)  ;; current-window
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
