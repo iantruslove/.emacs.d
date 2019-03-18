@@ -203,6 +203,7 @@
   (define-key ivy-minibuffer-map (kbd "M-SPC") 'ivy-restrict-to-matches)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
   (setq ivy-use-virtual-buffers t
+        ivy-use-selectable-prompt t  ;; E.g. for selecting a new input when a candidate matches
         ivy-wrap t
         ivy-count-format "(%d/%d) "
         ivy-re-builders-alist '((t . ivy--regex-fuzzy)) ;; This is really slow on big lists.
