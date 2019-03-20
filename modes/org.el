@@ -497,7 +497,7 @@
 ;;                                    (0900 1100 1300 1500 1700))))
 
 ;; Display tags farther right
-(setq org-agenda-tags-column -102)
+(setq org-agenda-tags-column 'auto)  ;; -102
 
 ;;
 ;; Agenda sorting functions
