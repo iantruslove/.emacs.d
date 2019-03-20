@@ -68,9 +68,11 @@
 (pcase system-type
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
   ;; default font size (point * 10)
-  ('darwin (set-face-attribute 'default nil
-                               :font "Roboto Mono"
-                               :height 120))
+  ('darwin ((lambda ()
+              (set-face-attribute 'default nil
+                                  :font "Roboto Mono"
+                                  :height 120)
+              (setq-default line-spacing 2))))
   ('gnu/linux (set-face-attribute 'default nil
                                   :font "Liberation Mono"
                                   :height 100)))
