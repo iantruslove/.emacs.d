@@ -305,6 +305,12 @@
       (quote (("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
+              ("D" "Decisions" tags "DECISION"
+               ((org-agenda-overriding-header "Decisions")
+                (org-tags-match-list-sublevels t)))
+              ("T" "Tech Debt" tags "TECH_DEBT"
+               ((org-agenda-overriding-header "Tech Debt")
+                (org-tags-match-list-sublevels t)))
               ("h" "Habits" tags-todo "STYLE=\"habit\""
                ((org-agenda-overriding-header "Habits")
                 (org-agenda-sorting-strategy
@@ -526,7 +532,6 @@
                             ("deep" . ?d)
                             ("shallow"  . ?s)
                             ("idle" . ?i)
-                            ("distracted" . ?D)
                             (:endgroup)
 
                             ("WAITING" . ?w)
@@ -536,6 +541,8 @@
                             ("ORG" . ?o)
                             ("crypt" . ?e)
                             ("NOTE" . ?n)
+                            ("DECISION" . ?D)
+                            ("TECH_DEBT" . ?T)
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
