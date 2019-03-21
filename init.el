@@ -598,6 +598,23 @@
   (eval-after-load "auto-complete"
     '(add-to-list 'ac-modes 'slime-repl-mode)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; C/C++
+
+(use-package cc-mode
+  :config
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (auto-complete-mode)))
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (auto-complete-mode))))
+
+(setq auto-mode-alist
+      (append '(("\\.ino$" . c++-mode))
+              auto-mode-alist))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
