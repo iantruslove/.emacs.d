@@ -302,19 +302,41 @@
 
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      (quote (("N" "Notes" tags "NOTE"
+      (quote (("P" "Project View"
+               ((tags "NOTE"
+                      ((org-agenda-overriding-header "Notes")
+                       (org-tags-match-list-sublevels t)))
+                (tags "DECISION"
+                      ((org-agenda-overriding-header "Decisions")
+                       (org-tags-match-list-sublevels t)))
+                (tags "TECH_DEBT"
+                      ((org-agenda-overriding-header "Tech Debt")
+                       (org-tags-match-list-sublevels t)))
+
+                (tags-todo "-HOLD-CANCELLED/!"
+                           ((org-agenda-overriding-header "Tasks")
+                            ;;(org-agenda-skip-function 'bh/skip-non-projects)
+                            (org-tags-match-list-sublevels 'indented)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))))
+
+              ("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
+
               ("D" "Decisions" tags "DECISION"
                ((org-agenda-overriding-header "Decisions")
                 (org-tags-match-list-sublevels t)))
+
               ("T" "Tech Debt" tags "TECH_DEBT"
                ((org-agenda-overriding-header "Tech Debt")
                 (org-tags-match-list-sublevels t)))
+
               ("h" "Habits" tags-todo "STYLE=\"habit\""
                ((org-agenda-overriding-header "Habits")
                 (org-agenda-sorting-strategy
                  '(todo-state-down effort-up category-keep))))
+
               ("A" "Agenda"
                ((agenda "" nil)
                 (tags "REFILE"
