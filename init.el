@@ -299,6 +299,11 @@
   :config
   (global-set-key (kbd "C-c =") 'er/expand-region))
 
+(use-package auto-complete
+  :config
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
 
