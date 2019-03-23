@@ -12,16 +12,25 @@
 
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(setq use-package-always-ensure t)
+;; Set up use-package
 
 (eval-when-compile
-  (require 'use-package))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
-(require 'bind-key)                ;; if you use any :bind variant
+  (setq use-package-always-ensure t)
+
+  (require 'use-package)
+
+  ;; Set use-package-compute-statistics to t to measure load stats;
+  ;; review with M-x use-package-report
+  (setq use-package-compute-statistics nil))
+
+;; For the code use-package writes, but we're not always loading use-package:
+(require 'diminish)
+(require 'bind-key)
+
 
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
@@ -78,9 +87,6 @@
                                   :height 100)))
 
 (use-package exec-path-from-shell
-  :ensure t)
-
-(use-package diminish
   :ensure t)
 
 (when (memq window-system '(mac ns))
@@ -146,6 +152,7 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (use-package ibuffer-projectile
+  :defer t
   :config
   (setq projectile-enable-caching t)
   (add-hook 'ibuffer-hook
@@ -265,13 +272,15 @@
   :ensure t)
 
 (use-package magit
+  :defer t
+  :init (global-set-key (kbd "C-c g") 'magit-status)
   :config
-  (global-set-key (kbd "C-c g") 'magit-status)
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
                 magit-auto-revert-mode t))
 
 (use-package gist
+  :defer t
   :ensure t)
 
 (use-package highlight-symbol
@@ -355,6 +364,7 @@
   (setq save-place-file (concat user-emacs-directory "places")))
 
 (use-package avy-flycheck
+  :defer t
   :config
   (global-set-key (kbd "M-g M-w") 'avy-goto-char-2)
   (setq avy-timeout-seconds 0.2)
@@ -460,6 +470,7 @@
 (setq ian/clojure-cols 80)
 
 (use-package clojure-mode
+  :defer t
   :config
   (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
   (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
@@ -485,10 +496,12 @@
 
 ;; A little more syntax highlighting
 (use-package clojure-mode-extra-font-locking
+  :defer t
   :ensure t)
 
 (use-package cider
   :pin melpa-stable
+  :defer t
   :config
   (setq
    ;; go right to the REPL buffer when it's finished connecting
@@ -514,11 +527,13 @@
    cider-prompt-for-symbol nil))
 
 (use-package cider-eval-sexp-fu
+  :defer t
   :ensure t)
 
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
 (use-package clj-refactor
+  :defer t
   :config
   (cljr-add-keybindings-with-prefix "C-c C-m")
   (setq cljr-favor-prefix-notation nil))
@@ -543,6 +558,7 @@
 
 ;; Clojure inferior mode - e.g. for phantomjs
 (use-package inf-clojure
+  :defer t
   :ensure t)
 
 (defun cljs-start-phantom-repl ()
@@ -551,19 +567,22 @@
   (run-clojure (concat "lein trampoline run -m clojure.main "
                        (expand-file-name "~/.emacs.d/repls/phantom_repl.clj"))))
 
-;; (use-package ac-cider
-;;   :config
-;;   (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-;;   (add-hook 'cider-mode-hook 'ac-cider-setup)
-;;   (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
-;;   (eval-after-load "auto-complete"
-;;     '(progn
-;;        (add-to-list 'ac-modes 'cider-mode)
-;;        (add-to-list 'ac-modes 'cider-repl-mode))))
+(use-package ac-cider
+  :disabled  ;; <---------------
+  :config
+  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+  (add-hook 'cider-mode-hook 'ac-cider-setup)
+  (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+  (eval-after-load "auto-complete"
+    '(progn
+       (add-to-list 'ac-modes 'cider-mode)
+       (add-to-list 'ac-modes 'cider-repl-mode))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; scss-mode - for SASS CSS files
 (use-package scss-mode
+  :defer t
   :config
   (setq scss-compile-at-save nil))
 
@@ -583,6 +602,7 @@
       '((ccl ("/usr/local/bin/ccl64" "-K" "utf-8"))))
 
 (use-package slime
+  :defer t
   :pin melpa-stable
   :config
   (add-hook 'slime-mode-hook 'smartparens-mode)
@@ -591,6 +611,7 @@
   (slime-setup '(slime-fancy)))
 
 (use-package ac-slime
+  :defer t
   :pin melpa-stable
   :config
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
@@ -732,6 +753,7 @@
         patterns))
 
 (use-package web-mode
+  :defer t
   :config
   (add-auto-mode 'web-mode
                  "*html*" "*twig*" "*tmpl*" "\\.erb" "\\.rhtml$" "\\.ejs$" "\\.hbs$"
@@ -748,6 +770,7 @@
 ;;               (setq c-basic-offset 2))))
 
 (use-package puppet-mode
+  :defer t
   :pin melpa-stable)
 
 
@@ -756,6 +779,7 @@
 
 (use-package flycheck-rust
   ;; :pin melpa-stable
+  :defer t
   )
 
 (use-package flycheck-inline
@@ -766,6 +790,7 @@
 
 (use-package rust-mode
   ;; :pin melpa-stable
+  :defer t
   :config
   (setq rust-format-on-save t)
   (with-eval-after-load 'rust-mode
@@ -774,12 +799,14 @@
 
 (use-package cargo
   ;; :pin melpa-stable
+  :defer t
   :config
   (add-hook 'rust-mode-hook #'cargo-minor-mode)
   (setq compilation-ask-about-save nil))
 
 (use-package racer
   ;; :pin melpa-stable
+  :defer t
   :requires rust-mode
   :init
   (setq company-tooltip-align-annotations t)
@@ -802,12 +829,15 @@
 ;; Markup and text formatting
 
 (use-package markdown-mode
+  :defer t
   :pin melpa-stable)
 
 (use-package yaml-mode
+  :defer t
   :pin melpa-stable)
 
 (use-package highlight-indentation
+  :defer t
   :config
   (add-hook 'web-mode-hook #'highlight-indent-guides-mode)
   (add-hook 'web-mode-hook #'highlight-indentation-current-column-mode)
@@ -817,9 +847,11 @@
 
   (add-hook 'yaml-mode-hook #'highlight-indentation-current-column-mode))
 
-(use-package graphviz-dot-mode)
+(use-package graphviz-dot-mode
+  :defer t)
 
 (use-package deft
+  :defer t
   :pin melpa-stable
   :config
   (setq deft-directory "~/org"
@@ -827,7 +859,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Custom modules
-(load-user-file "modes/org.el")
+
+(use-package org
+  :defer t
+  :config
+  (load-user-file "modes/org.el"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Site-specific overrides
