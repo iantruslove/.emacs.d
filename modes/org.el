@@ -1018,7 +1018,7 @@
          (org . t)
          (plantuml . t)
          (python . t)
-         (shell . t)
+         (sh . t)
          (sql . t))))
 
 ;; Use fundamental mode when editing plantuml blocks with C-c '
