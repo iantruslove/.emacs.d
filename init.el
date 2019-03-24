@@ -40,8 +40,8 @@
         (t "~/.emacs.d/")))
 
 (defun load-user-file (file)
-  (interactive "f")
   "Load a file in current user's configuration directory"
+  (interactive "f")
   (load-file (expand-file-name file user-init-dir)))
 
 (defun load-all-in-directory (dir)
@@ -69,6 +69,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode 0)
 
+(setq-default indent-tabs-mode nil)
+(setq create-lockfiles nil)
+
 (defadvice quit-window (before quit-window-always-kill)
   "When running `quit-window', always kill the buffer."
   (ad-set-arg 0 t))
@@ -94,11 +97,17 @@
           exec-path-from-shell-variables '("PATH"))
     (exec-path-from-shell-initialize)))
 
-(use-package auto-compile
-  :config
-  (setq load-prefer-newer t)
-  (auto-compile-on-load-mode)
-  (auto-compile-on-save-mode))
+(defun add-auto-mode (mode &rest patterns)
+  "E.g. (add-auto-mode 'web-mode \"*html*\" \"\\.ejs$\")"
+  (mapc (lambda (pattern)
+          (add-to-list 'auto-mode-alist (cons pattern mode)))
+        patterns))
+
+;; (use-package auto-compile
+;;   :config
+;;   (setq load-prefer-newer t)
+;;   (auto-compile-on-load-mode)
+;;   (auto-compile-on-save-mode))
 
 (setq-default column-number-mode t
               custom-file (expand-file-name "site/emacs-custom.el" user-init-dir) ;; Saves emacs customizations to somewhere other than the end of init.el
@@ -224,13 +233,15 @@
   :ensure t)
 
 (use-package ivy
+  :demand;; force eager load
   :diminish ivy-mode
+  :bind (:map ivy-minibuffer-map
+              ("\r" . 'ivy-alt-done)  ;; [RET]
+              ("C-j" . 'ivy-done)
+              ("S-SPC" . nil)
+              ("M-SPC" . 'ivy-restrict-to-matches))
   :config
   (ivy-mode 1)
-  (define-key ivy-minibuffer-map (kbd "RET") 'ivy-alt-done)
-  (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-done)
-  (define-key ivy-minibuffer-map (kbd "S-SPC") nil)
-  (define-key ivy-minibuffer-map (kbd "M-SPC") 'ivy-restrict-to-matches)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
   (setq ivy-use-virtual-buffers t
         ivy-use-selectable-prompt t  ;; E.g. for selecting a new input when a candidate matches
@@ -240,48 +251,44 @@
         ivy-initial-inputs-alist nil))
 
 (use-package counsel
-  :config
-  (global-set-key (kbd "M-x") 'counsel-M-x))
+  :bind ("M-x" . counsel-M-x))
 
 (use-package swiper
-  :config
-  (global-set-key (kbd "C-M-s") 'swiper))
+  :bind ("C-M-s" . swiper))
 
 (use-package avy
+  :bind (("M-g M-w" . avy-goto-char-2)
+         ("M-g M-t" . avy-goto-char-timer))
   :config
-  (global-set-key (kbd "M-g M-w") 'avy-goto-char-2)
-  (setq avy-timeout-seconds 0.2)
-  (global-set-key (kbd "M-g M-t") 'avy-goto-char-timer))
+  (setq avy-timeout-seconds 0.2))
 
 (use-package hydra
-  :ensure t)
-
-(load-user-file "hydras/smartparens.el")
+  :config
+  (load-user-file "hydras/smartparens.el"))
 
 (use-package projectile
+  :demand
   :diminish projectile-mode
+  :bind-keymap ("C-c C-p" . projectile-command-map)
   :init
   (setq projectile-completion-system 'ivy
         projectile-create-missing-test-files t)
   :config
-  (projectile-global-mode)
-  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))
-
+  (projectile-global-mode))
 
 (use-package ag
   :ensure t)
 
 (use-package magit
   :defer t
-  :init (global-set-key (kbd "C-c g") 'magit-status)
+  :bind ("C-c g" . magit-status)
   :config
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
                 magit-auto-revert-mode t))
 
 (use-package gist
-  :defer t
-  :ensure t)
+  :defer t)
 
 (use-package highlight-symbol
   :diminish highlight-symbol-mode
@@ -300,13 +307,12 @@
   :bind (("M-g o" . dumb-jump-go-other-window)
          ("M-g ." . dumb-jump-go)
          ("M-g ," . dumb-jump-back))
-  :config (setq dumb-jump-selector 'ivy))
-
-(dumb-jump-mode)
+  :config
+  (setq dumb-jump-selector 'ivy)
+  (dumb-jump-mode))
 
 (use-package expand-region
-  :config
-  (global-set-key (kbd "C-c =") 'er/expand-region))
+  :bind ("C-c =" . er/expand-region))
 
 (use-package auto-complete
   :config
@@ -371,7 +377,6 @@
   (global-set-key (kbd "M-g M-t") 'avy-goto-char-timer))
 
 (use-package flycheck
-  :ensure t
   :config
   (add-hook 'flycheck-mode-hook
             (lambda ()
@@ -449,10 +454,6 @@
 ;; (use-package eval-sexp-fu
 ;;   :ensure t)
 
-(setq-default indent-tabs-mode nil)
-(global-auto-revert-mode 1)
-(setq create-lockfiles nil)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; elisp
 (put 'use-package 'lisp-indent-function 1)
@@ -471,18 +472,16 @@
 
 (use-package clojure-mode
   :defer t
+  :init (add-auto-mode 'clojure-mode "\\.edn$" "\\.boot$")
+  :bind (:map clojure-mode-map
+              (";" . sp-comment)
+              ("C-c z" . cider-switch-to-repl-buffer))
   :config
-  (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
-  (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
   ;;(add-to-list 'auto-mode-alist '("\\.clj.*$" . clojure-mode))
   (add-hook 'clojure-mode-hook
             (lambda ()
               ;; This is useful for working with camel-case tokens, like names of
               ;; Java classes (e.g. JavaClassName)
-              (bind-keys
-               :map clojure-mode-map
-               (";" . sp-comment)
-               ("C-c z" . cider-switch-to-repl-buffer))
               (subword-mode)
               (auto-complete-mode)
               (whitespace-mode)
@@ -492,7 +491,13 @@
                     show-trailing-whitespace t)
               ;;(rainbow-delimiters-mode t)
               (smartparens-mode)
-              (aggressive-indent-mode))))
+              (aggressive-indent-mode)
+              (yas-minor-mode 1)
+
+              ;; match: as in clojure.core.match
+              (put-clojure-indent 'match 'defun)
+              (put-clojure-indent 'fdef 'defun)
+              (put-clojure-indent 'for-all 1))))
 
 ;; A little more syntax highlighting
 (use-package clojure-mode-extra-font-locking
@@ -527,39 +532,24 @@
    cider-prompt-for-symbol nil))
 
 (use-package cider-eval-sexp-fu
-  :defer t
-  :ensure t)
+  :defer t)
 
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
 (use-package clj-refactor
   :defer t
+  :hook clojure-mode
   :config
   (cljr-add-keybindings-with-prefix "C-c C-m")
   (setq cljr-favor-prefix-notation nil))
 
 ;;(add-hook 'cider-mode-hook #'eldoc-mode)  ;; this is terrible in CLJS
 
-(add-hook 'clojure-mode-hook
-          (lambda ()
-            (clj-refactor-mode 1)
-            (yas-minor-mode 1)))
-
-(eval-after-load 'clojure-mode
-  '(add-hook 'clojure-mode-hook
-             (lambda ()
-               (progn
-                 ;; match: as in clojure.core.match
-                 (put-clojure-indent 'match 'defun)
-                 (put-clojure-indent 'fdef 'defun)
-                 (put-clojure-indent 'for-all 1)))))
-
 (add-hook 'cider-repl-mode-hook 'smartparens-mode)
 
 ;; Clojure inferior mode - e.g. for phantomjs
 (use-package inf-clojure
-  :defer t
-  :ensure t)
+  :defer t)
 
 (defun cljs-start-phantom-repl ()
   (interactive)
@@ -624,22 +614,16 @@
 ;; C/C++
 
 (use-package cc-mode
-  :config
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (auto-complete-mode)))
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (auto-complete-mode))))
-
-(setq auto-mode-alist
-      (append '(("\\.ino$" . c++-mode))
-              auto-mode-alist))
+  :defer t
+  :init (add-auto-mode 'c++-mode "\\.ino$")
+  :hook ((c-mode . auto-complete-mode)
+         (c++-mode . auto-complete-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
 (use-package elpy
+  :defer t
   :config
   (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
   (setq elpy-rpc-backend "jedi")
@@ -727,30 +711,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Solidity
-
-;;;;; Temporarily disabling; this all isn't quite right...
-;; (use-package flycheck
-;;   :ensure t
-;;   :init (global-flycheck-mode))
-
-;; (use-package solidity-mode
-;;   :pin melpa-stable
-;;   :config
-;;   (setq solidity-flycheck-solc-checker-active t)
-;;   (setq solidity-solc-path "/usr/local/bin/solc")
-
-;;   (setq solidity-flycheck-solium-checker-active t)
-;;   (setq solidity-solium-path "/usr/local/bin/solium"))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Web stuff
-
-(defun add-auto-mode (mode &rest patterns)
-  (mapc (lambda (pattern)
-          (add-to-list 'auto-mode-alist (cons pattern mode)))
-        patterns))
 
 (use-package web-mode
   :defer t
@@ -784,9 +745,8 @@
 
 (use-package flycheck-inline
   ;; :pin melpa-stable
-  :config
-  (with-eval-after-load 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)))
+  :after flycheck
+  :hook flycheck)
 
 (use-package rust-mode
   ;; :pin melpa-stable
@@ -858,10 +818,17 @@
         deft-recursive t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Custom modules
+;; Org
+
+(use-package es-mode
+  :defer t)
+
+(use-package ob-http
+  :defer t)
 
 (use-package org
   :defer t
+  :mode ("\\.org\\'" . org-mode)
   :config
   (load-user-file "modes/org.el"))
 

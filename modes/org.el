@@ -1001,12 +1001,6 @@
 
 (require 'cider)
 
-(use-package es-mode
-  :ensure t)
-
-(use-package ob-http
-  :ensure t)
-
 (org-babel-do-load-languages
  (quote org-babel-load-languages)
  (quote ((clojure . t)
@@ -1018,7 +1012,7 @@
          (org . t)
          (plantuml . t)
          (python . t)
-         (sh . t)
+         (shell . t)
          (sql . t))))
 
 ;; Use fundamental mode when editing plantuml blocks with C-c '
