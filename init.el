@@ -338,6 +338,12 @@
   :config
   (load-theme 'sanityinc-tomorrow-night t))
 
+(use-package powerline
+  :defer 2
+  :config
+  (powerline-default-theme))
+
+
 (global-hl-line-mode 0)
 
 (show-paren-mode 1)
