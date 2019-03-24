@@ -81,7 +81,7 @@
               (set-face-attribute 'default nil
                                   :font "Roboto Mono"
                                   :height 120)
-              (setq-default line-spacing 2))))
+              (setq-default line-spacing 1))))
   ('gnu/linux (set-face-attribute 'default nil
                                   :font "Liberation Mono"
                                   :height 100)))
@@ -121,25 +121,25 @@
 ;;
 ;; find aspell and hunspell automatically
 (cond
- ;; try hunspell at first
- ;; if hunspell does NOT exist, use aspell
+ ;; try hunspell at first, falling back to aspell then ispell
  ((executable-find "hunspell")
   (setq ispell-program-name "hunspell")
   (setq ispell-local-dictionary "en_US")
   (setq ispell-local-dictionary-alist
-        ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+        ;; The list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell.
         ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
-          )))
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8))))
 
  ((executable-find "aspell")
   (setq ispell-program-name "aspell")
-  ;; Please note ispell-extra-args contains ACTUAL parameters passed to aspell
+  ;; ispell-extra-args contains ACTUAL parameters passed to aspell
   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
 
 
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c n") 'cleanup-buffer)
 
 (use-package smooth-scrolling
   :config
@@ -149,7 +149,6 @@
 (use-package fill-column-indicator
   :ensure t)
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (use-package ibuffer-projectile
   :config
@@ -261,7 +260,7 @@
   (load-user-file "hydras/multiple-cursors.el"))
 
 (use-package projectile
-  :demand
+  :defer 1
   :diminish projectile-mode
   :bind-keymap ("C-c C-p" . projectile-command-map)
   :init
@@ -339,8 +338,12 @@
   :config
   (load-theme 'sanityinc-tomorrow-night t))
 
-(global-hl-line-mode 1)
+(global-hl-line-mode 0)
+
 (show-paren-mode 1)
+;; (set-face-background 'show-paren-match (face-background 'default))
+;; (set-face-foreground 'show-paren-match "#a0a")
+;; (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 (setq whitespace-style '(face trailing tabs))
 
@@ -366,10 +369,9 @@
         (message "Cleaned up buffer."))
     (message "Didn't clean up buffer.")))
 
-(global-set-key (kbd "C-c n") 'cleanup-buffer)
-
 (use-package which-key
   :pin melpa-stable
+  :diminish
   :config (which-key-mode))
 
 (use-package undo-tree
@@ -383,10 +385,10 @@
 
 (use-package avy-flycheck
   :defer t
+  :bind (("M-g M-w" . avy-goto-char-2)
+         ("M-g M-t" . avy-goto-char-timer))
   :config
-  (global-set-key (kbd "M-g M-w") 'avy-goto-char-2)
-  (setq avy-timeout-seconds 0.2)
-  (global-set-key (kbd "M-g M-t") 'avy-goto-char-timer))
+  (setq avy-timeout-seconds 0.2))
 
 (use-package flycheck
   :config
@@ -644,6 +646,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
+(use-package python-mode
+  :defer t
+  :bind (:map python-mode-map
+              ("C-M-f" . python-nav-forward-sexp-safe)
+              ("C-M-b" . python-nav-backward-sexp-safe))
+  :config
+  (add-hook 'python-mode-hook
+            (lambda ()
+              ;; Set up fill column indicator
+              (set-fill-column ian/python-cols)
+              (fci-mode)
+              (setq fci-rule-column ian/python-cols
+                    show-trailing-whitespace t)
+              (flycheck-mode)
+              (setq python-shell-completion-native-enable nil)
+              (pyenv-mode)
+              (elpy-mode)
+              (elpy-enable))))
+
 (use-package elpy
   :defer t
   :config
@@ -663,10 +684,6 @@
               ("<M-S-right>" . elpy-nav-indent-shift-right)
               ("M-." . elpy-goto-definition)
               ("M-," . pop-tag-mark)))
-
-;; (eval-after-load "elpy"
-;;   '(cl-dolist (key '("M-<left>" "M-<right>" "C-c C-p" "C-c C-n"))
-;;      (define-key elpy-mode-map (kbd key) nil)))
 
 (setq ian/python-cols 88)
 
@@ -689,47 +706,14 @@
              (pyenv-mode-set pyenv-current-version)
              (message (concat "Setting virtualenv to " pyenv-current-version))))))))
 
-;; (defvar pyenv-current-version nil nil)
-
-;; (defun pyenv-init()
-;;   "Initialize pyenv's current version to the global one."
-;;   (let ((global-pyenv (replace-regexp-in-string "\n" "" (shell-command-to-string "pyenv global"))))
-;;     (message (concat "Setting pyenv version to " global-pyenv))
-;;     (pyenv-mode-set global-pyenv)
-;;     (setq pyenv-current-version global-pyenv)))
-
-;; (add-hook 'after-init-hook 'pyenv-init)
-
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            ;; Set up fill column indicator
-            (set-fill-column ian/python-cols)
-            (fci-mode)
-            (setq fci-rule-column ian/python-cols
-                  show-trailing-whitespace t)
-
-            (flycheck-mode)
-
-            (setq python-shell-completion-native-enable nil)
-            (pyenv-mode)
-
-            (elpy-mode)
-            (elpy-enable)
-
-            (bind-keys :map python-mode-map
-                       ("C-M-f" . python-nav-forward-sexp-safe)
-                       ("C-M-b" . python-nav-backward-sexp-safe))))
-
 (use-package highlight-indent-guides
+  :defer
+  :hook (python-mode . highlight-indent-guides-mode)
   :config
-  (progn
-    ;;(setq highlight-indent-guides-method 'column)
-    (setq highlight-indent-guides-method 'character)
-    (setq highlight-indent-guides-auto-odd-face-perc 3)
-    (setq highlight-indent-guides-auto-even-face-perc 7)
-    (setq highlight-indent-guides-auto-character-face-perc 10)
-    (add-hook 'python-mode-hook 'highlight-indent-guides-mode)))
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-auto-odd-face-perc 3)
+  (setq highlight-indent-guides-auto-even-face-perc 7)
+  (setq highlight-indent-guides-auto-character-face-perc 10))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -746,16 +730,9 @@
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2))
 
-;; (use-package php-mode
-;;   :config
-;;   (add-hook 'php-mode-hook
-;;             (lambda ()
-;;               (setq c-basic-offset 2))))
-
 (use-package puppet-mode
   :defer t
   :pin melpa-stable)
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rust
@@ -807,6 +784,9 @@
   (add-hook 'racer-mode-hook #'company-mode)
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
 
+(use-package toml-mode
+  :mode "\\.toml\\'")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markup and text formatting
 
@@ -850,6 +830,14 @@
 
 (use-package org
   :defer t
+
+  :bind
+  ("C-c l" . org-store-link)
+  ("C-c a" . org-agenda)
+  ("C-c b" . org-iswitchb)
+  ("C-c C-x C-j" . org-clock-goto)
+  ("C-c c" . org-capture)
+
   :mode ("\\.org\\'" . org-mode)
   :config
   (load-user-file "modes/org.el"))
