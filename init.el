@@ -254,8 +254,11 @@
   (setq avy-timeout-seconds 0.2))
 
 (use-package hydra
+  :bind ("C-c =" . hydra-mark/body)
   :config
-  (load-user-file "hydras/smartparens.el"))
+  (load-user-file "hydras/smartparens.el")
+  (load-user-file "hydras/expand-region.el")
+  (load-user-file "hydras/multiple-cursors.el"))
 
 (use-package projectile
   :demand
@@ -303,12 +306,30 @@
   (dumb-jump-mode))
 
 (use-package expand-region
-  :bind ("C-c =" . er/expand-region))
+  :defer t
+  :commands (er/expand-region
+             er/contract-region
+             er/mark-inside-pairs
+             er/mark-inside-quotes
+             er/mark-outside-pairs
+             er/mark-outside-quotes
+             er/mark-defun
+             er/mark-comment
+             er/mark-text-sentence
+             er/mark-text-paragraph
+             er/mark-word
+             er/mark-url
+             er/mark-email
+             er/mark-symbol))
 
 (use-package auto-complete
   :config
   (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
 
+
+(use-package multiple-cursors
+  :ensure t
+  :bind ("C->" . hydra-multiple-cursors/body))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
