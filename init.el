@@ -384,6 +384,16 @@
                :map flycheck-mode-map
                ("M-g M-e" . avy-flycheck-goto-error)))))
 
+(use-package yasnippet
+  ;; <TAB> expands a snippet
+  :defer 1
+  :config
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+(use-package yasnippet-snippets
+  ;; See http://andreacrotti.github.io/yasnippet-snippets/snippets.html for docs
+  )
+
 (use-package aggressive-indent
   :ensure t)
 
