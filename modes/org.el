@@ -7,7 +7,6 @@
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/modes/")))
 
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
-(require 'org)
 
 (require 'org-lib)
 (require 'org-clocktable-by-tag)
@@ -429,19 +428,6 @@
 ;; (global-set-key (kbd "<f9> p") 'bh/phone-call)
 
 (setq org-agenda-span 'day)
-
-;; Rebuild the reminders everytime the agenda is displayed
-(add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
-
-;; This is at the end of my .emacs - so appointments are set up when Emacs starts
-(bh/org-agenda-to-appt)
-
-;; Activate appointments so we get notifications
-(appt-activate t)
-
-;; If we leave Emacs running overnight - reset the appointments one minute after midnight
-(run-at-time "24:01" nil 'bh/org-agenda-to-appt)
-
 
 (add-hook 'org-agenda-mode-hook
           '(lambda ()
@@ -1215,8 +1201,15 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PROTOCOL
 
-;; (require 'org-protocol)
+;; Activate appointments so we get notifications
+(appt-activate t)
 
-;; (require 'org-mime)
+;; ;; Rebuild the reminders everytime the agenda is displayed
+(add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
+
+;; ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
+;; (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
+
+;; ;; This is at the end of my .emacs - so appointments are set up when Emacs starts
+;; (bh/org-agenda-to-appt)
