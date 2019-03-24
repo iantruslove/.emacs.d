@@ -29,11 +29,6 @@
   ;; review with M-x use-package-report
   (setq use-package-compute-statistics nil))
 
-;; For the code use-package writes, but we're not always loading use-package:
-(require 'diminish)
-(require 'bind-key)
-
-
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
          user-emacs-directory)
@@ -104,12 +99,6 @@
   (mapc (lambda (pattern)
           (add-to-list 'auto-mode-alist (cons pattern mode)))
         patterns))
-
-;; (use-package auto-compile
-;;   :config
-;;   (setq load-prefer-newer t)
-;;   (auto-compile-on-load-mode)
-;;   (auto-compile-on-save-mode))
 
 (setq-default column-number-mode t
               custom-file (expand-file-name "site/emacs-custom.el" user-init-dir) ;; Saves emacs customizations to somewhere other than the end of init.el
