@@ -1,5 +1,7 @@
 ;; Bootstrap
 
+(setq gc-cons-threshold (* 50 1000 1000));; Drop down again at the end of init.el
+
 (require 'package)
 (setq package-enable-at-startup nil)
 
@@ -857,3 +859,5 @@
 ;; TODO smartparens fun: https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el, https://github.com/Fuco1/smartparens/wiki/Tips-and-tricks
 ;; TODO multiple cursors
 ;; TODO expand region
+
+(setq gc-cons-threshold (* 2 1000 1000))
