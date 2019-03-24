@@ -57,16 +57,16 @@
                           org-gnus
                           org-id
                           org-info
-                          org-jsinfo
+                          ;;org-jsinfo
                           org-habit
                           org-inlinetask
                           ;;org-irc
-                          org-mew
+                          ;;org-mew
                           org-mhe
                           ;;org-protocol
                           ;;org-rmail
-                          org-vm
-                          org-wl
+                          ;;org-vm
+                          ;;org-wl
                           org-w3m)))
 
 (setq org-src-preserve-indentation nil)

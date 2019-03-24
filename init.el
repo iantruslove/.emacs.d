@@ -86,13 +86,13 @@
                                   :font "Liberation Mono"
                                   :height 100)))
 
-(use-package exec-path-from-shell
-  :ensure t)
-
 (when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-envs
-   '("PATH")))
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (setq exec-path-from-shell-check-startup-files nil
+          exec-path-from-shell-variables '("PATH"))
+    (exec-path-from-shell-initialize)))
 
 (use-package auto-compile
   :config
@@ -152,7 +152,6 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (use-package ibuffer-projectile
-  :defer t
   :config
   (setq projectile-enable-caching t)
   (add-hook 'ibuffer-hook
@@ -166,7 +165,8 @@
 
 ;; Desktops and sessions
 (setq desktop-path (list user-emacs-directory)
-      desktop-auto-save-timeout 600)
+      desktop-auto-save-timeout 600
+      desktop-load-locked-desktop t)  ;; don't worry about loading it over a lock
 (desktop-save-mode 1)
 (setq-default history-length 1000)
 (savehist-mode t)
