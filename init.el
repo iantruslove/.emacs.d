@@ -274,6 +274,7 @@
 
 (use-package magit
   :defer t
+  :pin melpa-stable
   :bind ("C-c g" . magit-status)
   :config
   (setq-default magit-process-popup-time 10
