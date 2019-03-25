@@ -279,7 +279,10 @@
   :config
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
-                magit-auto-revert-mode t))
+                magit-auto-revert-mode t)
+  ;; Make the current branch label more prominent in the log view:
+  (set-face-background 'magit-branch-current "#106030")
+  (set-face-foreground 'magit-branch-current "#b1d2de"))
 
 (use-package gist
   :defer t)
