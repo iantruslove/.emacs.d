@@ -262,7 +262,7 @@
 (use-package projectile
   :defer 1
   :diminish projectile-mode
-  :bind-keymap ("C-c C-p" . projectile-command-map)
+  :bind-keymap ("C-c p" . projectile-command-map)
   :init
   (setq projectile-completion-system 'ivy
         projectile-create-missing-test-files t)
@@ -662,15 +662,19 @@
   :defer t
   :bind (:map python-mode-map
               ("C-M-f" . python-nav-forward-sexp-safe)
-              ("C-M-b" . python-nav-backward-sexp-safe))
+              ("C-M-b" . python-nav-backward-sexp-safe)
+              ("C-c =" . nil)
+              ;; ("C-c C-p" . nil)
+              ;; ("C-c C-n" . nil)
+              )
   :config
   (add-hook 'python-mode-hook
             (lambda ()
               ;; Set up fill column indicator
               (set-fill-column ian/python-cols)
-              (fci-mode)
-              (setq fci-rule-column ian/python-cols
-                    show-trailing-whitespace t)
+              ;; (fci-mode)
+              ;; (setq fci-rule-column ian/python-cols
+              ;;       show-trailing-whitespace t)
               (flycheck-mode)
               (setq python-shell-completion-native-enable nil)
               (pyenv-mode)
@@ -690,8 +694,8 @@
               ("M-g M-p" . elpy-flymake-previous-error)
               ("<M-left>" . nil)
               ("<M-right>" . nil)
-              ("C-c C-p" . nil)
-              ("C-c C-n" . nil)
+              ;; ("C-c C-p" . nil)
+              ;; ("C-c C-n" . nil)
               ("<M-S-left>" . elpy-nav-indent-shift-left)
               ("<M-S-right>" . elpy-nav-indent-shift-right)
               ("M-." . elpy-goto-definition)
