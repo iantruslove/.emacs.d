@@ -281,8 +281,10 @@
                 magit-diff-refine-hunk nil
                 magit-auto-revert-mode t)
   ;; Make the current branch label more prominent in the log view:
-  (set-face-background 'magit-branch-current "#106030")
-  (set-face-foreground 'magit-branch-current "#b1d2de"))
+  ;;(set-face-background 'magit-branch-current "#004020")
+  ;;(set-face-foreground 'magit-branch-current "#de935f")
+  (set-face-underline 'magit-branch-current t)
+  (set-face-attribute 'magit-branch-current nil :weight 'bold))
 
 (use-package gist
   :defer t)
@@ -718,6 +720,7 @@
 
 (use-package highlight-indent-guides
   :defer
+  :diminish
   :hook (python-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character)
