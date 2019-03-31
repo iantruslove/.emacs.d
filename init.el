@@ -768,51 +768,45 @@
 ;; Rust
 
 (use-package flycheck-rust
-  ;; :pin melpa-stable
   :defer t
-  )
+  :commands flycheck-rust-setup)
 
 (use-package flycheck-inline
-  ;; :pin melpa-stable
-  :after flycheck
   :hook flycheck)
 
 (use-package rust-mode
-  ;; :pin melpa-stable
   :defer t
+  :hook ((rust-mode . flycheck-mode)
+         (flycheck-mode . flycheck-rust-setup))
   :config
-  (setq rust-format-on-save t)
-  (with-eval-after-load 'rust-mode
-    (add-hook 'rust-mode-hook #'flycheck-mode)
-    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+  (setq rust-format-on-save t))
 
 (use-package cargo
-  ;; :pin melpa-stable
   :defer t
+  :commands cargo-minor-mode
+  :hook (rust-mode . cargo-minor-mode)
   :config
-  (add-hook 'rust-mode-hook #'cargo-minor-mode)
   (setq compilation-ask-about-save nil))
 
 (use-package racer
-  ;; :pin melpa-stable
   :defer t
-  :requires rust-mode
+  :commands racer-mode
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)
+         (racer-mode . company-mode))
+
   :init
   (setq company-tooltip-align-annotations t)
 
   ;; Problems with racer having an incorrect RUST_SRC_PATH were fixed
   ;; with this setting, and by installing the rust sources with
   ;; `rustup component add rust-src`.
-  :init (setq racer-rust-src-path
-              (concat (string-trim
-                       (shell-command-to-string "rustc --print sysroot"))
-                      "/lib/rustlib/src/rust/src"))
+  (setq racer-rust-src-path
+        (concat (string-trim
+                 (shell-command-to-string "rustc --print sysroot"))
+                "/lib/rustlib/src/rust/src"))
 
-  :config
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+  :config (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
 
 (use-package toml-mode
   :mode "\\.toml\\'")
