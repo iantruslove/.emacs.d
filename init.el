@@ -228,6 +228,7 @@
   :bind (:map ivy-minibuffer-map
               ("\r" . 'ivy-alt-done)  ;; [RET]
               ("C-j" . 'ivy-done)
+              ("C-M-j" . 'ivy-immediate-done)
               ("S-SPC" . nil)
               ("M-SPC" . 'ivy-restrict-to-matches))
   :config
