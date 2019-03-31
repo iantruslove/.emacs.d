@@ -674,6 +674,7 @@
 
 (use-package python-mode
   :defer t
+  :diminish "Py"
   :bind (:map python-mode-map
               ("C-M-f" . python-nav-forward-sexp-safe)
               ("C-M-b" . python-nav-backward-sexp-safe)
@@ -697,6 +698,7 @@
 
 (use-package elpy
   :defer t
+  :commands (elpy-mode elpy-enable)
   :config
   (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
   (setq elpy-rpc-backend "jedi")
