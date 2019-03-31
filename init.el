@@ -294,13 +294,14 @@
   :bind (("M-n" . highlight-symbol-next)
          ("M-p" . highlight-symbol-prev)
          ("M-'" . highlight-symbol-query-replace))
+  :hook ((prog-mode . highlight-symbol-mode)
+         (html-mode . highlight-symbol-mode))
   :config
-  (setq highlight-symbol-idle-delay 0.75)
-  (setq highlight-symbol-highlight-single-occurrence nil)
-  (setq highlight-symbol-on-navigation-p t)
-  (dolist (hook '(prog-mode-hook html-mode-hook))
-    (add-hook hook (lambda ()
-                     (highlight-symbol-mode)))))
+  (setq highlight-symbol-idle-delay 0.75
+        highlight-symbol-highlight-single-occurrence nil
+        highlight-symbol-on-navigation-p t)
+  (set-face-attribute 'highlight-symbol-face nil
+                      :background "#005000"))
 
 (use-package dumb-jump
   :bind (("M-g o" . dumb-jump-go-other-window)
@@ -358,6 +359,18 @@
 ;; (set-face-attribute 'show-paren-match nil :weight 'extra-bold)
 
 (setq whitespace-style '(face trailing tabs))
+
+;; TODO: Look into smart mode line (https://github.com/Malabarba/smart-mode-line)
+(set-face-attribute  'mode-line
+                     nil
+                     :foreground "gray80"
+                     :background "gray25"
+                     :box '(:line-width 1 :style released-button))
+(set-face-attribute  'mode-line-inactive
+                     nil
+                     :foreground "gray30"
+                     :background "gray10"
+                     :box '(:line-width 1 :style released-button))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Editor
