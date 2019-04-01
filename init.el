@@ -731,37 +731,31 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
-(use-package python-mode
-  :defer t
-  :diminish "Py"
-  :bind (:map python-mode-map
-              ("C-M-f" . python-nav-forward-sexp-safe)
-              ("C-M-b" . python-nav-backward-sexp-safe)
-              ("C-c =" . nil)
-              ;; ("C-c C-p" . nil)
-              ;; ("C-c C-n" . nil)
-              )
-  :config
-  (add-hook 'python-mode-hook
-            (lambda ()
-              ;; Set up fill column indicator
-              (set-fill-column ian/python-cols)
-              ;; (fci-mode)
-              ;; (setq fci-rule-column ian/python-cols
-              ;;       show-trailing-whitespace t)
-              (flycheck-mode)
-              (setq python-shell-completion-native-enable nil)
-              (pyenv-mode)
-              (elpy-mode)
-              (elpy-enable))))
+(setq ian/python-cols 88)
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq mode-name "Py")  ;; "diminish" the major mode
+            ;; Set up fill column indicator
+            (set-fill-column ian/python-cols)
+            ;; (fci-mode)
+            ;; (setq fci-rule-column ian/python-cols
+            ;;       show-trailing-whitespace t)
+            (flycheck-mode)
+            (setq python-shell-completion-native-enable nil)
+            (pyenv-mode)
+            ;;(elpy-mode)
+            (elpy-enable)
+            (define-key python-mode-map (kbd "C-M-f") 'python-nav-forward-sexp-safe)
+            (define-key python-mode-map (kbd "C-M-b") 'python-nav-backward-sexp-safe)
+            (define-key python-mode-map (kbd "C-c =") nil)))
 
 (use-package elpy
-  :defer t
   :commands (elpy-mode elpy-enable)
   :config
-  (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules))
-  (setq elpy-rpc-backend "jedi")
-  (setq elpy-rpc-python-command "python")
+  (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules)
+        elpy-rpc-backend "jedi"
+        elpy-rpc-python-command "python")
 
   :bind (:map elpy-mode-map
               ("C-c z" . elpy-shell-switch-to-shell)
@@ -775,8 +769,6 @@
               ("<M-S-right>" . elpy-nav-indent-shift-right)
               ("M-." . elpy-goto-definition)
               ("M-," . pop-tag-mark)))
-
-(setq ian/python-cols 88)
 
 (use-package pyenv-mode
   :init
