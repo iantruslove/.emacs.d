@@ -56,6 +56,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fundamental Emacs config
 
+(defmacro comment (&rest body)
+  "Comment out one or more s-expressions."
+  nil)
+
 (global-auto-revert-mode 1)
 (menu-bar-mode -1)
 (setq use-dialog-box nil)
@@ -341,10 +345,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
 
-(use-package color-theme-sanityinc-tomorrow
-  :demand t
-  :config
-  (load-theme 'sanityinc-tomorrow-night t))
+(comment (use-package color-theme-sanityinc-tomorrow
+           :demand t
+           :config
+           (load-theme 'sanityinc-tomorrow-bright t)))
+
+(use-package monokai-theme
+  :defer t
+  :init
+  (load-theme 'monokai t))
 
 (use-package powerline
   :defer 2
