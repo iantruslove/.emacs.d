@@ -818,6 +818,9 @@
   :defer t
   :pin melpa-stable)
 
+(use-package terraform-mode
+  :defer t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Rust
 
