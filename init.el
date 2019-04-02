@@ -304,7 +304,10 @@
   :config
   (setq highlight-symbol-idle-delay 0.75
         highlight-symbol-highlight-single-occurrence nil
-        highlight-symbol-on-navigation-p t))
+        highlight-symbol-on-navigation-p t)
+  (set-face-attribute 'highlight-symbol-face nil
+                      :inherit 'default
+                      :underline `(:color ,(face-attribute 'match :background))))
 
 (use-package dumb-jump
   :bind (("M-g o" . dumb-jump-go-other-window)
@@ -351,8 +354,7 @@
 (use-package monokai-theme
   :defer t
   :init
-  (load-theme 'monokai t)
-  (face-remap-add-relative 'highlight-symbol-face 'match))
+  (load-theme 'monokai t))
 
 (use-package powerline
   :defer 1
