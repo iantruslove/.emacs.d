@@ -262,7 +262,8 @@
   :config
   (load-user-file "hydras/smartparens.el")
   (load-user-file "hydras/expand-region.el")
-  (load-user-file "hydras/multiple-cursors.el"))
+  ;; (load-user-file "hydras/multiple-cursors.el")
+  )
 
 (use-package projectile
   :defer 1
@@ -341,7 +342,9 @@
 
 (use-package multiple-cursors
   :ensure t
-  :bind ("C->" . hydra-multiple-cursors/body))
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-M->" . mc/mark-more-like-this-extended)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Themes and appearance
