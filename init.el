@@ -766,6 +766,7 @@
               ("C-c z" . elpy-shell-switch-to-shell)
               ("M-g M-n" . elpy-flymake-next-error)
               ("M-g M-p" . elpy-flymake-previous-error)
+              ("C-c n" . elpy-black-fix-code)
               ("<M-left>" . nil)
               ("<M-right>" . nil)
               ;; ("C-c C-p" . nil)
