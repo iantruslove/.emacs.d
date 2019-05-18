@@ -278,6 +278,14 @@
 (use-package ag
   :ensure t)
 
+(use-package keychain-environment
+  :demand
+  :if (and
+       (eq 'gnu/linux system-type)
+       (locate-file "keychain" exec-path))
+  :config
+  (keychain-refresh-environment))
+
 (use-package magit
   :defer t
   :pin melpa-stable
