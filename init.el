@@ -114,6 +114,11 @@
               require-final-newline 'visit-save
               ring-bell-function 'ignore
               save-interprogram-paste-before-kill t
+
+              ;; Split vertically a bit more often
+              split-width-threshold 140
+              split-height-threshold 80
+
               x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
               x-select-enable-primary t)
 
