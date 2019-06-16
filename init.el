@@ -771,10 +771,14 @@
 
 (use-package elpy
   :commands (elpy-mode elpy-enable)
+  :hook ((elpy-mode . flycheck-mode))
+
   :config
   (setq elpy-modules (delete 'elpy-module-highlight-indentation elpy-modules)
         elpy-rpc-backend "jedi"
         elpy-rpc-python-command "python")
+  (delete 'elpy-module-flymake elpy-modules)
+  (delete 'elpy-module-highlight-indentation elpy-modules)
 
   :bind (:map elpy-mode-map
               ("C-c z" . elpy-shell-switch-to-shell)
