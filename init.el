@@ -920,6 +920,17 @@
         deft-recursive t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Other modes
+
+
+(use-package dockerfile-mode
+  :defer t
+  :mode "Dockerfile\\'"
+  ;; :config
+  ;; (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Org
 
 (use-package es-mode
