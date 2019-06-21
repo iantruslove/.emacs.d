@@ -542,6 +542,7 @@
                             ("deep" . ?d)
                             ("shallow"  . ?s)
                             ("idle" . ?i)
+                            ("meeting" . ?m)
                             (:endgroup)
 
                             ("WAITING" . ?w)
