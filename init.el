@@ -715,9 +715,17 @@
                 ("\\.cl$" . lisp-mode))
               auto-mode-alist))
 
-(setq slime-default-lisp 'ccl)
 (setq slime-lisp-implementations
       '((ccl ("/usr/local/bin/ccl64" "-K" "utf-8"))))
+(setq slime-default-lisp 'ccl)
+
+;; Add roswell if it's installed
+(if (file-exists-p "~/.roswell/helper.el")
+    (progn
+      (load (expand-file-name "~/.roswell/helper.el"))
+      (setq slime-lisp-implementations
+            (append '((roswell ("ros" "-Q" "run"))) slime-lisp-implementations))
+      (setq slime-default-lisp 'roswell)))
 
 (use-package slime
   :defer t
