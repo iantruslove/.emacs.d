@@ -331,13 +331,13 @@
                ((agenda "" nil)
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
-                       (org-tags-match-list-sublevels nil)))
+                       (org-tags-match-list-sublevels t)))
 
                 (tags-todo "DEADLINE<\"<now>\""
                            ((org-agenda-overriding-header "Overdue Tasks")))
 
-                (tags-todo "-CANCELLED/!NEXT"
-                           ((org-agenda-overriding-header (concat "Project Next Tasks"
+                (tags-todo "-CANCELLED+TODO=\"NEXT\"|-CANCELLED+PRIORITY=\"A\""
+                           ((org-agenda-overriding-header (concat "Project Next and High Priority Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
                                                                     " (including WAITING and SCHEDULED tasks)")))
@@ -347,10 +347,11 @@
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
-                             '(todo-state-down effort-up category-keep))))
+                             '(todo-state-down priority-down effort-up category-keep))))
 
-                (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!NEXT"
-                           ((org-agenda-overriding-header (concat "Standalone Next Tasks"
+
+                (tags-todo "-REFILE+TODO=\"NEXT\"|-REFILE+TODO=\"TODO\"+PRIORITY=\"A\""
+                           ((org-agenda-overriding-header (concat "Next and High Priority Standalone Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
                                                                     " (including WAITING and SCHEDULED tasks)")))
@@ -359,19 +360,22 @@
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
-                             '(todo-state-down effort-up category-keep))))
+                             '(priority-down todo-state-down effort-up category-keep))))
 
-                (tags-todo "-CANCELLED/!"
-                           ((org-agenda-overriding-header "Stuck Projects")
-                            (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                            (org-agenda-sorting-strategy
-                             '(category-keep))))
+
                 (tags-todo "-HOLD-CANCELLED/!"
                            ((org-agenda-overriding-header "Projects")
                             (org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
+
+                (tags-todo "-CANCELLED/!"
+                           ((org-agenda-overriding-header "Stuck Projects")
+                            (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+
                 (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
                            ((org-agenda-overriding-header (concat "Project Subtasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
@@ -609,8 +613,8 @@
               ("r" "respond" entry (file refile)
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
                :clock-in t :clock-resume t :immediate-finish t)
-              ("n" "note" entry (file refile)
-               "* %? :NOTE:\n%U\n%a\n"
+              ("n" "note" entry (file+datetree journal)
+               "* %? :NOTE:\n%U\n"
                :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree journal)
                "* %?\n%U\n"
@@ -619,7 +623,7 @@
                "* TODO Review %c\n%U\n"
                :immediate-finish t)
               ("m" "Meeting" entry (file refile)
-               "* MEETING with %? :MEETING:\n%U"
+               "* MEETING with %? :meeting:\n%U"
                :clock-in t :clock-resume t)
               ("p" "Phone call" entry (file refile)
                "* PHONE %? :PHONE:\n%U"
