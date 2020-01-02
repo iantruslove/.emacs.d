@@ -726,7 +726,7 @@
   (add-hook 'slime-mode-hook 'smartparens-mode)
   (add-hook 'slime-repl-mode-hook 'smartparens-mode)
   (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-fancy)))
+  (slime-setup '(slime-fancy slime-quicklisp slime-asdf slime-highlight-edits)))
 
 (use-package ac-slime
   :defer t
