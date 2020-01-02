@@ -707,8 +707,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
 
+(add-hook 'lisp-mode-hook 'auto-complete-mode)
+(add-hook 'lisp-mode-hook 'eldoc-mode)
 (add-hook 'lisp-mode-hook 'smartparens-mode)
-(add-hook 'lisp-mode-hook #'eldoc-mode)
 
 (setq auto-mode-alist
       (append '(("\\.lisp$" . lisp-mode)
@@ -734,7 +735,10 @@
   (add-hook 'slime-mode-hook 'smartparens-mode)
   (add-hook 'slime-repl-mode-hook 'smartparens-mode)
   (setq slime-net-coding-system 'utf-8-unix)
-  (slime-setup '(slime-fancy slime-quicklisp slime-asdf slime-highlight-edits)))
+  (setq slime-contribs '(slime-asdf
+                         slime-fancy
+                         slime-highlight-edits
+                         slime-quicklisp)))
 
 (use-package ac-slime
   :defer t
