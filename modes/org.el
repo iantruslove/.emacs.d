@@ -71,6 +71,9 @@
 (setq org-src-preserve-indentation nil)
 (setq org-edit-src-content-indentation 0)
 
+;; Format lines in source code blocks with <tab>:
+(setq org-src-tab-acts-natively t)
+
 (setq org-catch-invisible-edits 'error)
 
 (setq org-export-coding-system 'utf-8)
@@ -226,16 +229,6 @@
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-;; org structure templates:
-
-(require 'org-tempo)  ;; For quick tab-completion of template blocks
-
-(setq org-structure-template-alist
-      (quote (("s" . "src")
-              ("e" . "example")
-              ("q" . "quote")
-              ("h" . "html")
-              ("a" . "ascii"))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS
@@ -740,20 +733,6 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; IDO
-;;;;; NOTE: I commented out all the IDO stuff.
-
-;; ;; Use IDO for both buffer and file completion and ido-everywhere to t
-;; (setq org-completion-use-ido t)
-;; (setq ido-everywhere t)
-;; (setq ido-max-directory-size 100000)
-;; (ido-mode (quote both))
-;; ;; Use the current window when visiting files and buffers with ido
-;; (setq ido-default-file-method 'selected-window)
-;; (setq ido-default-buffer-method 'selected-window)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ARCHIVING
 
 (setq org-archive-mark-done nil)
@@ -988,14 +967,18 @@
 
 (require 'cider)
 
+(use-package es-mode)
+
 (org-babel-do-load-languages
  (quote org-babel-load-languages)
  (quote ((clojure . t)
          (dot . t)
          (ditaa . t)
+         (elasticsearch . t)
          (emacs-lisp . t)
          (gnuplot . t)
          (http . t)
+         (js . t)
          (org . t)
          (plantuml . t)
          (python . t)
