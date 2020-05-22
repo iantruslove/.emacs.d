@@ -236,11 +236,11 @@
   :demand;; force eager load
   :diminish ivy-mode
   :bind (:map ivy-minibuffer-map
-              ("\r" . 'ivy-alt-done)  ;; [RET]
-              ("C-j" . 'ivy-done)
-              ("C-M-j" . 'ivy-immediate-done)
+              ("\r" . ivy-alt-done)  ;; [RET]
+              ("C-j" . ivy-done)
+              ("C-M-j" . ivy-immediate-done)
               ("S-SPC" . nil)
-              ("M-SPC" . 'ivy-restrict-to-matches))
+              ("M-SPC" . ivy-restrict-to-matches))
   :config
   (ivy-mode 1)
   ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
