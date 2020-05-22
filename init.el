@@ -907,7 +907,8 @@
 
 (use-package markdown-mode
   :defer t
-  :pin melpa-stable)
+  :pin melpa-stable
+  :hook ((markdown-mode . flyspell-mode)))
 
 (use-package yaml-mode
   :defer t
