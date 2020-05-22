@@ -350,9 +350,18 @@
              er/mark-symbol))
 
 (use-package auto-complete
-  :config
-  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete))
-
+  :defer t
+  :bind ("M-TAB" . auto-complete)
+  :config (progn
+            (require 'auto-complete-config)
+            (setq-default ac-sources '(ac-source-abbrev
+                                       ac-source-dictionary
+                                       ac-source-words-in-same-mode-buffers))
+            (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
+            (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+            (add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
+            (add-hook 'css-mode-hook 'ac-css-mode-setup)
+            (add-hook 'auto-complete-mode-hook 'ac-common-setup)))
 
 (use-package multiple-cursors
   :ensure t
@@ -791,6 +800,10 @@
             (flycheck-mode)
             (setq python-shell-completion-native-enable nil)
             (pyenv-mode)
+            (setq ac-sources '(ac-source-pycomplete
+                               ac-source-abbrev
+                               ac-source-dictionary
+                               ac-source-words-in-same-mode-buffers))
             ;;(elpy-mode)
             (elpy-enable)
             (define-key python-mode-map (kbd "C-M-f") 'python-nav-forward-sexp-safe)
