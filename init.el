@@ -839,16 +839,6 @@
              (pyenv-mode-set pyenv-current-version)
              (message (concat "Setting virtualenv to " pyenv-current-version))))))))
 
-(use-package highlight-indent-guides
-  :defer
-  :diminish
-  :hook (python-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character)
-  (setq highlight-indent-guides-auto-odd-face-perc 3)
-  (setq highlight-indent-guides-auto-even-face-perc 7)
-  (setq highlight-indent-guides-auto-character-face-perc 10))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Web stuff
