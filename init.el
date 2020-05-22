@@ -760,6 +760,22 @@
          (c++-mode . auto-complete-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Golang
+
+(use-package go-autocomplete
+  ;;:hook ((go-mode . 'auto-complete-for-go))
+  )
+
+(use-package go-mode
+  :init (add-auto-mode 'go-mode "\\.go$")
+  :hook ((go-mode . auto-complete-mode)
+         (go-mode . (lambda ()
+                      (add-hook 'before-save-hook 'gofmt-before-save nil 'local))))
+  :bind (:map go-mode-map
+              ("M-." . godef-jump)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Python
 
 (setq ian/python-cols 88)
