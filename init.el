@@ -911,25 +911,25 @@
   :config
   (setq compilation-ask-about-save nil))
 
-(use-package racer
-  :defer t
-  :commands racer-mode
-  :hook ((rust-mode . racer-mode)
-         (racer-mode . eldoc-mode)
-         (racer-mode . company-mode))
+;; (use-package racer
+;;   :defer t
+;;   :commands racer-mode
+;;   :hook ((rust-mode . racer-mode)
+;;          (racer-mode . eldoc-mode)
+;;          (racer-mode . company-mode))
 
-  :init
-  (setq company-tooltip-align-annotations t)
+;;   :init
+;;   (setq company-tooltip-align-annotations t)
 
-  ;; Problems with racer having an incorrect RUST_SRC_PATH were fixed
-  ;; with this setting, and by installing the rust sources with
-  ;; `rustup component add rust-src`.
-  (setq racer-rust-src-path
-        (concat (string-trim
-                 (shell-command-to-string "rustc --print sysroot"))
-                "/lib/rustlib/src/rust/src"))
+;;   ;; Problems with racer having an incorrect RUST_SRC_PATH were fixed
+;;   ;; with this setting, and by installing the rust sources with
+;;   ;; `rustup component add rust-src`.
+;;   (setq racer-rust-src-path
+;;         (concat (string-trim
+;;                  (shell-command-to-string "rustc --print sysroot"))
+;;                 "/lib/rustlib/src/rust/src"))
 
-  :config (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
+;;   :config (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common))
 
 (use-package toml-mode
   :mode "\\.toml\\'")
