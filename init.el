@@ -900,9 +900,11 @@
   :hook ((rust-mode . flycheck-mode)
          (rust-mode . lsp)
          (flycheck-mode . flycheck-rust-setup))
-  :config
-  (setq rust-format-on-save t)
-  (setq lsp-rust-server 'rust-analyzer))
+  :config (progn
+            (setq rust-format-on-save t)
+            (setq lsp-rust-server 'rust-analyzer))
+  :bind (:map rust-mode-map
+              ("M-." . lsp-find-definition)))
 
 (use-package cargo
   :defer t
