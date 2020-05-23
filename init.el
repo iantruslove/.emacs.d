@@ -592,6 +592,16 @@
 ;;   :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Language Server Protocol
+
+(use-package lsp-mode
+  :init (setq lsp-keymap-prefix "C-c C-l")
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; elisp
 (put 'use-package 'lisp-indent-function 1)
 
@@ -886,10 +896,13 @@
 
 (use-package rust-mode
   :defer t
+  :after (lsp-mode)
   :hook ((rust-mode . flycheck-mode)
+         (rust-mode . lsp)
          (flycheck-mode . flycheck-rust-setup))
   :config
-  (setq rust-format-on-save t))
+  (setq rust-format-on-save t)
+  (setq lsp-rust-server 'rust-analyzer))
 
 (use-package cargo
   :defer t
