@@ -600,7 +600,9 @@
 (use-package lsp-mode
   :init (setq lsp-keymap-prefix "C-c C-l")
   :hook ((lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  :commands lsp
+  :bind (:map lsp-mode-map
+              ("M-." . lsp-find-definition)))
 
 (use-package lsp-ui)
 
@@ -905,9 +907,7 @@
          (flycheck-mode . flycheck-rust-setup))
   :config (progn
             (setq rust-format-on-save t)
-            (setq lsp-rust-server 'rust-analyzer))
-  :bind (:map rust-mode-map
-              ("M-." . lsp-find-definition)))
+            (setq lsp-rust-server 'rust-analyzer)))
 
 (use-package cargo
   :defer t
