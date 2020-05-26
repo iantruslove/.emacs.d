@@ -749,26 +749,27 @@
                 ("\\.cl$" . lisp-mode))
               auto-mode-alist))
 
-(setq slime-lisp-implementations
-      '((ccl ("/usr/local/bin/ccl64" "-K" "utf-8"))))
-(setq slime-default-lisp 'ccl)
-
-;; Add roswell if it's installed
-(if (file-exists-p "~/.roswell/helper.el")
-    (progn
-      (load (expand-file-name "~/.roswell/helper.el"))
-      (setq slime-lisp-implementations
-            (append '((roswell ("ros" "-Q" "run"))) slime-lisp-implementations))
-      (setq slime-default-lisp 'roswell)))
-
 (use-package slime
   :defer t
   :pin melpa-stable
   :config
+  (setq slime-lisp-implementations
+        '((ccl ("/usr/local/bin/ccl64" "-K" "utf-8"))
+          (sbcl ("/usr/local/bin/sbcl" "--noinform") :coding-system utf-8-unix)))
+  (setq slime-default-lisp 'sbcl)
+  ;; Add roswell if it's installed
+  (if (file-exists-p "~/.roswell/helper.el")
+      (progn
+        (load (expand-file-name "~/.roswell/helper.el"))
+        (setq slime-lisp-implementations
+              (append '((roswell ("ros" "-Q" "run"))) slime-lisp-implementations))
+        (setq slime-default-lisp 'roswell)))
+
   (add-hook 'slime-mode-hook 'smartparens-mode)
   (add-hook 'slime-repl-mode-hook 'smartparens-mode)
   (setq slime-net-coding-system 'utf-8-unix)
   (setq slime-contribs '(slime-asdf
+                         slime-autodoc
                          slime-fancy
                          slime-highlight-edits
                          slime-quicklisp)))
@@ -776,12 +777,14 @@
 (use-package ac-slime
   :defer t
   :pin melpa-stable
-  :config
+  :init
   (add-hook 'slime-mode-hook 'set-up-slime-ac)
   (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-  (eval-after-load "auto-complete"
-    '(add-to-list 'ac-modes 'slime-repl-mode)))
-
+  ;; :config
+  ;; (progn
+  ;;   (eval-after-load "auto-complete"
+  ;;     '(add-to-list 'ac-modes 'slime-repl-mode)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; C/C++
