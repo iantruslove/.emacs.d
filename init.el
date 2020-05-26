@@ -60,6 +60,7 @@
   "Comment out one or more s-expressions."
   nil)
 
+;; Disable window-y stuff
 (global-auto-revert-mode 1)
 (menu-bar-mode -1)
 (setq use-dialog-box nil)
@@ -78,6 +79,7 @@
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
 
+;; Set font based on system type
 (pcase system-type
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
   ;; default font size (point * 10)
@@ -122,6 +124,7 @@
               x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
               x-select-enable-primary t)
 
+;; Always clean up trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)  ;; or perhaps 'whitespace-cleanup
 
 (set-language-environment "utf-8")
