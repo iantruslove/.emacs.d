@@ -161,7 +161,6 @@
 (use-package fill-column-indicator
   :ensure t)
 
-
 (use-package ibuffer-projectile
   :config
   (setq projectile-enable-caching t)
@@ -246,7 +245,7 @@
               ("M-SPC" . ivy-restrict-to-matches))
   :config
   (ivy-mode 1)
-  ;;(global-set-key (kbd "C-c C-r") 'ivy-resume) ;; interesting. TODO put it into a hydra
+  ;;(global-set-key (kbd "C-c C-r") 'ivy-resume)
   (setq ivy-use-virtual-buffers t
         ivy-use-selectable-prompt t  ;; E.g. for selecting a new input when a candidate matches
         ivy-wrap t
@@ -265,14 +264,6 @@
          ("M-g M-t" . avy-goto-char-timer))
   :config
   (setq avy-timeout-seconds 0.2))
-
-(use-package hydra
-  :bind ("C-c =" . hydra-mark/body)
-  :config
-  (load-user-file "hydras/smartparens.el")
-  (load-user-file "hydras/expand-region.el")
-  ;; (load-user-file "hydras/multiple-cursors.el")
-  )
 
 (use-package projectile
   :defer 1
@@ -546,7 +537,6 @@
    ("C-k"         . sp-kill-hybrid-sexp)
    ("C-M-k"       . sp-kill-sexp)
    ("<backspace>" . sp-backward-delete-char)
-   ("C-M-i"       . smartparens-hydra/body)
    ;; ("C-M-a" . sp-beginning-of-sexp)
    ;; ("C-M-e" . sp-end-of-sexp)
 
@@ -1035,10 +1025,6 @@
 ;; TODO org-projectile
 ;; TODO org archiving - e.g. http://stackoverflow.com/a/35475878
 ;; DONE spacemacs multiple pane buffer wrapping -- it's `follow-mode`.
-;; TODO: set up some hydras
-;; - clj-refactor
-;; - cider
-;; - window movements and rearrangements
 ;; TODO window operations - vim-like would be nice for moving
 ;; TODO smartparens fun: https://github.com/Fuco1/.emacs.d/blob/master/files/smartparens.el, https://github.com/Fuco1/smartparens/wiki/Tips-and-tricks
 ;; TODO multiple cursors
