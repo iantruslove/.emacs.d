@@ -352,6 +352,9 @@
              er/mark-email
              er/mark-symbol))
 
+(use-package company
+  :commands (company-mode))
+
 (use-package auto-complete
   :defer t
   :bind ("M-TAB" . auto-complete)
@@ -815,15 +818,19 @@
             (flycheck-mode)
             (setq python-shell-completion-native-enable nil)
             (pyenv-mode)
-            (setq ac-sources '(ac-source-pycomplete
-                               ac-source-abbrev
-                               ac-source-dictionary
-                               ac-source-words-in-same-mode-buffers))
-            ;;(elpy-mode)
+
             (elpy-enable)
             (define-key python-mode-map (kbd "C-M-f") 'python-nav-forward-sexp-safe)
             (define-key python-mode-map (kbd "C-M-b") 'python-nav-backward-sexp-safe)
-            (define-key python-mode-map (kbd "C-c =") nil)))
+            (define-key python-mode-map (kbd "C-c =") nil)
+
+            (company-mode)
+            (make-local-variable 'company-backends)
+            ;;(add-to-list 'company-backends 'company-jedi)
+            ))
+
+;; Set up autocomplete
+(use-package company-jedi)
 
 (use-package elpy
   :commands (elpy-mode elpy-enable)
@@ -866,6 +873,12 @@
            (let ((pyenv-current-version (s-trim (f-read-text pyenv-version-path 'utf-8))))
              (pyenv-mode-set pyenv-current-version)
              (message (concat "Setting virtualenv to " pyenv-current-version))))))))
+
+(use-package lsp-python-ms
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-python-ms)
+                         (lsp))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
