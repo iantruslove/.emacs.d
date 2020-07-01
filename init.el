@@ -556,6 +556,9 @@
 ;; (use-package eval-sexp-fu
 ;;   :ensure t)
 
+(use-package makefile-runner
+  :commands makefile-runner)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Language Server Protocol
 
