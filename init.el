@@ -307,6 +307,8 @@
              er/mark-symbol))
 
 (use-package company
+  :config (progn (setq company-idle-delay 0)
+                 (setq company-minimum-prefix-length 1))
   :commands (company-mode))
 
 (use-package auto-complete
