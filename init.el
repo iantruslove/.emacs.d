@@ -757,16 +757,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Golang
 
-(use-package go-autocomplete
-  ;;:hook ((go-mode . 'auto-complete-for-go))
-  )
-
 (use-package go-mode
+  :after (exec-path-from-shell)
   :init (add-auto-mode 'go-mode "\\.go$")
-  :hook ((go-mode . auto-complete-mode)
+  :config (progn
+            (exec-path-from-shell-copy-env "GOPATH")
+            (exec-path-from-shell-copy-env "GOPRIVATE"))
+  :hook ((go-mode . lsp-deferred)
          (go-mode . (lambda ()
-                      (add-hook 'before-save-hook 'gofmt-before-save nil 'local))))
+                      ;;(add-hook 'before-save-hook 'gofmt-before-save nil 'local)
+                      (display-line-numbers-mode 1)
+                      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+                      (add-hook 'before-save-hook #'lsp-organize-imports t t))))
   :bind (:map go-mode-map
+              ("C-c C-c" . makefile-runner)
               ("M-." . godef-jump)))
 
 
