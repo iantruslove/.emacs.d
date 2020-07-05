@@ -953,8 +953,13 @@
 (use-package markdown-mode
   :defer t
   :pin melpa-stable
-  :hook ((markdown-mode . flyspell-mode))
-  :config (set-fill-column 78))
+  :config 
+  (set-fill-column 78)
+  (add-hook 'markdown-mode-hook
+            '(lambda ()
+               (turn-on-flyspell)
+               (flyspell-buffer))
+            'append))
 
 (use-package yaml-mode
   :defer t

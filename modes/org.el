@@ -84,7 +84,11 @@
 (setq org-startup-folded nil)
 
 ;; flyspell mode for spell checking everywhere
-(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+(add-hook 'org-mode-hook
+          '(lambda ()
+             (turn-on-flyspell)
+             (flyspell-buffer))
+          'append)
 
 ;; Disable keys in org-mode
 ;;    C-c [
