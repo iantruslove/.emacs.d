@@ -92,7 +92,7 @@
                                   :font "Noto Mono"
                                   :height 110)))
 
-(when (memq window-system '(mac ns))
+(when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
     :ensure t
     :config
