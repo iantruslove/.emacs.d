@@ -572,7 +572,27 @@
               ("M-." . lsp-find-definition)))
 
 (use-package lsp-ui
-  :commands lsp-ui-mode)
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-doc-enable t
+        lsp-ui-doc-use-childframe t
+        lsp-ui-doc-position 'top
+        lsp-ui-doc-alignment 'window
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-delay 1
+
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-code-actions t
+        lsp-ui-sideline-delay 1
+
+        lsp-ui-flycheck-enable t
+        lsp-ui-flycheck-list-position 'bottom
+
+        lsp-ui-peek-enable t
+        lsp-ui-peek-list-width 60
+        lsp-ui-peek-peek-height 25))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; elisp
