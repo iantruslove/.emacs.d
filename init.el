@@ -119,7 +119,7 @@
 
               ;; Split vertically a bit more often
               split-width-threshold 140
-              split-height-threshold 80
+              split-height-threshold 180
 
               x-select-enable-clipboard t ;; makes killing/yanking interact with the clipboard
               x-select-enable-primary t)
@@ -256,7 +256,8 @@
   :config
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
-                magit-auto-revert-mode t)
+                magit-auto-revert-mode t
+                magit-display-buffer-function 'magit-display-buffer-fullcolumn-most-v1)
   ;; Make the current branch label more prominent in the log view:
   ;;(set-face-background 'magit-branch-current "#004020")
   ;;(set-face-foreground 'magit-branch-current "#de935f")
