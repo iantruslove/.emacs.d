@@ -981,7 +981,7 @@
          (elasticsearch . t)
          (emacs-lisp . t)
          (gnuplot . t)
-         (http . t)
+         (http . t)  ;; See https://github.com/zweifisch/ob-http
          (js . t)
          (org . t)
          (plantuml . t)
