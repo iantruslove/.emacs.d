@@ -981,6 +981,8 @@
   (setq deft-directory "~/org"
         deft-recursive t))
 
+(use-package mermaid-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Other modes
 
