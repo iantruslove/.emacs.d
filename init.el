@@ -562,14 +562,16 @@
 (use-package makefile-runner
   :commands makefile-runner)
 
+(use-package jq-mode)  ;; M-x jq-interactively is awesome!
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Language Server Protocol
 
 (use-package lsp-mode
-  :init (setq lsp-keymap-prefix "C-c C-l")
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred)
-  :bind (:map lsp-mode-map
+    :init (setq lsp-keymap-prefix "C-c C-l")
+    :hook ((lsp-mode . lsp-enable-which-key-integration))
+    :commands (lsp lsp-deferred)
+    :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)))
 
 (use-package lsp-ui
