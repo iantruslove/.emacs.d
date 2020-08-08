@@ -459,11 +459,11 @@
   (setq-default save-place t)
   (setq save-place-file (concat user-emacs-directory "places")))
 
-(use-package editorconfig
-  :ensure t
-  :diminish
-  :config
-  (editorconfig-mode 1))
+;; (use-package editorconfig
+;;   :ensure t
+;;   :diminish
+;;   :config
+;;   (editorconfig-mode 1))
 
 (use-package avy-flycheck
   :defer t
