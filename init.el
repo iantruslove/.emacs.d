@@ -239,7 +239,9 @@
   (projectile-global-mode))
 
 (use-package ag
-  :ensure t)
+  :ensure t
+  :config
+  (setq ag-arguments '("--smart-case" "--stats" "--hidden")))
 
 (use-package keychain-environment
   :demand
