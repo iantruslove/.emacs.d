@@ -568,16 +568,16 @@
 ;; Language Server Protocol
 
 (use-package lsp-mode
-    :init (setq lsp-keymap-prefix "C-c C-l")
-    :hook ((lsp-mode . lsp-enable-which-key-integration))
-    :commands (lsp lsp-deferred)
-    :bind (:map lsp-mode-map
+  :init (setq lsp-keymap-prefix "C-c C-l")
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :commands (lsp lsp-deferred)
+  :bind (:map lsp-mode-map
               ("M-." . lsp-find-definition)))
 
 (use-package lsp-ui
-    :commands lsp-ui-mode
-    :config
-    (setq lsp-ui-doc-enable t
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
         lsp-ui-doc-use-childframe t
         lsp-ui-doc-position 'top
         lsp-ui-doc-alignment 'window
