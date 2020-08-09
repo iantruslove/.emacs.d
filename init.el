@@ -921,6 +921,7 @@
   :after (lsp-mode)
   :hook ((rust-mode . flycheck-mode)
          (rust-mode . lsp)
+         (rust-mode . smartparens-mode)
          (flycheck-mode . flycheck-rust-setup))
   :config (progn
             (setq rust-format-on-save t)
