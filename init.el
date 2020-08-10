@@ -89,8 +89,8 @@
                                   :height 120)
               (setq-default line-spacing 1))))
   ('gnu/linux (set-face-attribute 'default nil
-                                  :font "Noto Mono"
-                                  :height 110)))
+                                  :font "Noto Sans Mono Light"
+                                  :height 90)))
 
 (when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
