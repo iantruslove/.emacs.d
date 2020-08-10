@@ -586,6 +586,7 @@
         lsp-ui-sideline-show-diagnostics t
         lsp-ui-sideline-show-code-actions t
         lsp-ui-sideline-delay 1
+        lsp-ui-sideline-global '((t (:background "black")))
 
         lsp-ui-flycheck-enable t
         lsp-ui-flycheck-list-position 'bottom
@@ -959,7 +960,7 @@
 (use-package markdown-mode
   :defer t
   :pin melpa-stable
-  :config 
+  :config
   (set-fill-column 78)
   (add-hook 'markdown-mode-hook
             '(lambda ()
