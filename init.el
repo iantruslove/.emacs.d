@@ -253,7 +253,7 @@
 
 (use-package magit
   :defer t
-  :pin melpa-stable
+  :pin melpa
   :bind ("C-c g" . magit-status)
   :config
   (setq-default magit-process-popup-time 10
@@ -270,6 +270,7 @@
   :defer t)
 
 (use-package highlight-symbol
+  :pin melpa
   :diminish highlight-symbol-mode
   :bind (("M-n" . highlight-symbol-next)
          ("M-p" . highlight-symbol-prev)
