@@ -822,7 +822,8 @@
             ))
 
 ;; Set up autocomplete
-(use-package company-jedi)
+;; (use-package company-jedi)
+
 
 (use-package elpy
   :commands (elpy-mode elpy-enable)
