@@ -867,11 +867,11 @@
              (pyenv-mode-set pyenv-current-version)
              (message (concat "Setting virtualenv to " pyenv-current-version))))))))
 
-(use-package lsp-python-ms
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp))))
+;; (use-package lsp-python-ms
+;;   :init (setq lsp-python-ms-auto-install-server t)
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-python-ms)
+;;                          (lsp))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
