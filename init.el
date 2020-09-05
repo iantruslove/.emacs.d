@@ -311,7 +311,7 @@
              er/mark-symbol))
 
 (use-package company
-  :config (progn (setq company-idle-delay 0)
+  :config (progn (setq company-idle-delay 1)
                  (setq company-minimum-prefix-length 1))
   :commands (company-mode))
 
