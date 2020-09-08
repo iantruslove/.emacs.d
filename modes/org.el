@@ -609,7 +609,7 @@
       (quote (("t" "todo" entry (file refile)
                "* TODO %?\n%U\n%a\n"
                :clock-in t :clock-resume t)
-              ("r" "respond" entry (file refile)
+              ("d" "respond" entry (file refile)
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
                :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file+datetree journal)
@@ -617,6 +617,9 @@
                :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree journal)
                "* %?\n%U\n"
+               :clock-in t :clock-resume t)
+              ("r" "Review" entry (file+datetree journal)
+               "* Review\n%U\n** What did I achieve today? :wdiat:\n*** %?\n** What did I learn today? :wdilt:\n*** \n** What do I need to do tomorrow?\n*** TODO \n"
                :clock-in t :clock-resume t)
               ("w" "org-protocol" entry (file refile)
                "* TODO Review %c\n%U\n"
