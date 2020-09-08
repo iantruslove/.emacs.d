@@ -977,6 +977,8 @@
 
 (use-package es-mode)
 
+(use-package ob-mermaid)
+
 (org-babel-do-load-languages
  (quote org-babel-load-languages)
  (quote ((clojure . t)
@@ -987,6 +989,7 @@
          (gnuplot . t)
          (http . t)  ;; See https://github.com/zweifisch/ob-http
          (js . t)
+         (mermaid . t)
          (org . t)
          (plantuml . t)
          (python . t)
