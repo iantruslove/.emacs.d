@@ -966,8 +966,7 @@
 (use-package markdown-mode
   :defer t
   :pin melpa-stable
-  :config
-  (set-fill-column 78))
+  :config (set-fill-column 78))
 
 (use-package yaml-mode
   :defer t
