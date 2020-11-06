@@ -147,11 +147,13 @@
   ;; ispell-extra-args contains ACTUAL parameters passed to aspell
   (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
 
-
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
+
+;; dired settings
+(setq-default dired-listing-switches "-alh")
 
 (use-package smooth-scrolling
   :config
