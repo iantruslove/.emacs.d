@@ -187,6 +187,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operations
 
+(use-package popwin
+  :commands popwin-mode
+  :init (popwin-mode 1)
+  :config (progn
+            (global-set-key (kbd "C-x C-p") 'popwin:select-popup-window)
+            (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+            (push '("*magit-process*" :stick t) popwin:special-display-config)
+            (push '(direx:direx-mode :position left :width 40 :dedicated t) popwin:special-display-config)
+            (push '("*Occur*" :stick t) popwin:special-display-config)))
+
+(use-package direx
+  :bind ("C-x C-j" . direx:jump-to-directory-other-window))
+
 (use-package recentf
   :config
   (setq recentf-save-file (concat user-emacs-directory ".recentf")
