@@ -961,15 +961,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markup and text formatting
 
-(add-hook 'text-mode-hook
-          '(lambda ()
-             (turn-on-flyspell)
-             (flyspell-buffer))
-          'append)
-
 (use-package markdown-mode
   :defer t
   :pin melpa-stable
+  :hook (markdown-mode . (lambda ()
+                           (turn-on-flyspell)
+                           (flyspell-buffer)))
   :config (set-fill-column 78))
 
 (use-package yaml-mode
