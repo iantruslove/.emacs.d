@@ -152,9 +152,6 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 
-;; dired settings
-(setq-default dired-listing-switches "-alh")
-
 (use-package smooth-scrolling
   :config
   (smooth-scrolling-mode 1)
@@ -186,6 +183,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operations
+
+;; dired settings
+(setq-default dired-listing-switches "-alh")
 
 (use-package popwin
   :commands popwin-mode
