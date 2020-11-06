@@ -182,6 +182,8 @@
 (desktop-save-mode 1)
 (setq-default history-length 1000)
 
+(use-package diminish)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operations
 
