@@ -721,6 +721,25 @@
   :config
   (setq scss-compile-at-save nil))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Javascript
+;; (use-package js2-mode)
+(setq js-indent-level 2)
+
+(use-package prettier
+  :hook ((typescript-mode . prettier-mode)
+         (json-mode . prettier-mode))
+  :diminish prettier-mode
+  :bind ("C-c n" . prettier-prettify))
+
+;; Typescript
+(use-package typescript-mode
+  :mode "\\.tsx?$"
+  :hook ((typescript-mode . lsp)
+         (typescript-mode . display-line-numbers-mode)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
 
