@@ -276,7 +276,7 @@
   (setq-default magit-process-popup-time 10
                 magit-diff-refine-hunk nil
                 magit-auto-revert-mode t
-                magit-display-buffer-function 'magit-display-buffer-fullcolumn-most-v1)
+                magit-display-buffer-function 'magit-display-buffer-traditional)
   ;; Make the current branch label more prominent in the log view:
   ;;(set-face-background 'magit-branch-current "#004020")
   ;;(set-face-foreground 'magit-branch-current "#de935f")
