@@ -192,7 +192,8 @@
   :init (popwin-mode 1)
   :config (progn
             (global-set-key (kbd "C-x C-p") 'popwin:select-popup-window)
-            (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+            ;;(push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+            (push '("*Help*" :position right :width 80 :dedicated t) popwin:special-display-config)
             (push '("*magit-process*" :stick t) popwin:special-display-config)
             (push '(direx:direx-mode :position left :width 40 :dedicated t) popwin:special-display-config)
             (push '("*Occur*" :stick t) popwin:special-display-config)))
