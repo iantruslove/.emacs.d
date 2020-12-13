@@ -1008,14 +1008,11 @@
 
 (use-package highlight-indentation
   :defer t
-  :config
-  (add-hook 'web-mode-hook #'highlight-indent-guides-mode)
-  (add-hook 'web-mode-hook #'highlight-indentation-current-column-mode)
-
-  (add-hook 'html-mode-hook #'highlight-indent-guides-mode)
-  (add-hook 'html-mode-hook #'highlight-indentation-current-column-mode)
-
-  (add-hook 'yaml-mode-hook #'highlight-indentation-current-column-mode))
+  :hook ((web-mode . highlight-indent-guides-mode)
+         (web-mode . highlight-indentation-current-column-mode)
+         (html-mode . highlight-indent-guides-mode)
+         (html-mode . highlight-indentation-current-column-mode)
+         (yaml-mode . highlight-indentation-current-column-mode)))
 
 (use-package graphviz-dot-mode
   :defer t)
