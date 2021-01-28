@@ -722,15 +722,14 @@
 (setq js-indent-level 2)
 
 (use-package prettier
-  :hook ((typescript-mode . prettier-mode)
-         (json-mode . prettier-mode))
-  :diminish prettier-mode
-  :bind ("C-c n" . prettier-prettify))
+  ;; global-prettier-mode only loads prettier for major modes it knows about
+  :hook (after-init-hook . global-prettier-mode))
 
 ;; Typescript
 (use-package typescript-mode
   :mode "\\.tsx?$"
-  :hook ((typescript-mode . lsp)
+  :hook ((typescript-mode . prettier-mode)
+         (typescript-mode . lsp)
          (typescript-mode . display-line-numbers-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -910,6 +909,7 @@
   :pin melpa-stable)
 
 (use-package terraform-mode
+  :hook (terraform-mode . terraform-format-on-save-mode)
   :defer t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
