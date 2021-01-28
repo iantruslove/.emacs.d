@@ -971,6 +971,16 @@
   :mode "\\.toml\\'")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; protobufs
+(defconst ian/protobuf-style
+  '((c-basic-offset . 2)
+    (indent-tabs-mode . nil)))
+
+(use-package protobuf-mode
+  :pin melpa-stable
+  :hook (protobuf-mode . (lambda () (c-add-style "ian-protobuf-style" ian/protobuf-style t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Markup and text formatting
 
 ;; Spelling - from http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
