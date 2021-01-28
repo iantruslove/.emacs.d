@@ -556,9 +556,6 @@
 ;; (use-package eval-sexp-fu
 ;;   :ensure t)
 
-(use-package makefile-runner
-  :commands makefile-runner)
-
 (use-package jq-mode)  ;; M-x jq-interactively is awesome!
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
