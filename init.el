@@ -175,19 +175,33 @@
 ;; dired settings
 (setq-default dired-listing-switches "-alh")
 
-(use-package popwin
-  :commands popwin-mode
-  :init (popwin-mode 1)
+(use-package treemacs
+  :pin melpa
+  :bind ("C-x C-j d" . treemacs)
   :config (progn
-            (global-set-key (kbd "C-x C-p") 'popwin:select-popup-window)
-            ;;(push '("*Help*" :stick t :noselect t) popwin:special-display-config)
-            (push '("*Help*" :position right :width 80 :dedicated t) popwin:special-display-config)
-            (push '("*magit-process*" :stick t) popwin:special-display-config)
-            (push '(direx:direx-mode :position left :width 40 :dedicated t) popwin:special-display-config)
-            (push '("*Occur*" :stick t) popwin:special-display-config)))
+            (treemacs-resize-icons 16)
+            (treemacs-follow-mode t)
+            (treemacs-filewatch-mode t)
+            (treemacs-fringe-indicator-mode 'always)))
 
-(use-package direx
-  :bind ("C-x C-j" . direx:jump-to-directory-other-window))
+(use-package treemacs-projectile
+  :pin melpa
+  :after treemacs projectile
+  :ensure t)
+
+;; (use-package treemacs-icons-dired
+;;   :pin melpa
+;;   :after treemacs dired
+;;   :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-magit
+  :pin melpa
+  :after treemacs magit
+  :ensure t)
+
+(use-package lsp-treemacs
+  :after treemacs lsp
+  :pin melpa)
 
 (use-package recentf
   :config
