@@ -79,6 +79,12 @@
   (ad-set-arg 0 t))
 (ad-activate 'quit-window)
 
+;; Set up windmove to bop around between windows quickly
+(global-set-key (kbd "S-<left>")  'windmove-left)
+(global-set-key (kbd "S-<right>") 'windmove-right)
+(global-set-key (kbd "S-<up>")    'windmove-up)
+(global-set-key (kbd "S-<down>")  'windmove-down)
+
 ;; Set font based on system type
 (pcase system-type
   ;; Download: http://www.1001freefonts.com/roboto_mono.font
