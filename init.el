@@ -750,7 +750,8 @@
   :mode "\\.tsx?$"
   :hook ((typescript-mode . prettier-mode)
          (typescript-mode . lsp)
-         (typescript-mode . display-line-numbers-mode)))
+         (typescript-mode . display-line-numbers-mode)
+         (typescript-mode . smartparens-mode)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
