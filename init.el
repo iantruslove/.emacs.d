@@ -195,6 +195,19 @@
 
 (use-package diminish)
 
+;; Scratch buffer:
+(setq initial-major-mode 'markdown-mode)
+(setq initial-scratch-message "\
+# Scratch
+
+<!--
+This buffer is for notes you don't want to save. If If you want
+to create a file, visit that file with, C-x C-f then enter the
+text in that file's own buffer.
+-->
+
+")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Operations
 
