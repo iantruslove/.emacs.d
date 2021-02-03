@@ -749,9 +749,17 @@
 (use-package typescript-mode
   :mode "\\.tsx?$"
   :hook ((typescript-mode . prettier-mode)
-         (typescript-mode . lsp)
          (typescript-mode . display-line-numbers-mode)
-         (typescript-mode . smartparens-mode)))
+         (typescript-mode . smartparens-mode)
+         ;;(typescript-mode . lsp)
+         (typescript-mode . (lambda ()
+                              (lsp)
+                              ;; The chained eslint can get a bit weird because prettier
+                              ;; reformats the buffer on save and there's a race.
+                              ;; So, slow flycheck down:
+                              (setq flycheck-idle-change-delay 1.0)
+                              (when (flycheck-may-enable-checker 'javascript-eslint)
+                                (flycheck-add-next-checker 'lsp 'javascript-eslint))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
