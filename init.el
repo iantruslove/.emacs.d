@@ -218,7 +218,8 @@ text in that file's own buffer.
   :pin melpa
   :bind ("C-x C-j d" . treemacs)
   :config (progn
-            (treemacs-resize-icons 16)
+            (if window-system
+                (treemacs-resize-icons 16))
             (treemacs-follow-mode t)
             (treemacs-filewatch-mode t)
             (treemacs-fringe-indicator-mode 'always)))
