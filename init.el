@@ -643,7 +643,10 @@ text in that file's own buffer.
         lsp-ui-sideline-show-diagnostics t
         lsp-ui-sideline-show-code-actions t
         lsp-ui-sideline-delay 1
-        lsp-ui-sideline-global '((t (:background "black")))
+
+        lsp-ui-sideline-current-symbol '((t (:foreground "white" :weight ultra-bold :height 0.99)))
+        lsp-ui-sideline-global '((t (:background "#004000")))
+        lsp-ui-sideline-symbol '((t (:foreground "grey" :height 0.5)))
 
         lsp-ui-flycheck-enable t
         lsp-ui-flycheck-list-position 'bottom
