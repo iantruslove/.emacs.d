@@ -201,8 +201,8 @@
 # Scratch
 
 <!--
-This buffer is for notes you don't want to save. If If you want
-to create a file, visit that file with, C-x C-f then enter the
+This buffer is for notes you don't want to save. If you want
+to create a file, visit that file with C-x C-f then enter the
 text in that file's own buffer.
 -->
 
@@ -790,7 +790,7 @@ text in that file's own buffer.
 
 ;; Typescript
 (use-package typescript-mode
-  :mode "\\.tsx?$"
+  :mode ("\\.ts\\'" "\\.tsx\\'")
   :hook ((typescript-mode . prettier-mode)
          (typescript-mode . display-line-numbers-mode)
          (typescript-mode . smartparens-mode)
