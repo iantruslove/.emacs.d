@@ -366,7 +366,6 @@
                             (org-agenda-sorting-strategy
                              '(priority-down todo-state-down effort-up category-keep))))
 
-
                 (tags-todo "-HOLD-CANCELLED/!"
                            ((org-agenda-overriding-header "Projects")
                             (org-agenda-skip-function 'bh/skip-non-projects)
@@ -536,7 +535,7 @@
                             ("@cambium"  . ?C)
                             ("@office" . ?O)
                             ("@home" . ?H)
-                            ("@whiteops" . ?W)
+                            ("@work" . ?W)
                             (:endgroup)
 
                             (:startgroup)
@@ -609,63 +608,41 @@
       (quote (("t" "todo" entry (file refile)
                "* TODO %?\n%U\n%a\n"
                :clock-in t :clock-resume t)
-              ("d" "respond" entry (file refile)
-               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
-               :clock-in t :clock-resume t :immediate-finish t)
+
               ("n" "note" entry (file+datetree journal)
                "* %? :NOTE:\n%U\n"
                :clock-in t :clock-resume t)
+
               ("j" "Journal" entry (file+datetree journal)
                "* %?\n%U\n"
                :clock-in t :clock-resume t)
-              ("r" "Review" entry (file+datetree journal)
+
+              ("m" "Meeting" entry (file+datetree journal)
+               "* MEETING %? :meeting:\n%U"
+               :clock-in t :clock-resume t)
+
+              ("e" "Email" entry (file refile)
+               "* EMAIL %? :email:\n%U"
+               :clock-in t :clock-resume t)
+
+              ("r" "Code Review" entry (file+datetree journal)
+               "* Code Review: %?  :code_review:\n%U\n"
+               :clock-in t :clock-resume t)
+
+              ("R" "Daily Review" entry (file+datetree journal)
                "* Review\n%U\n** What did I achieve today? :wdiat:\n*** %?\n** What did I learn today? :wdilt:\n*** \n** What do I need to do tomorrow?\n*** TODO \n"
                :clock-in t :clock-resume t)
+
+              ("d" "respond" entry (file refile)
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
+               :clock-in t :clock-resume t :immediate-finish t)
+
               ("w" "org-protocol" entry (file refile)
                "* TODO Review %c\n%U\n"
                :immediate-finish t)
-              ("m" "Meeting" entry (file refile)
-               "* MEETING with %? :meeting:\n%U"
-               :clock-in t :clock-resume t)
-              ("p" "Phone call" entry (file refile)
-               "* PHONE %? :PHONE:\n%U"
-               :clock-in t :clock-resume t)
+
               ("h" "Habit" entry (file refile)
                "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
-
-;; (setq org-capture-templates
-;;       `(
-;;         ;; ("T" "Detailed Task" entry
-;;         ;;  (file+headline organizer "Inbox")
-;;         ;;  ,my/org-basic-task-template)
-;;         ("T" "Quick organizer TODO" entry
-;;          (file+headline organizer "Inbox")
-;;          "* TODO %^{Task}\n\n"
-;;          :immediate-finish t)
-
-;;         ("t" "Quick journal TODO" entry
-;;          (file+datetree journal)
-;;          "* TODO %^{Task}\n\n"
-;;          :empty-lines 1
-;;          :immediate-finish t)
-
-;;         ("c" "Quick Cambium TODO" entry
-;;          (file+headline cambium-organizer "Cambium Inbox")
-;;          "* TODO %^{Task}\n\n"
-;;          :empty-lines 1
-;;          :immediate-finish t)
-
-;;         ("j" "Quick Journal Entry" entry
-;;          (file+datetree journal)
-;;          "* %^{Title}\n\n"
-;;          :empty-lines 1
-;;          :immediate-finish t)
-
-;;         ;; ("J" "Context-specific Journal Entry"
-;;         ;;  entry (file+datetree journal)
-;;         ;;  "* %?\n:PROPERTIES:\n:Captured:[%<%H:%M>]\n:END:\n\n  %i\n\n  From: %a"
-;;         ;;  :empty-lines 1)
-;;         ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; CLOCKING
@@ -699,7 +676,7 @@
 ;; Include current clocking task in clock reports
 (setq org-clock-report-include-clocking-task t)
 
-(setq bh/keep-clock-running nil)
+(setq bh/keep-clock-running t)
 
 (add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
 
@@ -1008,7 +985,6 @@
   "#+begin_" str "\n"
   _ - \n
   "#+end_" str "\n")
-
 (define-abbrev org-mode-abbrev-table "sblk" "" 'skel-org-block)
 
 ;; splantuml - PlantUML Source block
@@ -1018,7 +994,6 @@
   "#+begin_src plantuml :file " str ".png :cache yes\n"
   _ - \n
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "splantuml" "" 'skel-org-block-plantuml)
 
 (define-skeleton skel-org-block-plantuml-activity
@@ -1037,7 +1012,6 @@
   _ - \n
   "@enduml\n"
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "sact" "" 'skel-org-block-plantuml-activity)
 
 (define-skeleton skel-org-block-plantuml-activity-if
@@ -1050,7 +1024,6 @@
   "else\n"
   "end if\n"
   "--> ==IF" ifn "M2==")
-
 (define-abbrev org-mode-abbrev-table "sif" "" 'skel-org-block-plantuml-activity-if)
 
 (define-skeleton skel-org-block-plantuml-activity-for
@@ -1060,7 +1033,6 @@
   "note left: Loop" loopn ": For each " str "\n"
   "--> ==ENDLOOP" loopn "==\n"
   "note left: Loop" loopn ": End for each " str "\n" )
-
 (define-abbrev org-mode-abbrev-table "sfor" "" 'skel-org-block-plantuml-activity-for)
 
 (define-skeleton skel-org-block-plantuml-sequence
@@ -1077,7 +1049,6 @@
   _ - \n
   "@enduml\n"
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "sseq" "" 'skel-org-block-plantuml-sequence)
 
 ;; sdot - Graphviz DOT block
@@ -1089,7 +1060,6 @@
   _ - \n
   "}\n"
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "sdot" "" 'skel-org-block-dot)
 
 ;; sditaa - Ditaa source block
@@ -1099,7 +1069,6 @@
   "#+begin_src ditaa :file " str ".png :cache yes\n"
   _ - \n
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "sditaa" "" 'skel-org-block-ditaa)
 
 ;; selisp - Emacs Lisp source block
@@ -1109,7 +1078,6 @@
   "#+begin_src emacs-lisp\n"
   _ - \n
   "#+end_src\n")
-
 (define-abbrev org-mode-abbrev-table "selisp" "" 'skel-org-block-elisp)
 
 
