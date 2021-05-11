@@ -125,6 +125,12 @@
                                   ;; "Noto Sans Mono Light"
                                   :height 90)))
 
+;; Set modifier keys on mac
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-modifier 'meta)
+      (setq mac-command-modifier 'hyper)))
+
 (when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
     :ensure t
