@@ -117,11 +117,16 @@
   ;; default font size (point * 10)
   ('darwin ((lambda ()
               (set-face-attribute 'default nil
-                                  :font "Roboto Mono"
+                                  :font
+                                  ;; "Roboto Mono for Powerline"
+                                  ;; "Roboto Mono"
+                                  "Inconsolata for Powerline"
                                   :height 120)
               (setq-default line-spacing 1))))
   ('gnu/linux (set-face-attribute 'default nil
-                                  :font "Droid Sans Mono" ;;"Noto Sans Mono Light"
+                                  :font
+                                  "Droid Sans Mono"
+                                  ;; "Noto Sans Mono Light"
                                   :height 90)))
 
 (when (memq window-system '(mac ns x))
