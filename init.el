@@ -820,6 +820,13 @@ text in that file's own buffer.
                               (when (flycheck-may-enable-checker 'javascript-eslint)
                                 (flycheck-add-next-checker 'lsp 'javascript-eslint))))))
 
+;; PHP
+(use-package php-mode
+  :mode ("\\.php\\’" . php-mode)
+  :hook (php-mode . (lambda ()
+                      (display-line-numbers-mode)
+                      (lsp))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
 
