@@ -790,8 +790,15 @@ text in that file's own buffer.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Javascript
-;; (use-package js2-mode)
 (setq js-indent-level 2)
+(add-hook 'js-mode-hook (lambda ()
+                          (lsp)
+                          (smartparens-mode)
+                          (display-line-numbers-mode)
+                          (git-gutter-mode)
+                          (setq flycheck-idle-change-delay 1.0)
+                          (when (flycheck-may-enable-checker 'javascript-eslint)
+                            (flycheck-add-next-checker 'lsp 'javascript-eslint))))
 
 (use-package prettier
   ;; global-prettier-mode only loads prettier for major modes it knows about
