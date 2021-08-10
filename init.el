@@ -336,6 +336,8 @@ text in that file's own buffer.
 (use-package gist
   :defer t)
 
+(use-package git-gutter)
+
 (use-package highlight-symbol
   :pin melpa
   :diminish highlight-symbol-mode
