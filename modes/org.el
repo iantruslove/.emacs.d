@@ -3,6 +3,7 @@
 ;; org-mode-user-lisp-path
 ;;
 (if (boundp 'org-mode-user-lisp-path)
+
     (add-to-list 'load-path org-mode-user-lisp-path)
   (add-to-list 'load-path (expand-file-name "~/.emacs.d/modes/")))
 
@@ -193,10 +194,6 @@
 (setq org-return-follows-link t)
 
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button)))) t))
 
 (setq org-remove-highlights-with-change t)
@@ -604,6 +601,7 @@
 
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+;; See documentation at https://orgmode.org/manual/Capture-templates.html
 (setq org-capture-templates
       (quote (("t" "todo" entry (file refile)
                "* TODO %?\n%U\n%a\n"
@@ -621,7 +619,7 @@
                "* MEETING %? :meeting:\n%U"
                :clock-in t :clock-resume t)
 
-              ("e" "Email" entry (file refile)
+              ("e" "Email" entry (file+datetree journal)
                "* EMAIL %? :email:\n%U"
                :clock-in t :clock-resume t)
 
@@ -629,11 +627,23 @@
                "* Code Review: %?  :code_review:\n%U\n"
                :clock-in t :clock-resume t)
 
+              ("D" "Daily Planning" entry (file+datetree journal)
+               (file "~/.emacs.d/modes/org-capture-daily-planning.org")
+               :clock-in t :clock-resume t)
+
+              ("W" "Weely Planning" entry (file+datetree journal)
+               (file "~/.emacs.d/modes/org-capture-weekly-planning.org")
+               :clock-in t :clock-resume t)
+
               ("R" "Daily Review" entry (file+datetree journal)
                "* Review\n%U\n** What did I achieve today? :wdiat:\n*** %?\n** What did I learn today? :wdilt:\n*** \n** What do I need to do tomorrow?\n*** TODO \n"
                :clock-in t :clock-resume t)
 
-              ("d" "respond" entry (file refile)
+              ("s" "shoutout" entry (file+datetree journal)
+               "* @%? :shoutout:\n%U\n"
+               :clock-in t :clock-resume t)
+
+              ("d" "respond" entry (file+datetree journal)
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
                :clock-in t :clock-resume t :immediate-finish t)
 
@@ -678,9 +688,10 @@
 
 (setq bh/keep-clock-running t)
 
-(add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
+(setq org-clock-idle-time 15)
+(setq org-time-stamp-rounding-minutes (quote (0 5)))
 
-(setq org-time-stamp-rounding-minutes (quote (1 1)))
+(add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
 
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
@@ -982,9 +993,9 @@
 (define-skeleton skel-org-block
   "Insert an org block, querying for type."
   "Type: "
-  "#+begin_" str "\n"
+  "#+BEGIN_" str "\n"
   _ - \n
-  "#+end_" str "\n")
+  "#+END_" str "\n")
 (define-abbrev org-mode-abbrev-table "sblk" "" 'skel-org-block)
 
 ;; splantuml - PlantUML Source block
