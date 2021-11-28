@@ -824,8 +824,10 @@ text in that file's own buffer.
 (use-package php-mode
   :mode ("\\.php\\’" . php-mode)
   :hook (php-mode . (lambda ()
+                      (prettier-mode)
                       (display-line-numbers-mode)
                       (lsp))))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Common Lisp
