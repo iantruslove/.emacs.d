@@ -804,6 +804,9 @@ text in that file's own buffer.
   ;; global-prettier-mode only loads prettier for major modes it knows about
   :hook (after-init-hook . global-prettier-mode))
 
+(use-package prettier-js
+  :hook (js-mode . prettier-js-mode))
+
 ;; Typescript
 (use-package typescript-mode
   :mode ("\\.ts\\'" "\\.tsx\\'")
