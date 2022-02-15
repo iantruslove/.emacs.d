@@ -1110,13 +1110,13 @@ text in that file's own buffer.
   :defer t
   :pin melpa-stable)
 
-(use-package highlight-indentation
-  :defer t
-  :hook ((web-mode . highlight-indent-guides-mode)
-         (web-mode . highlight-indentation-current-column-mode)
-         (html-mode . highlight-indent-guides-mode)
-         (html-mode . highlight-indentation-current-column-mode)
-         (yaml-mode . highlight-indentation-current-column-mode)))
+;; (use-package highlight-indentation
+;;   :defer t
+;;   :hook ((web-mode . highlight-indent-guides-mode)
+;;          (web-mode . highlight-indentation-current-column-mode)
+;;          (html-mode . highlight-indent-guides-mode)
+;;          (html-mode . highlight-indentation-current-column-mode)
+;;          (yaml-mode . highlight-indentation-current-column-mode)))
 
 (use-package graphviz-dot-mode
   :defer t)
