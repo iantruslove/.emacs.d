@@ -820,6 +820,17 @@ text in that file's own buffer.
                               (when (flycheck-may-enable-checker 'javascript-eslint)
                                 (flycheck-add-next-checker 'lsp 'javascript-eslint))))))
 
+;; (use-package vue-mode
+;;   :mode "\\.vue\\'"
+;;   :config
+;;   (add-hook 'vue-mode-hook #'lsp))
+
+(use-package mmm-mode
+  :mode ("\\.vue\\'" "\\.vuex\\'")
+  :init (setq mmm-global-mode 'maybe)
+  :config
+  (mmm-add-mode-ext-class 'web-mode "\\.vue\\'" 'javascript-mode))
+
 ;; PHP
 (use-package php-mode
   :mode ("\\.php\\’" . php-mode)
@@ -996,6 +1007,7 @@ text in that file's own buffer.
   (add-auto-mode 'web-mode
                  "*html*" "*twig*" "*tmpl*" "\\.erb" "\\.rhtml$" "\\.ejs$" "\\.hbs$"
                  "\\.ctp$" "\\.tpl$"
+                 "\\.vue$" "\\.vuex$"
                  "/\\(views\\|html\\|templates\\)/.*\\.php$")
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
