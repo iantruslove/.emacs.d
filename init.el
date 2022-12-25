@@ -1146,8 +1146,11 @@ text in that file's own buffer.
 (use-package mermaid-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Other modes
+;; Infra
 
+(use-package k8s-mode
+  :ensure t
+  :hook (k8s-mode . yas-minor-mode))
 
 (use-package dockerfile-mode
   :defer t
