@@ -746,12 +746,12 @@ text in that file's own buffer.
 
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
-(use-package clj-refactor
-  :defer t
-  :hook clojure-mode
-  :config
-  (cljr-add-keybindings-with-prefix "C-c C-m")
-  (setq cljr-favor-prefix-notation nil))
+;; (use-package clj-refactor
+;;   :defer t
+;;   :hook clojure-mode
+;;   :config
+;;   (cljr-add-keybindings-with-prefix "C-c C-m")
+;;   (setq cljr-favor-prefix-notation nil))
 
 ;;(add-hook 'cider-mode-hook #'eldoc-mode)  ;; this is terrible in CLJS
 
