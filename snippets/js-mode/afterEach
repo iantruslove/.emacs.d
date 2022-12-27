@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: afterEach (Mocha test)
+# key: afterEach
+# --
+afterEach(function () {
+  $0
+});

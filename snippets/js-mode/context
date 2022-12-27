@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: context (Mocha test)
+# key: context
+# --
+context('$1', function () {
+  $0
+});

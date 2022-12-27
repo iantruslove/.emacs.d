@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: before (Mocha test)
+# key: before
+# --
+before(function () {
+  $0
+});

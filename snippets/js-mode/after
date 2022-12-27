@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: after (Mocha test)
+# key: after
+# --
+after(function () {
+  $0
+});
