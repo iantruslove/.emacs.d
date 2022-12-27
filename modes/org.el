@@ -23,7 +23,6 @@
 (setq org-directory "~/org/")
 
 (defvar organizer (concat org-directory "organizer.org"))
-(defvar cambium-organizer (concat org-directory "cambium/cambium-organizer.org"))
 (defvar journal (concat org-directory "journal.org"))
 (defvar refile (concat org-directory "refile.org"))
 
@@ -292,24 +291,31 @@
 
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      (quote (("P" "Project View"
-               ((tags "NOTE"
-                      ((org-agenda-overriding-header "Notes")
-                       (org-tags-match-list-sublevels t)))
-                (tags "DECISION"
-                      ((org-agenda-overriding-header "Decisions")
-                       (org-tags-match-list-sublevels t)))
-                (tags "TECH_DEBT"
-                      ((org-agenda-overriding-header "Tech Debt")
-                       (org-tags-match-list-sublevels t)))
-                (tags-todo "DEADLINE<\"<now>\""
-                           ((org-agenda-overriding-header "Overdue Tasks")))
-                (tags-todo "-HOLD-CANCELLED/!"
-                           ((org-agenda-overriding-header "Tasks")
+      (quote (("G" "Goal View"
+
+               (;; (agenda ""
+                ;;         ((org-agenda-span 1)
+                ;;          (org-agenda-time-grid nil)
+                ;;          (org-agenda-show-all-dates nil)
+                ;;          (org-agenda-skip-function
+                ;;           '(my/org-agenda-skip-without-match "+projects"))
+                ;;          (org-agenda-entry-types '(:deadline)) ;; this entry excludes :scheduled
+                ;;          (org-deadline-warning-days 1000) ))
+
+                (tags-todo "TODO=\"NEXT\"+goals+current|TODO=\"TODO\"+goals+current"
+                           ((org-agenda-overriding-header "Active Goals")
+                            (org-agenda-hide-tags-regexp "goal\\|current\\|scope_")
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+
+                (tags-todo "TODO=\"NEXT\"+projects+strategic|TODO=\"TODO\"+projects+strategic"
+                           ((org-agenda-overriding-header "Strategic Projects (goal-supporting)")
+                            (org-agenda-hide-tags-regexp "projects\\|strategic")
                             ;;(org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
-                             '(category-keep))))))
+                             '(deadline-down category-keep))))
+                ))
 
               ("N" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
@@ -330,19 +336,22 @@
 
               ("A" "Agenda"
                ((agenda "" nil)
+
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
+                       (org-agenda-hide-tags-regexp "REFILE")
                        (org-tags-match-list-sublevels t)))
 
                 (tags-todo "DEADLINE<\"<now>\""
                            ((org-agenda-overriding-header "Overdue Tasks")))
 
-                (tags-todo "-CANCELLED+TODO=\"NEXT\"|-CANCELLED+PRIORITY=\"A\""
+                (tags-todo "-CANCELLED+TODO=\"NEXT\"-{^@.*}|-CANCELLED+PRIORITY=\"A\"-{^@.*}"
                            ((org-agenda-overriding-header (concat "Project Next and High Priority Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
+                                                                    " (including BLOCKED and SCHEDULED tasks)")))
                             (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+                            (org-agenda-hide-tags-regexp "projects")
                             (org-tags-match-list-sublevels t)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
@@ -350,49 +359,56 @@
                             (org-agenda-sorting-strategy
                              '(todo-state-down priority-down effort-up category-keep))))
 
-
-                (tags-todo "-REFILE+TODO=\"NEXT\"|-REFILE+TODO=\"TODO\"+PRIORITY=\"A\""
-                           ((org-agenda-overriding-header (concat "Next and High Priority Standalone Tasks"
+                (tags-todo "-REFILE+TODO=\"NEXT\"-{^@.*}|-REFILE+TODO=\"TODO\"+PRIORITY=\"A\"-{^@.*}"
+                           ((org-agenda-overriding-header (concat "Standalone Next and High Priority Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
+                                                                    " (including BLOCKED and SCHEDULED tasks)")))
                             (org-agenda-skip-function 'bh/skip-project-tasks)
-                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                            ;; (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            ;; (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            ;; (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(priority-down todo-state-down effort-up category-keep))))
 
-                (tags-todo "-HOLD-CANCELLED/!"
+                (tags-todo "-LATER-CANCELLED/!"
                            ((org-agenda-overriding-header "Projects")
                             (org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-CANCELLED/!"
+                (tags-todo "TODO=\"NEXT\"+{^@.*}|TODO=\"TODO\"+{^@.*}"
+                           ((org-agenda-overriding-header "Delegated Tasks")
+                            (org-tags-match-list-sublevels 'indented)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+
+                (tags-todo "-CANCELLED/!-LATER"
                            ((org-agenda-overriding-header "Stuck Projects")
+                            (org-agenda-hide-tags-regexp "projects")
                             (org-agenda-skip-function 'bh/skip-non-stuck-projects)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                (tags-todo "-REFILE-CANCELLED-BLOCKED-LATER/!"
                            ((org-agenda-overriding-header (concat "Project Subtasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
+                                                                    " (including BLOCKED and SCHEDULED tasks)")))
                             (org-agenda-skip-function 'bh/skip-non-project-tasks)
+                            (org-agenda-hide-tags-regexp "projects")
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                (tags-todo "-goals-REFILE-CANCELLED-BLOCKED-LATER/!"
                            ((org-agenda-overriding-header (concat "Standalone Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
+                                                                    " (including BLOCKED and SCHEDULED tasks)")))
                             (org-agenda-skip-function 'bh/skip-project-tasks)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
@@ -400,15 +416,16 @@
                             (org-agenda-sorting-strategy
                              '(todo-state-down effort-up category-keep))))
 
-                (tags-todo "-CANCELLED+WAITING|HOLD/!"
+                (tags-todo "-CANCELLED+BLOCKED|LATER/!"
                            ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
+                                                                    " (including BLOCKED and SCHEDULED tasks)")))
                             (org-agenda-skip-function 'bh/skip-non-tasks)
                             (org-tags-match-list-sublevels nil)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+
                 (tags "-REFILE/"
                       ((org-agenda-overriding-header "Tasks to Archive")
                        (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
@@ -428,14 +445,14 @@
 
 (setq org-agenda-span 'day)
 
-(add-hook 'org-agenda-mode-hook
-          '(lambda ()
-             (org-defkey org-agenda-mode-map "W"
-                         (lambda ()
-                           (interactive)
-                           (setq bh/hide-scheduled-and-waiting-next-tasks t)
-                           (bh/widen))))
-          'append)
+;; (add-hook 'org-agenda-mode-hook
+;;           '(lambda ()
+;;              (org-defkey org-agenda-mode-map "W"
+;;                          (lambda ()
+;;                            (interactive)
+;;                            (setq bh/hide-scheduled-and-waiting-next-tasks t)
+;;                            (bh/widen))))
+;;           'append)
 
 (add-hook 'org-agenda-mode-hook
           '(lambda ()
@@ -527,14 +544,23 @@
 ;; TAGS
 
 ;; Tags with fast selection keys
-(setq org-tag-alist (quote ((:startgroup)
+(setq org-tag-alist (quote (
+                            ;; Traffic Lights
+                            (:startgroup)
+                            ("tlp_green")
+                            ("tlp_orange")
+                            ("tlp_red")
+                            (:endgroup)
+
+                            ;; GTD scope
+                            (:startgroup)
                             ("@errand" . ?E)
-                            ("@cambium"  . ?C)
                             ("@office" . ?O)
                             ("@home" . ?H)
                             ("@work" . ?W)
                             (:endgroup)
 
+                            ;; How the time was spent
                             (:startgroup)
                             ("deep" . ?d)
                             ("shallow"  . ?s)
@@ -542,8 +568,17 @@
                             ("meeting" . ?m)
                             (:endgroup)
 
-                            ("WAITING" . ?w)
-                            ("HOLD" . ?h)
+                            ;; What the scope of the goal is
+                            (:startgroup)
+                            ("scope_pg")
+                            ("scope_r_and_d")
+                            ("scope_eng")
+                            ("scope_prof_svcs")
+                            ("scope_personal")
+                            (:endgroup)
+
+                            ("BLOCKED" . ?b)
+                            ("LATER" . ?l)
                             ("PERSONAL" . ?P)
                             ("WORK" . ?W)
                             ("ORG" . ?o)
@@ -570,17 +605,16 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
-
+              (sequence "BLOCKED(b@/!)" "LATER(l!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "forest green" :weight bold)
               ("DONE" :foreground "blue" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
+              ("BLOCKED" :foreground "orange" :weight bold)
+              ("LATER" :foreground "gray" :weight bold)
               ("CANCELLED" :foreground "blue" :weight bold)
-              ("MEETING" :foreground "blue" :weight bold)
-              ("PHONE" :foreground "blue" :weight bold))))
+              ("MEETING" :foreground "pink" :weight bold)
+              ("PHONE" :foreground "pink" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
 
@@ -588,12 +622,12 @@
 
 (setq org-todo-state-tags-triggers
       (quote (("CANCELLED" ("CANCELLED" . t))
-              ("WAITING" ("WAITING" . t))
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+              ("BLOCKED" ("BLOCKED" . t))
+              ("LATER" ("BLOCKED") ("LATER" . t))
+              (done ("BLOCKED") ("LATER"))
+              ("TODO" ("BLOCKED") ("CANCELLED") ("LATER"))
+              ("NEXT" ("BLOCKED") ("CANCELLED") ("LATER"))
+              ("DONE" ("BLOCKED") ("CANCELLED") ("LATER")))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1121,61 +1155,13 @@
 ;; SPEED COMMANDS
 
 (setq org-use-speed-commands t)
-(setq org-speed-commands-user (quote (("0" . ignore)
-                                      ("1" . ignore)
-                                      ("2" . ignore)
-                                      ("3" . ignore)
-                                      ("4" . ignore)
-                                      ("5" . ignore)
-                                      ("6" . ignore)
-                                      ("7" . ignore)
-                                      ("8" . ignore)
-                                      ("9" . ignore)
-
-                                      ("d" . ignore)
-                                      ("h" . bh/hide-other)
-                                      ("i" progn
-                                       (forward-char 1)
-                                       (call-interactively 'org-insert-heading-respect-content))
-                                      ("k" . org-kill-note-or-show-branches)
-                                      ("l" . ignore)
-                                      ("m" . ignore)
-                                      ("q" . bh/show-org-agenda)
-                                      ("r" . ignore)
-                                      ("s" . org-save-all-org-buffers)
-                                      ("w" . org-refile)
-                                      ("x" . ignore)
-                                      ("y" . ignore)
-                                      ("z" . org-add-note)
-
-                                      ("A" . ignore)
-                                      ("B" . ignore)
-                                      ("E" . ignore)
-                                      ("F" . bh/restrict-to-file-or-follow)
-                                      ("G" . ignore)
-                                      ("H" . ignore)
-                                      ("J" . org-clock-goto)
-                                      ("K" . ignore)
-                                      ("L" . ignore)
-                                      ("M" . ignore)
-                                      ("N" . bh/narrow-to-org-subtree)
-                                      ("P" . bh/narrow-to-org-project)
-                                      ("Q" . ignore)
-                                      ("R" . ignore)
-                                      ("S" . ignore)
-                                      ("T" . bh/org-todo)
-                                      ("U" . bh/narrow-up-one-org-level)
-                                      ("V" . ignore)
-                                      ("W" . bh/widen)
-                                      ("X" . ignore)
-                                      ("Y" . ignore)
-                                      ("Z" . ignore))))
-
+;; The default set of speed commands is good, no customizations for now.
+;; The ? speed command shows all bindings
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Activate appointments so we get notifications
-(appt-activate t)
+;; Disable appointments so we don't get notifications
+(appt-activate nil)
 
 ;; ;; Rebuild the reminders everytime the agenda is displayed
 (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
