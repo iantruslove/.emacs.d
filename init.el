@@ -223,7 +223,7 @@ text in that file's own buffer.
 
 (use-package treemacs
   :pin melpa
-  :bind ("C-x C-j d" . treemacs)
+  :bind ("C-x j d" . treemacs)
   :config (progn
             (if window-system
                 (treemacs-resize-icons 16))
