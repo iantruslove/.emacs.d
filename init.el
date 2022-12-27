@@ -524,7 +524,9 @@ text in that file's own buffer.
 
 (use-package undo-tree
   :diminish undo-tree-mode
-  :config (global-undo-tree-mode))
+  :config
+  (global-undo-tree-mode)
+  (setq undo-tree-auto-save-history nil))
 
 (use-package saveplace
   :config
