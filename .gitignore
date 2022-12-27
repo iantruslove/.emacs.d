@@ -29,3 +29,10 @@ url/
 network-security.data
 bookmarks
 org-clock-save.el
+lsp-cache
+.cache
+.lsp-session-v1
+transient
+quelpa
+elpy
+abbrev_defs
