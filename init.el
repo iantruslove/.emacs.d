@@ -14,20 +14,30 @@
 
 (package-initialize)
 
-;; Set up use-package
+;; Bootstrap quelpa, then install quelpa-use-package which will pull
+;; use-package in along for the ride. This replaces the explicit
+;; bootstrapping of use-package.
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
-(eval-when-compile
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (setq use-package-always-ensure t)
-
-  (require 'use-package)
-
-  ;; Set use-package-compute-statistics to t to measure load stats;
-  ;; review with M-x use-package-report
-  (setq use-package-compute-statistics nil))
+;;;; Set up use-package
+;; (eval-when-compile
+;;   (unless (package-installed-p 'use-package)
+;;     (package-refresh-contents)
+;;     (package-install 'use-package))
+;;   (setq use-package-always-ensure t)
+;;   (require 'use-package)
+;;   ;; Set use-package-compute-statistics to t to measure load stats;
+;;   ;; review with M-x use-package-report
+;;   (setq use-package-compute-statistics nil))
 
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
@@ -552,7 +562,12 @@ text in that file's own buffer.
   ;; <TAB> expands a snippet
   :defer 1
   :config
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  ;; (with-eval-after-load 'yasnippet
+  ;;   (setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+  (yas-reload-all)
+  ;;(yas-global-mode)
+  )
 
 (use-package yasnippet-snippets
   ;; See http://andreacrotti.github.io/yasnippet-snippets/snippets.html for docs
@@ -623,6 +638,10 @@ text in that file's own buffer.
    ;; ("C-c `"  . wrap-with-back-quotes)
    )
   )
+
+;; Embrace: for adding, changing and removing surrounding pairs.
+(use-package embrace
+  :config (global-set-key (kbd "C-,") #'embrace-commander))
 
 ;; (use-package eval-sexp-fu
 ;;   :ensure t)
@@ -938,6 +957,7 @@ text in that file's own buffer.
             ;;       show-trailing-whitespace t)
             (flycheck-mode)
             (setq python-shell-completion-native-enable nil)
+
             (pyenv-mode)
 
             (elpy-enable)
@@ -1145,6 +1165,16 @@ text in that file's own buffer.
   (setq deft-directory "~/org"
         deft-recursive t))
 
+;; Mermaid: for pretty pictures.
+;;
+;; Requires mmdc installed on command line, e.g. `brew install mermaid-cli`
+;;
+;;   C-c C-c - compile current file to an image
+;;   C-c C-f - compile given file to an image
+;;   C-c C-b - compile current buffer to an image
+;;   C-c C-r - compile current region to an image
+;;   C-c C-o - open in the live editor
+;;   C-c C-d - open the official doc
 (use-package mermaid-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1181,8 +1211,26 @@ text in that file's own buffer.
   ("C-c c" . org-capture)
 
   :mode ("\\.org\\'" . org-mode)
+
+  :hook (org-mode . yas-minor-mode)
+
   :config
-  (load-user-file "modes/org.el"))
+  (load-user-file "modes/org.el")
+
+  )
+
+(use-package org-super-links
+  :quelpa (org-super-links :repo "toshism/org-super-links" :fetcher github :commit "develop")
+  :bind (("C-c s s" . org-super-links-link)
+         ("C-c s l" . org-super-links-store-link)
+         ("C-c s C-l" . org-super-links-insert-link)
+         ("C-c s d" . org-super-links-quick-insert-drawer-link)
+         ("C-c s i" . org-super-links-quick-insert-inline-link)
+         ("C-c s C-d" . org-super-links-delete-link))
+  :config
+  (setq org-super-links-related-into-drawer t
+  	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Site-specific overrides
@@ -1197,3 +1245,4 @@ text in that file's own buffer.
 ;; TODO expand region
 
 (setq gc-cons-threshold (* 2 1000 1000))
+(put 'narrow-to-region 'disabled nil)
