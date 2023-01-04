@@ -317,9 +317,9 @@
                              '(deadline-down category-keep))))
                 ))
 
-              ("N" "Notes" tags "NOTE"
-               ((org-agenda-overriding-header "Notes")
-                (org-tags-match-list-sublevels t)))
+              ;; ("N" "Notes" tags "NOTE"
+              ;;  ((org-agenda-overriding-header "Notes")
+              ;;   (org-tags-match-list-sublevels t)))
 
               ("D" "Decisions" tags "DECISION"
                ((org-agenda-overriding-header "Decisions")
@@ -329,10 +329,17 @@
                ((org-agenda-overriding-header "Tech Debt")
                 (org-tags-match-list-sublevels t)))
 
-              ("h" "Habits" tags-todo "STYLE=\"habit\""
-               ((org-agenda-overriding-header "Habits")
+              ;; ("h" "Habits" tags-todo "STYLE=\"habit\""
+              ;;  ((org-agenda-overriding-header "Habits")
+              ;;   (org-agenda-sorting-strategy
+              ;;    '(todo-state-down effort-up category-keep))))
+
+              ("h" "Home" tags-todo "#home"
+               ((org-agenda-overriding-header "Home Tasks")
+                (org-tags-match-list-sublevels nil)
                 (org-agenda-sorting-strategy
-                 '(todo-state-down effort-up category-keep))))
+                 '(category-keep))
+                ))
 
               ("A" "Agenda"
                ((agenda "" nil)
@@ -345,7 +352,7 @@
                 (tags-todo "DEADLINE<\"<now>\""
                            ((org-agenda-overriding-header "Overdue Tasks")))
 
-                (tags-todo "-CANCELLED+TODO=\"NEXT\"-{^@.*}|-CANCELLED+PRIORITY=\"A\"-{^@.*}"
+                (tags-todo "-#home-CANCELLED+TODO=\"NEXT\"-{^@.*}|-CANCELLED+PRIORITY=\"A\"-{^@.*}"
                            ((org-agenda-overriding-header (concat "Project Next and High Priority Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -359,7 +366,7 @@
                             (org-agenda-sorting-strategy
                              '(todo-state-down priority-down effort-up category-keep))))
 
-                (tags-todo "-REFILE+TODO=\"NEXT\"-{^@.*}|-REFILE+TODO=\"TODO\"+PRIORITY=\"A\"-{^@.*}"
+                (tags-todo "-#home-REFILE+TODO=\"NEXT\"-{^@.*}|-#home-REFILE+TODO=\"TODO\"+PRIORITY=\"A\"-{^@.*}"
                            ((org-agenda-overriding-header (concat "Standalone Next and High Priority Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -371,27 +378,34 @@
                             (org-agenda-sorting-strategy
                              '(priority-down todo-state-down effort-up category-keep))))
 
-                (tags-todo "-LATER-CANCELLED/!"
+                (tags-todo "-#home-LATER-CANCELLED/!"
                            ((org-agenda-overriding-header "Projects")
                             (org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "TODO=\"NEXT\"+{^@.*}|TODO=\"TODO\"+{^@.*}"
+                (tags-todo "-#home+TODO=\"TASK\""
                            ((org-agenda-overriding-header "Delegated Tasks")
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-CANCELLED/!-LATER"
+
+                (tags-todo "-#home+TODO=\"TODO\"+{^@.*}|-#home+TODO=\"NEXT\"+{^@.*}"
+                           ((org-agenda-overriding-header "Tasks to Delegate")
+                            (org-tags-match-list-sublevels 'indented)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+
+                (tags-todo "-#home-CANCELLED/!-LATER"
                            ((org-agenda-overriding-header "Stuck Projects")
                             (org-agenda-hide-tags-regexp "projects")
                             (org-agenda-skip-function 'bh/skip-non-stuck-projects)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-REFILE-CANCELLED-BLOCKED-LATER/!"
+                (tags-todo "-#home-REFILE-CANCELLED-BLOCKED-LATER/!"
                            ((org-agenda-overriding-header (concat "Project Subtasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -404,7 +418,7 @@
                             (org-agenda-sorting-strategy
                              '(category-keep))))
 
-                (tags-todo "-goals-REFILE-CANCELLED-BLOCKED-LATER/!"
+                (tags-todo "-#home-goals-REFILE-CANCELLED-BLOCKED-LATER/!"
                            ((org-agenda-overriding-header (concat "Standalone Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -416,7 +430,7 @@
                             (org-agenda-sorting-strategy
                              '(todo-state-down effort-up category-keep))))
 
-                (tags-todo "-CANCELLED+BLOCKED|LATER/!"
+                (tags-todo "-#home-CANCELLED+BLOCKED|-#home+LATER/!"
                            ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
@@ -605,11 +619,14 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "TASK(f)" "|" "DONE(d)")
               (sequence "BLOCKED(b@/!)" "LATER(l!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "forest green" :weight bold)
               ("DONE" :foreground "blue" :weight bold)
+              ("TASK" . (:foreground "light sea green"))
               ("BLOCKED" :foreground "orange" :weight bold)
               ("LATER" :foreground "gray" :weight bold)
               ("CANCELLED" :foreground "blue" :weight bold)
@@ -637,8 +654,20 @@
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 ;; See documentation at https://orgmode.org/manual/Capture-templates.html
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file refile)
+      (quote (("t" "todo in Journal" entry (file+datetree journal)
                "* TODO %?\n%U\n%a\n"
+               :clock-in t :clock-resume t)
+
+              ("T" "todo to refile" entry (file refile)
+               "* TODO %?\n%U\n%a\n"
+               :clock-in t :clock-resume t)
+
+              ("d" "Delegate a task" entry (file+datetree journal)
+               "* TASK @%^{Who} %^{What}   \t:@%\\2: \n%U\n%l\n"
+               :clock-in t :clock-resume t)
+
+              ("n" "note" entry (file+datetree journal)
+               "* %? :NOTE:\n%U\n"
                :clock-in t :clock-resume t)
 
               ("n" "note" entry (file+datetree journal)
