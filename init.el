@@ -686,6 +686,14 @@ text in that file's own buffer.
         lsp-ui-peek-peek-height 25))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; prog-mode config
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (display-line-numbers-mode)
+            (git-gutter-mode)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; elisp
 (put 'use-package 'lisp-indent-function 1)
 
@@ -815,8 +823,6 @@ text in that file's own buffer.
 (add-hook 'js-mode-hook (lambda ()
                           (lsp)
                           (smartparens-mode)
-                          (display-line-numbers-mode)
-                          (git-gutter-mode)
                           (setq flycheck-idle-change-delay 1.0)
                           (when (flycheck-may-enable-checker 'javascript-eslint)
                             (flycheck-add-next-checker 'lsp 'javascript-eslint))))
@@ -832,7 +838,6 @@ text in that file's own buffer.
 (use-package typescript-mode
   :mode ("\\.ts\\'" "\\.tsx\\'")
   :hook ((typescript-mode . prettier-mode)
-         (typescript-mode . display-line-numbers-mode)
          (typescript-mode . smartparens-mode)
          ;;(typescript-mode . lsp)
          (typescript-mode . (lambda ()
@@ -860,7 +865,6 @@ text in that file's own buffer.
   :mode ("\\.php\\’" . php-mode)
   :hook (php-mode . (lambda ()
                       (prettier-mode)
-                      (display-line-numbers-mode)
                       (lsp))))
 
 
@@ -934,7 +938,6 @@ text in that file's own buffer.
   :hook ((go-mode . lsp-deferred)
          (go-mode . (lambda ()
                       ;;(add-hook 'before-save-hook 'gofmt-before-save nil 'local)
-                      (display-line-numbers-mode 1)
                       (add-hook 'before-save-hook #'lsp-format-buffer t t)
                       (add-hook 'before-save-hook #'lsp-organize-imports t t))))
   :bind (:map go-mode-map
