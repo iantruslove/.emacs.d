@@ -1158,13 +1158,6 @@ text in that file's own buffer.
 (use-package graphviz-dot-mode
   :defer t)
 
-(use-package deft
-  :defer t
-  :pin melpa-stable
-  :config
-  (setq deft-directory "~/org"
-        deft-recursive t))
-
 ;; Mermaid: for pretty pictures.
 ;;
 ;; Requires mmdc installed on command line, e.g. `brew install mermaid-cli`
