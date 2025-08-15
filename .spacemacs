@@ -32,9 +32,16 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(rust
+     nginx
      ansible
-     python
+     (python :variables
+             python-backend 'lsp
+             python-lsp-server 'pyright  ;; The key binding SPC m = invokes the selected formatter on the current buffer when in non LSP python mode otherwise SPC m == is used.
+             python-formatter 'black
+
+             ;; SPC m v p a   activate a pipenv environment with pipenv
+             )
      sql
      csv
      yaml
@@ -43,30 +50,37 @@ This function should only modify configuration layer settings."
                  typescript-linter 'eslint
                  )
      javascript
-     ;; auto-completion
+     auto-completion
      ;; better-defaults
      emacs-lisp
      git
-     helm
+     ;; helm
      html
+     (ivy :variables
+          ivy-ret-visits-directory t
+          ivy-enable-advanced-buffer-information t
+          ivy-use-virtual-buffers t
+          ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      lsp
      markdown
      (multiple-cursors :variables multiple-cursors-backend 'mc)
      org
 
-     ;; See https://github.com/arnm/mermaid-layer
-     ;; Need to clone the repo into ~/.emacs.d/private/
-     mermaid
+     ;; ;; See https://github.com/arnm/mermaid-layer
+     ;; ;; Need to clone the repo into ~/.emacs.d/private/
+     ;; mermaid
 
      (php :variables php-backend 'lsp)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
+     spacemacs-editing
      ;; spell-checking
      syntax-checking
      version-control
      terraform
+     themes-megapack
      (treemacs :variables treemacs-use-icons-dired nil)
      )
 
@@ -78,16 +92,25 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(
-                                      ob-http
-                                      keychain-environment
-                                      )
+   dotspacemacs-additional-packages
+   '(ob-http
+     keychain-environment
+     highlight-indent-guides
+     gptel
+
+     ;; (copilot :location (recipe
+     ;;                     :fetcher github
+     ;;                     :repo "copilot-emacs/copilot.el"
+     ;;                     :files ("*.el")))
+     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages
+   '(window-purpose  ;; [2024-06-04] excluded to prevent an issue with gptel not creating a new buffer
+     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -254,10 +277,18 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(monokai
-                         spacemacs-dark
+   dotspacemacs-themes '(wilson
+
+                         modus-operandi
                          spacemacs-light
-                         gruvbox)
+
+                         odersky
+
+                         ;;spacemacs-dark
+                         ;;gruvbox
+                         ;;gruvbox-light-soft
+                         ;;sunny-day
+                         )
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -281,6 +312,9 @@ It should only modify the values of Spacemacs settings."
                                :weight normal
                                :width normal)
 
+   ;; Default icons font, it can be `all-the-icons' or `nerd-icons'.
+   dotspacemacs-default-icons-font 'all-the-icons
+
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
 
@@ -300,10 +334,10 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-major-mode-leader-key ","
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
-   ;; (default "C-M-m" for terminal mode, "<M-return>" for GUI mode).
+   ;; (default "C-M-m" for terminal mode, "M-<return>" for GUI mode).
    ;; Thus M-RET should work as leader key in both GUI and terminal modes.
    ;; C-M-m also should work in terminal mode, but not in GUI mode.
-   dotspacemacs-major-mode-emacs-leader-key (if window-system "<M-return>" "C-M-m")
+   dotspacemacs-major-mode-emacs-leader-key (if window-system "M-<return>" "C-M-m")
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -354,6 +388,10 @@ It should only modify the values of Spacemacs settings."
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
+   ;; It is also possible to use a posframe with the following cons cell
+   ;; `(posframe . position)' where position can be one of `center',
+   ;; `top-center', `bottom-center', `top-left-corner', `top-right-corner',
+   ;; `top-right-corner', `bottom-left-corner' or `bottom-right-corner'
    ;; (default 'bottom)
    dotspacemacs-which-key-position 'bottom
 
@@ -363,6 +401,22 @@ It should only modify the values of Spacemacs settings."
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
+
+   ;; Whether side windows (such as those created by treemacs or neotree)
+   ;; are kept or minimized by `spacemacs/toggle-maximize-window' (SPC w m).
+   ;; (default t)
+   dotspacemacs-maximize-window-keep-side-windows t
+
+   ;; If nil, no load-hints enabled. If t, enable the `load-hints' which will
+   ;; put the most likely path on the top of `load-path' to reduce walking
+   ;; through the whole `load-path'. It's an experimental feature to speedup
+   ;; Spacemacs on Windows. Refer the FAQ.org "load-hints" session for details.
+   dotspacemacs-enable-load-hints nil
+
+   ;; If t, enable the `package-quickstart' feature to avoid full package
+   ;; loading, otherwise no `package-quickstart' attemption (default nil).
+   ;; Refer the FAQ.org "package-quickstart" section for details.
+   dotspacemacs-enable-package-quickstart nil
 
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
@@ -490,6 +544,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
    dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
 
+   ;; The backend used for undo/redo functionality. Possible values are
+   ;; `undo-fu', `undo-redo' and `undo-tree' see also `evil-undo-system'.
+   ;; Note that saved undo history does not get transferred when changing
+   ;; your undo system. The default is currently `undo-fu' as `undo-tree'
+   ;; is not maintained anymore and `undo-redo' is very basic."
+   dotspacemacs-undo-system 'undo-tree
+
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
    ;; %t - `projectile-project-name'
@@ -525,8 +586,11 @@ It should only modify the values of Spacemacs settings."
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
+   ;; The variable `global-spacemacs-whitespace-cleanup-modes' controls
+   ;; which major modes have whitespace cleanup enabled or disabled
+   ;; by default.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup 'all
+   dotspacemacs-whitespace-cleanup 'changed
 
    ;; If non-nil activate `clean-aindent-mode' which tries to correct
    ;; virtual indentation of simple modes. This can interfere with mode specific
@@ -654,7 +718,7 @@ dump."
   (setq org-agenda-window-setup 'current-window)
 
   (setq org-agenda-custom-commands
-        (quote (("G" "Goal View"          ;4M
+        (quote (("G" "Goal View"
 
                  (;; (agenda ""
                   ;;         ((org-agenda-span 1)
@@ -706,11 +770,6 @@ dump."
 
                 ("A" "Agenda"
                  ((agenda "" nil)
-
-                  (tags "REFILE"
-                        ((org-agenda-overriding-header "Tasks to Refile")
-                         (org-agenda-hide-tags-regexp "REFILE")
-                         (org-tags-match-list-sublevels t)))
 
                   (tags-todo "DEADLINE<\"<now>\""
                              ((org-agenda-overriding-header "Overdue Tasks")))
@@ -776,6 +835,11 @@ dump."
                               (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                               (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
 
+                  (tags "REFILE"
+                        ((org-agenda-overriding-header "Tasks to Refile")
+                         (org-agenda-hide-tags-regexp "REFILE")
+                         (org-tags-match-list-sublevels t)))
+
                   ;; (tags "-REFILE/"
                   ;;       ((org-agenda-overriding-header "Tasks to Archive")
                   ;;        (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
@@ -785,6 +849,28 @@ dump."
 
                 ("P" "Projects"
                  ((agenda "" nil)
+
+                  ;; (tags-todo "-#home-CANCELLED+TODO=\"NEXT\"-{^@.*}|-CANCELLED+PRIORITY=\"A\"-{^@.*}"
+                  ;;            ((org-agenda-overriding-header (concat "Rocks"
+                  ;;                                                   (if bh/hide-scheduled-and-waiting-next-tasks
+                  ;;                                                       ""
+                  ;;                                                     " (including BLOCKED and SCHEDULED tasks)")))
+                  ;;             (org-agenda-skip-function 'bh/skip-projects-and-habits-and-single-tasks)
+                  ;;             (org-agenda-hide-tags-regexp "projects")
+                  ;;             (org-tags-match-list-sublevels t)
+                  ;;             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                  ;;             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                  ;;             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                  ;;             (org-agenda-sorting-strategy
+                  ;;              '(todo-state-down priority-down effort-up category-keep))))
+
+                  (tags-todo "-#home-LATER-CANCELLED+{^R_202.*}"
+                             ((org-agenda-overriding-header "Rocks")
+                              (org-use-tag-inheritance nil)
+                              (org-agenda-hide-tags-regexp "R_20..q.")
+                              (org-tags-match-list-sublevels t)
+                              (org-agenda-sorting-strategy
+                               '(category-keep))))
 
                   (tags-todo "-#home-CANCELLED+TODO=\"NEXT\"-{^@.*}|-CANCELLED+PRIORITY=\"A\"-{^@.*}"
                              ((org-agenda-overriding-header (concat "Project Next and High Priority Tasks"
@@ -833,6 +919,10 @@ dump."
 (defun ian/config-org-tags ()
   ;; Tags with fast selection keys
   (setq org-tag-alist (quote (
+                              ;; Rocks
+                              ("R_2024q3" . ?r)
+                              ("R_2024" . ?R)
+
                               ;; Traffic Lights
                               (:startgroup)
                               ("tlp_green")
@@ -930,7 +1020,7 @@ dump."
                  "* TODO %?\n%U\n%a\n"
                  :clock-in t :clock-resume t :empty-lines 1)
 
-                ("T" "todo to refile" entry (file refile)
+                ("c" "todo to refile" entry (file refile)
                  "* TODO %?\n%U\n%a\n"
                  :clock-in t :clock-resume t)
 
@@ -946,16 +1036,16 @@ dump."
                  "* %? :NOTE:\n%U\n"
                  :clock-in t :clock-resume t :empty-lines 1)
 
-                ("n" "note" entry (file+datetree journal)
-                 "* %? :NOTE:\n%U\n"
-                 :clock-in t :clock-resume t :empty-lines 1)
-
                 ("j" "Journal" entry (file+datetree journal)
                  "* %?\n%U\n"
                  :clock-in t :clock-resume t :empty-lines 1)
 
                 ("m" "Meeting" entry (file+datetree journal)
                  "* MEETING %? :meeting:\n%U"
+                 :clock-in t :clock-resume t :empty-lines 1)
+
+                ("1" "1:1 Meeting" entry (file+datetree journal)
+                 "* MEETING %^{Who} 1:1  \t:meeting:one_on_one:@%\\1:\n%U\n\n%?"
                  :clock-in t :clock-resume t :empty-lines 1)
 
                 ("e" "Email" entry (file+datetree journal)
@@ -1006,7 +1096,7 @@ dump."
         org-babel-default-header-args:sh '((:results . "verbatim drawer")))
 
   (setq org-src-tab-acts-natively nil)
-  (setq ob-mermaid-cli-path "/Users/iantruslove/.nvm/versions/node/v18.17.0/bin/mmdc")
+  (setq ob-mermaid-cli-path "/Users/iantruslove/.nvm/versions/node/v20.16.0/bin/mmdc")
 
   (org-babel-do-load-languages
    (quote org-babel-load-languages)
@@ -1041,6 +1131,7 @@ dump."
   (setq org-superstar-headline-bullets-list '("◉" "▶" "✸" "●" "◆" "○" "▸" "•")
         org-hide-leading-stars t
         org-startup-indented t
+        org-adapt-indentation t
 
         org-edit-src-content-indentation 0
         org-src-tab-acts-natively t
@@ -1073,7 +1164,9 @@ dump."
         org-refile-allow-creating-parent-nodes (quote confirm)
         org-refile-target-verify-function 'bh/verify-refile-target)
 
-  (run-at-time "00:59" 600 'org-save-all-org-buffers))
+  ;; This seems to be causing trouble...
+  ;; (run-at-time "00:59" 600 'org-save-all-org-buffers)
+  )
 
 
 (defun ian/config-org ()
@@ -1161,7 +1254,9 @@ before packages are loaded."
   (add-hook 'web-mode-hook 'prettier-js-mode)
   (add-hook 'typescript-mode-hook 'prettier-js-mode)
 
-  (add-hook 'yaml-mode 'indent-guide-mode)
+  (setq highlight-indent-guides-method 'bitmap)
+  (setq highlight-indent-guides-auto-character-face-perc 70)
+  (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
 
   (with-eval-after-load 'magit-mode
     ;;(global-set-key (kbd "C-c g") #'magit-status) ;; I should learn the spacemacs way
@@ -1183,9 +1278,26 @@ before packages are loaded."
   (ian/config-highlight-symbol)
   (ian/config-org)
 
+  ;; Key bindings
+  ;; (global-set-key (kbd "C-l") 'counsel-up-directory)
+
   ;; Helm's minibuffer actions popup stopped working, with the error "cannot
   ;; split window or parent of side window". This is a workaround:
-  (setq-default helm-display-function 'helm-default-display-buffer)
+  ;;(setq-default helm-display-function 'helm-default-display-buffer)
+
+  ;; ;; Copilot
+  ;; (with-eval-after-load 'company
+  ;;   ;; disable inline previews
+  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
+  ;; (with-eval-after-load 'copilot
+  ;;   (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+  ;;   (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  ;;   (define-key copilot-completion-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+  ;;   (define-key copilot-completion-map (kbd "C-<tab>") 'copilot-accept-completion-by-word))
+
+  ;; (add-hook 'prog-mode-hook 'copilot-mode)
+
+  (require 'gptel)
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1197,22 +1309,24 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(grep-find-ignored-directories
-   '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules"))
- '(org-agenda-files
-   '("/Users/iantruslove/org/journal.org" "/Users/iantruslove/org/journal_2023.org" "/Users/iantruslove/org/journal_2022.org" "/Users/iantruslove/org/projects.org" "/Users/iantruslove/org/planning.org"))
- '(package-selected-packages
-   '(composer php-runtime phpcbf phpunit ansible ansible-doc company-ansible jinja2-mode nord-theme blacken code-cells company-anaconda anaconda-mode cython-mode helm-cscope wfnames helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry compat py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance yapfify recompile-on-save sql-indent sqlup-mode csv-mode company-web web-completion-data counsel-css helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit yaml-mode emmet-mode typescript-mode web-mode add-node-modules-path company counsel-gtags counsel swiper ivy dap-mode lsp-docker lsp-treemacs bui yaml lsp-mode markdown-mode ggtags helm-gtags impatient-mode htmlize import-js grizzl js-doc js2-refactor yasnippet multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify ws-butler writeroom-mode winum which-key volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org term-cursor symon symbol-overlay string-inflection string-edit-at-point spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
- '(warning-suppress-types '((lsp-mode))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-mode-line-clock ((t (:foreground "red" :box (:line-width -1 :style released-button))))))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(grep-find-ignored-directories
+     '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs"
+       "{arch}" "node_modules"))
+   '(org-agenda-files
+     '("~/org/rocks_2024.org" "/Users/iantruslove/org/projects.org"
+       "/Users/iantruslove/org/1:1s.org" "/Users/iantruslove/org/journal.org"
+       "/Users/iantruslove/org/function_it.org"
+       "/Users/iantruslove/org/refile.org" "/Users/iantruslove/org/planning.org"))
+   '(warning-suppress-types '((lsp-mode))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   )
+  )
