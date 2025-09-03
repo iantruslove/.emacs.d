@@ -38,8 +38,11 @@ This function should only modify configuration layer settings."
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pyright  ;; The key binding SPC m = invokes the selected formatter on the current buffer when in non LSP python mode otherwise SPC m == is used.
-             python-formatter 'black
 
+             python-pipenv-activate t
+
+             python-formatter 'ruff
+             python-format-on-save t
              ;; SPC m v p a   activate a pipenv environment with pipenv
              )
      sql
