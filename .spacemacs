@@ -644,7 +644,6 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.n
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (add-to-list 'exec-path "/Users/iantruslove/.nvm/versions/node/v18.17.0/bin" t)
-  (keychain-refresh-environment)
   )
 
 
