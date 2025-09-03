@@ -1015,6 +1015,22 @@ dump."
   )
 
 
+(defun ian/check-journal-month ()
+  "Warn if we're about to write to a journal file for the wrong month."
+  (when buffer-file-name
+    (cond
+     ;; Check if it's a properly named journal file
+     ((string-match "/journal/journal-\\([0-9]\\{4\\}-[0-9]\\{2\\}\\)\\.org$" buffer-file-name)
+      (let* ((file-month (match-string 1 buffer-file-name))
+             (current-month (format-time-string "%Y-%m")))
+        (unless (string= file-month current-month)
+          (unless (y-or-n-p (format "You're writing to %s but current month is %s. Continue? " file-month current-month))
+            (error "Aborted writing to wrong month's journal")))))
+     ;; Check if it's a journal file with wrong naming
+     ((and (string-match "/journal/" buffer-file-name)
+           (string-match "journal" buffer-file-name))
+      (error "Journal file doesn't match expected naming pattern: journal-YYYY-MM.org")))))
+
 (defun ian/config-org-capture ()
   ;; See documentation at https://orgmode.org/manual/Capture-templates.html
   (setq org-capture-templates
@@ -1179,7 +1195,7 @@ dump."
     (require 'org-clocktable-by-tag)
 
     ;;(defvar organizer (concat org-directory "organizer.org"))
-    (defvar journal (concat org-directory "/journal.org"))
+    (defvar journal (concat org-directory "/journal/journal-" (format-time-string "%Y-%m") ".org"))
     (defvar refile (concat org-directory "/refile.org"))
 
     (ian/config-org-basics)
@@ -1188,6 +1204,11 @@ dump."
     (ian/config-org-tasks-todos)
     (ian/config-org-capture)
     (ian/config-org-babel)
+
+    ;; Add journal month guard
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook 'ian/check-journal-month nil t)))
     ))
 
 
@@ -1320,10 +1341,19 @@ This function is called at the very end of Spacemacs initialization."
      '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs"
        "{arch}" "node_modules"))
    '(org-agenda-files
-     '("~/org/rocks_2024.org" "/Users/iantruslove/org/projects.org"
-       "/Users/iantruslove/org/1:1s.org" "/Users/iantruslove/org/journal.org"
+     '("/Users/iantruslove/org/journal/journal-2025-09.org"
+       "/Users/iantruslove/org/rocks_2024.org"
+       "/Users/iantruslove/org/projects.org" "/Users/iantruslove/org/1:1s.org"
        "/Users/iantruslove/org/function_it.org"
-       "/Users/iantruslove/org/refile.org" "/Users/iantruslove/org/planning.org"))
+       "/Users/iantruslove/org/refile.org" "/Users/iantruslove/org/planning.org"
+       "/Users/iantruslove/org/journal/journal-2025-01.org"
+       "/Users/iantruslove/org/journal/journal-2025-02.org"
+       "/Users/iantruslove/org/journal/journal-2025-03.org"
+       "/Users/iantruslove/org/journal/journal-2025-04.org"
+       "/Users/iantruslove/org/journal/journal-2025-05.org"
+       "/Users/iantruslove/org/journal/journal-2025-06.org"
+       "/Users/iantruslove/org/journal/journal-2025-07.org"
+       "/Users/iantruslove/org/journal/journal-2025-08.org"))
    '(warning-suppress-types '((lsp-mode))))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
