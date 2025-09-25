@@ -59,13 +59,7 @@ This function should only modify configuration layer settings."
      git
      ;; helm
      html
-     (ivy :variables
-          ivy-ret-visits-directory t
-          ivy-enable-advanced-buffer-information t
-          ivy-use-virtual-buffers t
-          ivy-re-builders-alist '(
-                                  ;; (swiper . ivy--regex-plus)
-                                  (t      . ivy--regex-fuzzy)))
+     compleseus
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      lsp
      markdown
@@ -1303,6 +1297,12 @@ before packages are loaded."
 
   (with-eval-after-load 'lsp-mode
     (bind-key (kbd "M-.") 'lsp-find-definition lsp-mode-map))
+
+  (with-eval-after-load 'consult
+    ;; Replace forward/backward isearch with consult-line
+    (global-set-key [remap isearch-forward]  #'consult-line)
+    (global-set-key [remap isearch-backward] #'consult-line)
+    (define-key vertico-map "\C-w" "\M-n\M-n"))
 
   (ian/config-os)
   (ian/config-editor)
