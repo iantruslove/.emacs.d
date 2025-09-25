@@ -1266,6 +1266,14 @@ dump."
         web-mode-code-indent-offset 2)
   )
 
+
+(defun ian/find-file-at-point-immediate ()
+  "Find the file at point without asking for confirmation."
+  (interactive)
+  (let ((file (ffap-file-at-point)))
+    (when file
+      (find-file file))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun dotspacemacs/user-config ()
@@ -1305,6 +1313,7 @@ before packages are loaded."
 
   ;; Key bindings
   ;; (global-set-key (kbd "C-l") 'counsel-up-directory)
+  (spacemacs/set-leader-keys "fP" 'ian/find-file-at-point-immediate)
 
   ;; Helm's minibuffer actions popup stopped working, with the error "cannot
   ;; split window or parent of side window". This is a workaround:
