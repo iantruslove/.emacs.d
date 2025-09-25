@@ -63,7 +63,9 @@ This function should only modify configuration layer settings."
           ivy-ret-visits-directory t
           ivy-enable-advanced-buffer-information t
           ivy-use-virtual-buffers t
-          ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+          ivy-re-builders-alist '(
+                                  ;; (swiper . ivy--regex-plus)
+                                  (t      . ivy--regex-fuzzy)))
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      lsp
      markdown
