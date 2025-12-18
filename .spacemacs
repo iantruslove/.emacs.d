@@ -1404,10 +1404,8 @@ This function is called at the very end of Spacemacs initialization."
      '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs"
        "{arch}" "node_modules"))
    '(org-agenda-files
-     '("/Users/iantruslove/org/journal/journal-2025-09.org"
-       "/Users/iantruslove/org/rocks_2024.org"
-       "/Users/iantruslove/org/projects.org" "/Users/iantruslove/org/1:1s.org"
-       "/Users/iantruslove/org/function_it.org"
+     '("/Users/iantruslove/org/rocks_2024.org" "/Users/iantruslove/org/projects.org"
+       "/Users/iantruslove/org/1:1s.org" "/Users/iantruslove/org/function_it.org"
        "/Users/iantruslove/org/refile.org" "/Users/iantruslove/org/planning.org"
        "/Users/iantruslove/org/journal/journal-2025-01.org"
        "/Users/iantruslove/org/journal/journal-2025-02.org"
@@ -1416,7 +1414,12 @@ This function is called at the very end of Spacemacs initialization."
        "/Users/iantruslove/org/journal/journal-2025-05.org"
        "/Users/iantruslove/org/journal/journal-2025-06.org"
        "/Users/iantruslove/org/journal/journal-2025-07.org"
-       "/Users/iantruslove/org/journal/journal-2025-08.org"))
+       "/Users/iantruslove/org/journal/journal-2025-08.org"
+       "/Users/iantruslove/org/journal/journal-2025-09.org"
+       "/Users/iantruslove/org/journal/journal-2025-10.org"
+       "/Users/iantruslove/org/journal/journal-2025-11.org"
+       "/Users/iantruslove/org/journal/journal-2025-12.org"))
+
    '(warning-suppress-types '((lsp-mode))))
   (custom-set-faces
    ;; custom-set-faces was added by Custom.
