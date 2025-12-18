@@ -1268,6 +1268,13 @@ dump."
   (setq js-indent-level 2
         typescript-indent-level 2
         web-mode-code-indent-offset 2)
+
+  ;; Disable Ctrl + mouse wheel zoom (font resize) (it's really annoying)
+
+  (global-unset-key (kbd "<C-wheel-up>"))
+  (global-unset-key (kbd "<C-wheel-down>"))
+  (global-unset-key (kbd "<C-mouse-4>")) ; Ctrl + Scroll Up
+  (global-unset-key (kbd "<C-mouse-5>")) ; Ctrl + Scroll Down
   )
 
 
