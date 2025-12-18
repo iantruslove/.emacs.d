@@ -715,6 +715,14 @@ dump."
 
   (setq org-agenda-window-setup 'current-window)
 
+  (defun ian/org-delegated-prefix ()
+    (let* ((owner   (org-entry-get nil "OWNER"))
+           (why     (org-entry-get nil "WHY"))
+           (deadline (org-get-deadline-time (point))))
+      (format "%-10s %-12s "
+              (or owner "")
+              (if deadline (format-time-string "%Y-%m-%d" deadline) ""))))
+
   (setq org-agenda-custom-commands
         (quote (("G" "Goal View"
 
@@ -798,11 +806,19 @@ dump."
                               (org-agenda-sorting-strategy
                                '(priority-down todo-state-down effort-up category-keep))))
 
-                  (tags-todo "-#home+TODO=\"TASK\""
+                  (tags-todo "-#home+TODO=\"DELEGATED\""
                              ((org-agenda-overriding-header "Delegated Tasks")
                               (org-tags-match-list-sublevels 'indented)
+                              (org-agenda-prefix-format
+                               '((tags . "%(ian/org-delegated-prefix)")))
                               (org-agenda-sorting-strategy
-                               '(category-keep))))
+                               '(deadline-up priority-down category-keep))))
+
+                  ;; (tags-todo "-#home+TODO=\"DELEGATED\""
+                  ;;            ((org-agenda-overriding-header "Delegated Tasks")
+                  ;;             (org-tags-match-list-sublevels 'indented)
+                  ;;             (org-agenda-sorting-strategy
+                  ;;              '(category-keep))))
 
 
                   (tags-todo "-#home+TODO=\"TODO\"+{^@.*}|-#home+TODO=\"NEXT\"+{^@.*}"
@@ -844,6 +860,21 @@ dump."
                   ;;        (org-tags-match-list-sublevels nil)))
                   )
                  nil)
+
+                ("d" "Delegation Dashboard"
+                 ((tags-todo "-#home-delegated+TODO=\"TODO\"+{^@.*}|-#home-delegated+TODO=\"NEXT\"+{^@.*}"
+                             ;; BLOCK 1: Tasks you *could* delegate
+                             ((org-agenda-overriding-header "Tasks to Delegate")
+                              (org-tags-match-list-sublevels 'indented)
+                              (org-agenda-sorting-strategy
+                               '(priority-down category-keep))))
+                  (tags-todo "-#home+TODO=\"DELEGATED\""
+                             ((org-agenda-overriding-header "Delegated Tasks")
+                              (org-tags-match-list-sublevels 'indented)
+                              (org-agenda-prefix-format
+                               '((tags . "%(ian/org-delegated-prefix)")))
+                              (org-agenda-sorting-strategy
+                               '(deadline-up priority-down category-keep))))))
 
                 ("P" "Projects"
                  ((agenda "" nil)
@@ -982,14 +1013,14 @@ dump."
 
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "TASK(f)" "|" "DONE(d)")  ;; TASK items are work delegated to others
+                (sequence "DELEGATED(f)" "|" "DONE(d)")  ;; DELEGATED items are work delegated to others
                 (sequence "BLOCKED(b@/!)" "LATER(l!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
   (setq org-todo-keyword-faces
         (quote (("TODO" :foreground "red" :weight bold)
                 ("NEXT" :foreground "forest green" :weight bold)
                 ("DONE" :foreground "blue" :weight bold)
-                ("TASK" . (:foreground "light sea green"))
+                ("DELEGATED" . (:foreground "light sea green"))
                 ("BLOCKED" :foreground "orange" :weight bold)
                 ("LATER" :foreground "gray" :weight bold)
                 ("CANCELLED" :foreground "blue" :weight bold)
@@ -1038,12 +1069,16 @@ dump."
                  "* TODO %?\n%U\n%a\n"
                  :clock-in t :clock-resume t)
 
-                ("d" "Delegate a task" entry (file+datetree journal)
-                 "* TASK @%\\2 %^{What}   \t:@%^{Who}:\n%U\n%l\n"
-                 :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
+                ;; ("d" "Record a delegated task" entry (file+datetree journal)
+                ;;  "* DELEGATED @%\\2 %^{What}   \t:@%^{Who}:\n%U\n%l\n"
+                ;;  :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
 
                 ("D" "A task that needs delegating later" entry (file+datetree journal)
                  "* TODO %^{What}   \t:@%^{Who}:\n%U\n%l\n"
+                 :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
+
+                ("d" "Record a delegated task" entry (file+datetree journal)
+                 "* DELEGATED @%\\2 %^{What}\n:PROPERTIES:\n:OWNER: %^{Owner}\n:WHY: %^{Why}\n:DOD: %^{DoD}\n:END:\nDEADLINE: %^{Deadline}t\n%U\n%l\n"
                  :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
 
                 ("n" "note" entry (file+datetree journal)
