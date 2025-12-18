@@ -1141,6 +1141,13 @@ dump."
   )
 
 
+(defun ian/swap-org-level-4-and-6-colors ()
+  "Swap the foreground colors of org-level-4 and org-level-6 faces."
+  (let ((level-4-fg (face-foreground 'org-level-4 nil t))
+        (level-6-fg (face-foreground 'org-level-6 nil t)))
+    (set-face-foreground 'org-level-4 level-6-fg)
+    (set-face-foreground 'org-level-6 level-4-fg)))
+
 (defun ian/config-org-basics ()
   (setq org-superstar-headline-bullets-list '("◉" "▶" "✸" "●" "◆" "○" "▸" "•")
         org-hide-leading-stars t
@@ -1200,6 +1207,9 @@ dump."
     (ian/config-org-tasks-todos)
     (ian/config-org-capture)
     (ian/config-org-babel)
+
+    ;; Swap org-level-4 and org-level-6 colors
+    (ian/swap-org-level-4-and-6-colors)
 
     ;; Add journal month guard
     (add-hook 'org-mode-hook
