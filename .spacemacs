@@ -108,7 +108,7 @@ This function should only modify configuration layer settings."
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages
-   '(window-purpose  ;; [2024-06-04] excluded to prevent an issue with gptel not creating a new buffer
+   '(
      )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
