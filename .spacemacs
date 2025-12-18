@@ -65,6 +65,12 @@ This function should only modify configuration layer settings."
      (multiple-cursors :variables multiple-cursors-backend 'mc)
      org
 
+     (claude-code :variables
+                  claude-code-ide-window-side 'right
+                  claude-code-ide-window-width 88
+                  claude-code-ide-terminal-backend 'eat
+                  )
+
      ;; ;; See https://github.com/arnm/mermaid-layer
      ;; ;; Need to clone the repo into ~/.emacs.d/private/
      ;; mermaid
@@ -94,6 +100,7 @@ This function should only modify configuration layer settings."
      keychain-environment
      highlight-indent-guides
      gptel
+     eat
 
      sublime-themes      ; wilson, odersky themes
      modus-themes        ; modus-operandi theme
