@@ -79,7 +79,6 @@ This function should only modify configuration layer settings."
      syntax-checking
      version-control
      terraform
-     themes-megapack
      (treemacs :variables treemacs-use-icons-dired nil)
      )
 
@@ -101,6 +100,8 @@ This function should only modify configuration layer settings."
      ;;                     :fetcher github
      ;;                     :repo "copilot-emacs/copilot.el"
      ;;                     :files ("*.el")))
+     sublime-themes      ; wilson, odersky themes
+     modus-themes        ; modus-operandi theme
      )
 
    ;; A list of packages that cannot be updated.
