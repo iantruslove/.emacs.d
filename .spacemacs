@@ -1121,10 +1121,6 @@ dump."
                  "* @%? :shoutout:\n%U\n"
                  :clock-in t :clock-resume t :empty-lines 1)
 
-                ("d" "respond" entry (file+datetree journal)
-                 "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
-                 :clock-in t :clock-resume t :immediate-finish t :empty-lines 1)
-
                 ("w" "org-protocol" entry (file refile)
                  "* TODO Review %c\n%U\n"
                  :immediate-finish t)
