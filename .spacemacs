@@ -34,7 +34,6 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(rust
      nginx
-     ansible
      (python :variables
              python-backend 'lsp
              python-lsp-server 'pyright  ;; The key binding SPC m = invokes the selected formatter on the current buffer when in non LSP python mode otherwise SPC m == is used.
@@ -96,10 +95,6 @@ This function should only modify configuration layer settings."
      highlight-indent-guides
      gptel
 
-     ;; (copilot :location (recipe
-     ;;                     :fetcher github
-     ;;                     :repo "copilot-emacs/copilot.el"
-     ;;                     :files ("*.el")))
      sublime-themes      ; wilson, odersky themes
      modus-themes        ; modus-operandi theme
      )
