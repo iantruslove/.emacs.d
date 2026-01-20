@@ -66,9 +66,10 @@ This function should only modify configuration layer settings."
      org
 
      (claude-code :variables
-                  claude-code-ide-window-side 'right
-                  claude-code-ide-window-width 88
-                  claude-code-ide-terminal-backend 'eat
+                  ;;claude-code-ide-window-side 'right
+                  ;;claude-code-ide-window-width 88
+                  claude-code-ide-use-side-window nil
+                  claude-code-ide-terminal-backend 'vterm ;; 'eat
                   )
 
      ;; ;; See https://github.com/arnm/mermaid-layer
@@ -76,9 +77,12 @@ This function should only modify configuration layer settings."
      ;; mermaid
 
      (php :variables php-backend 'lsp)
+
+     (shell :variables shell-default-shell 'vterm)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
+
      spacemacs-editing
      ;; spell-checking
      syntax-checking
