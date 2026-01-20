@@ -1066,7 +1066,7 @@ dump."
   ;; See documentation at https://orgmode.org/manual/Capture-templates.html
   (setq org-capture-templates
         (quote (("t" "todo in Journal" entry (file+datetree journal)
-                 "* TODO %?\n%U\n%a\n"
+                 "* TODO %?\n%U\n"
                  :clock-in t :clock-resume t :empty-lines 1)
 
                 ("c" "todo to refile" entry (file refile)
