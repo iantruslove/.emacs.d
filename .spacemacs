@@ -107,6 +107,8 @@ This function should only modify configuration layer settings."
      gptel
      eat
 
+     clipetty
+
      sublime-themes      ; wilson, odersky themes
      modus-themes        ; modus-operandi theme
      )
@@ -1360,6 +1362,8 @@ before packages are loaded."
     (global-set-key [remap isearch-forward]  #'consult-line)
     (global-set-key [remap isearch-backward] #'consult-line)
     (define-key vertico-map "\C-w" "\M-n\M-n"))
+
+  (global-clipetty-mode)  ; enables yank from emacs to system clipboard
 
   (ian/config-os)
   (ian/config-editor)
